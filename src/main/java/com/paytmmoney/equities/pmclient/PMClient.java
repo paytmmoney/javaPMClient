@@ -46,6 +46,9 @@ public class PMClient {
 
     public PMClient(String apiKey, String apiSecretKey, String accessToken) {
         sessionManager = new SessionManager(apiKey, apiSecretKey, accessToken);
+        sessionManagerService = new SessionManagerServiceImpl();
+        accountService = new AccountServiceImpl();
+        orderService = new OrderServiceImpl();
     }
 
     public String login() {
