@@ -28,9 +28,9 @@ Create PMClient object to use SDK for any call Order or Account API.
 
 ```java
 //Initialize PMClient using apiKey and apiSecretKey.User needs to create an object of SDK, by passing apiKey and SecretKey
-PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key");
+PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","your_state_key");
 // Initialize PMClient using apiKey, apiSecretKey and accessToken if you have already
-PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","accessToken");
+PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","your_state_key","accessToken");
 ```
 
 User need to generate session or set access token to use Api's
