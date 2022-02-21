@@ -87,7 +87,7 @@ public class PMClientTest {
         mocked2 = Mockito.mockConstruction(SessionManagerServiceImpl.class);
         mocked3 = Mockito.mockConstruction(AccountServiceImpl.class);
         mocked4 = Mockito.mockConstruction(OrderServiceImpl.class);
-        pMClient = new PMClient("1", "1");
+        pMClient = new PMClient("1", "1","1");
         sessionManager = mocked1.constructed().get(0);
         sessionManagerService = mocked2.constructed().get(0);
         accountService = mocked3.constructed().get(0);
@@ -128,7 +128,7 @@ public class PMClientTest {
 
     @Test
     public void testSetAccessToken() {
-        PMClient pm = new PMClient("1", "1");
+        PMClient pm = new PMClient("1", "1","1");
         pm.setAccessToken("accessToken");
     }
 

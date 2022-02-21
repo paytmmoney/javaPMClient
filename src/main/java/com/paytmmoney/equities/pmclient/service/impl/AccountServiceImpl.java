@@ -5,15 +5,7 @@ import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
-import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
-import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
-import com.paytmmoney.equities.pmclient.response.OrderBookDto;
-import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
-import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
-import com.paytmmoney.equities.pmclient.response.PositionDto;
-import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
-import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
-import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
+import com.paytmmoney.equities.pmclient.response.*;
 import com.paytmmoney.equities.pmclient.service.AccountService;
 import com.paytmmoney.equities.pmclient.util.ApiUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +21,21 @@ public class AccountServiceImpl implements AccountService {
 
     public AccountServiceImpl() {
         restTemplate = new RestTemplate();
+    }
+
+    public UserDetailsResDto getUserDetails(SessionManager sessionManager) throws ApplicationException {
+        ApiUtils.isSessionExpired(sessionManager);
+        ResponseEntity<UserDetailsResDto> response = null;
+        try {
+            response = restTemplate.exchange(
+                    ApiConstants.USER_DETAILS_URL, HttpMethod.GET,
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), UserDetailsResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in AccountServiceImpl->getUserDetails:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
     public OrderBookDto getOrderBook(SessionManager sessionManager) throws ApplicationException {
