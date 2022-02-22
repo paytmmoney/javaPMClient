@@ -2,7 +2,7 @@
 
 The official Java client for communicating with [PaytmMoney Equity API](https://www.paytmmoney.com/stocks/).
 
-PMApi Connect is a set of REST-like APIs that expose many capabilities required to build a complete investment and
+PMClient is a set of REST-like APIs that expose many capabilities required to build a complete investment and
 trading platform. Execute orders in real time, manage user portfolio, and more, with the simple HTTP API collection.
 
 [PaytmMoney Technology Pvt Ltd](https://www.paytmmoney.com/) (c) 2021. Licensed under the MIT License.
