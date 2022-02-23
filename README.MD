@@ -43,6 +43,7 @@ User need to generate session or set access token to use Api's
 
 ```java
 //Get login url. Use this url in browser to login user, after authenticating user you will get requestToken. Use the same to get accessToken.
+//stateKey : Variable key which merchant/fintech company expects Paytm Money to return with Request Token. This can be string.
 String url=pmClient.login("stateKey");
 
 // Once requestToken is obtained user can generate accessToken by calling generateSession,
