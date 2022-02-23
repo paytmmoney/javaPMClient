@@ -105,9 +105,9 @@ public class PMClientTest {
 
     @Test
     public void testLogin() {
-        new PMClient("1", "1", "1");
+        new PMClient("1", "1");
         when(sessionManager.getApiKey()).thenReturn("getApiKeyResponse");
-        String result = pMClient.login();
+        String result = pMClient.login("stateKey");
         Assert.assertEquals(result, "https://login.paytmmoney.com/merchant-login?apiKey=getApiKeyResponse");
     }
 
@@ -128,7 +128,7 @@ public class PMClientTest {
 
     @Test
     public void testSetAccessToken() {
-        PMClient pm = new PMClient("1", "1","1");
+        PMClient pm = new PMClient("1", "1");
         pm.setAccessToken("accessToken");
     }
 

@@ -28,9 +28,9 @@ Create PMClient object to use SDK for any call Order or Account API.
 
 ```java
 //Initialize PMClient using apiKey and apiSecretKey.User needs to create an object of SDK, by passing apiKey and SecretKey
-PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","your_state_key");
+PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key");
 // Initialize PMClient using apiKey, apiSecretKey and accessToken if you have already
-PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","your_state_key","accessToken");
+PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","accessToken");
 ```
 
 User need to generate session or set access token to use Api's
@@ -43,7 +43,7 @@ User need to generate session or set access token to use Api's
 
 ```java
 //Get login url. Use this url in browser to login user, after authenticating user you will get requestToken. Use the same to get accessToken.
-String url=pmClient.login();
+String url=pmClient.login("stateKey");
 
 // Once requestToken is obtained user can generate accessToken by calling generateSession,
 String session=pmClient.generateSession("request_token");

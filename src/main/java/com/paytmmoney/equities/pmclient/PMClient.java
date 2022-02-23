@@ -25,22 +25,22 @@ public class PMClient {
     private OrderService orderService = null;
 
 
-    public PMClient(String apiKey, String apiSecretKey, String stateKey) {
-        sessionManager = new SessionManager(apiKey, apiSecretKey, stateKey);
+    public PMClient(String apiKey, String apiSecretKey) {
+        sessionManager = new SessionManager(apiKey, apiSecretKey);
         sessionManagerService = new SessionManagerServiceImpl();
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
     }
 
-    public PMClient(String apiKey, String apiSecretKey, String stateKey, String accessToken) {
-        sessionManager = new SessionManager(apiKey, apiSecretKey, stateKey, accessToken);
+    public PMClient(String apiKey, String apiSecretKey, String accessToken) {
+        sessionManager = new SessionManager(apiKey, apiSecretKey, accessToken);
         sessionManagerService = new SessionManagerServiceImpl();
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
     }
 
-    public String login() {
-        return ApiConstants.LOGIN_URL + sessionManager.getApiKey() + ApiConstants.LOGIN_URL_PARAM + sessionManager.getStateKey();
+    public String login(String state_key) {
+        return ApiConstants.LOGIN_URL + sessionManager.getApiKey() + ApiConstants.LOGIN_URL_PARAM + state_key;
     }
 
     public void setAccessToken(String accessToken) {

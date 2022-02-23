@@ -5,20 +5,17 @@ import org.apache.logging.log4j.util.Strings;
 public class SessionManager {
     private String apiKey = null;
     private String apiSecretKey = null;
-    private String stateKey = null;
     private String accessToken = null;
     private boolean sessionAlive = false;
 
-    public SessionManager(String apiKey, String apiSecretKey, String stateKey) {
+    public SessionManager(String apiKey, String apiSecretKey) {
         this.apiKey = apiKey;
         this.apiSecretKey = apiSecretKey;
-        this.stateKey = stateKey;
     }
 
-    public SessionManager(String apiKey, String apiSecretKey, String stateKey, String accessToken) {
+    public SessionManager(String apiKey, String apiSecretKey, String accessToken) {
         this.apiKey = apiKey;
         this.apiSecretKey = apiSecretKey;
-        this.stateKey = stateKey;
         this.accessToken = accessToken;
         setSessionAlive(!Strings.isBlank(accessToken));
     }
@@ -30,8 +27,6 @@ public class SessionManager {
     public String getApiSecretKey() {
         return apiSecretKey;
     }
-
-    public String getStateKey() { return stateKey; }
 
     public String getAccessToken() {
         return accessToken;
