@@ -101,7 +101,7 @@ public class PMClient {
     }
 
     public String getSecurityMaster() throws ApplicationException {
-        return accountService.getSecurityMaster(sessionManager);
+        return accountService.getSecurityMaster();
     }
 
 

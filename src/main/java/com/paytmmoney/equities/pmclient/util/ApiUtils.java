@@ -78,10 +78,10 @@ public class ApiUtils {
         return new HttpEntity<>(headers);
     }
 
-    public static HttpEntity<String> getHttpEntityCsv(String accessToken) {
+    public static HttpEntity<String> getHttpEntityCsv() {
         HttpHeaders headers = new HttpHeaders();
-        //headers.setContentType(new MediaType(ApiConstants.TEXT, ApiConstants.CSV));
-        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.setContentType(new MediaType(ApiConstants.TEXT, ApiConstants.CSV));
+//        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
         return new HttpEntity<>(headers);
     }
 

@@ -174,12 +174,11 @@ public class AccountServiceImpl implements AccountService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public String getSecurityMaster(SessionManager sessionManager) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+    public String getSecurityMaster() throws ApplicationException {
         ResponseEntity<String> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.SECURITY_MASTER_ENDPOINT, HttpMethod.GET,
-                    ApiUtils.getHttpEntityCsv(sessionManager.getAccessToken()), String.class);
+                    ApiUtils.getHttpEntityCsv(), String.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in AccountServiceImpl->getSecurityMaster:", e);

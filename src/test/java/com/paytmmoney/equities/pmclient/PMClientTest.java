@@ -205,7 +205,7 @@ public class PMClientTest {
 
     @Test
     public void testGetSecurityMaster() throws Exception {
-        when(accountService.getSecurityMaster(any())).thenReturn("a, b, c");
+        when(accountService.getSecurityMaster()).thenReturn("a, b, c");
         String result = pMClient.getSecurityMaster();
         Assert.assertEquals(result, "a, b, c");
     }

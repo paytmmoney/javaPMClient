@@ -67,7 +67,7 @@ public class ApiUtilsTest {
 
     @Test
     public void testGetHttpEntityCsv() {
-        HttpEntity<String> result = ApiUtils.getHttpEntityCsv("accessToken");
+        HttpEntity<String> result = ApiUtils.getHttpEntityCsv();
         Assert.assertEquals(result.getHeaders().getContentType(), null);
     }
 
