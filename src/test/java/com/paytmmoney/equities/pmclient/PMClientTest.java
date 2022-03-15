@@ -108,7 +108,7 @@ public class PMClientTest {
         new PMClient("1", "1");
         when(sessionManager.getApiKey()).thenReturn("getApiKeyResponse");
         String result = pMClient.login("stateKey");
-        Assert.assertEquals(result, "https://login.paytmmoney.com/merchant-login?apiKey=getApiKeyResponse");
+        Assert.assertEquals(result, "https://login.paytmmoney.com/merchant-login?apiKey=getApiKeyResponse&state=stateKey");
     }
 
 //    @Test(expected = ApplicationException.class)
