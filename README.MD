@@ -9,13 +9,13 @@ trading platform. Execute orders in real time, manage user portfolio, and more, 
 
 ## Documentation
 
-[comment]: <> (- [Kite Connect HTTP API documentation]&#40;https://kite.trade/docs/connect/v3/&#41;)
+[comment]: <> (- [PM Client HTTP API documentation]&#40;https://business.paytm.com/docs;)
 
-[comment]: <> (- [Java library documentation]&#40;https://kite.trade/docs/javakiteconnect/v3/&#41;)
+[comment]: <> (- [Java library documentation]&#40;https://business.paytm.com/docs;)
 
 ## Usage
 
-[comment]: <> (- [Download Kite Connect 3 jar file]&#40;https://github.com/zerodhatech/javakiteconnect/tree/master/dist&#41; and include it in your build path.)
+[comment]: <> (- [Download PM Client 1 jar file]&#40;https://github.com/paytmmoney/javaPMClient/tree/pmClient1/dist; and include it in your build path.)
 
 - Include com.paytmmoney.equities.pmclient into build path from maven. Use version 3.8.2
 
