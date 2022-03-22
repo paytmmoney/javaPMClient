@@ -1,11 +1,12 @@
 package com.paytmmoney.equities.pmclient.constant;
 
 public class ApiConstants {
-    public static final String ENV_HOST = "-stg";
     public static final String LOGIN_HOST = "https://login.paytmmoney.com";
-    public static final String API_HOST = "https://developer" + ENV_HOST + ".paytmmoney.com";
+    public static final String LOGIN_URL_PARAM = "&state=";
+    public static final String API_HOST = "https://developer.paytmmoney.com";
     public static final String LOGIN_URL = LOGIN_HOST + "/merchant-login?apiKey=";
     public static final String ACCESS_TOKEN_URL = API_HOST + "/accounts/v1/gettoken";
+    public static final String USER_DETAILS_URL = API_HOST + "/accounts/v1/user/details";
     public static final String LOGOUT_ENDPOINT = API_HOST + "/accounts/v1/logout";
     public static final String ORDER_BOOK_ENDPOINT = API_HOST + "/orders/v1/order-book";
     public static final String TRADE_DETAILS_ENDPOINT = API_HOST + "/orders/v1/trade-details";

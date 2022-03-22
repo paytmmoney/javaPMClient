@@ -309,7 +309,7 @@ public class AccountServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(response);
-        String result = accountServiceImpl.getSecurityMaster(sessionManager);
+        String result = accountServiceImpl.getSecurityMaster();
         Assert.assertEquals(result, "a,b,c");
     }
 
@@ -321,6 +321,6 @@ public class AccountServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(null);
-        accountServiceImpl.getSecurityMaster(sessionManager);
+        accountServiceImpl.getSecurityMaster();
     }
 }

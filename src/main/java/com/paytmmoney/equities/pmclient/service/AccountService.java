@@ -3,18 +3,12 @@ package com.paytmmoney.equities.pmclient.service;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
-import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
-import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
-import com.paytmmoney.equities.pmclient.response.OrderBookDto;
-import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
-import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
-import com.paytmmoney.equities.pmclient.response.PositionDto;
-import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
-import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
-import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
+import com.paytmmoney.equities.pmclient.response.*;
 
 public interface AccountService {
     OrderBookDto getOrderBook(SessionManager sessionManager) throws ApplicationException;
+
+    UserDetailsResDto getUserDetails(SessionManager sessionManager) throws ApplicationException;
 
     TradeDetailsDto getTradeDetails(SessionManager sessionManager, String orderNo,
                                     String legNo, String segment) throws ApplicationException;
@@ -37,5 +31,5 @@ public interface AccountService {
     ScriptMarginCalResDto postScriptMarginCalculator(
             SessionManager sessionManager, ScriptMarginCalReqDto scriptMarginCalReqDto) throws ApplicationException;
 
-    String getSecurityMaster(SessionManager sessionManager) throws ApplicationException;
+    String getSecurityMaster() throws ApplicationException;
 }
