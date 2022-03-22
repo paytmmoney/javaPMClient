@@ -87,7 +87,7 @@ public class PMClientTest {
         mocked2 = Mockito.mockConstruction(SessionManagerServiceImpl.class);
         mocked3 = Mockito.mockConstruction(AccountServiceImpl.class);
         mocked4 = Mockito.mockConstruction(OrderServiceImpl.class);
-        pMClient = new PMClient("1", "1");
+        pMClient = new PMClient("1", "1","1");
         sessionManager = mocked1.constructed().get(0);
         sessionManagerService = mocked2.constructed().get(0);
         accountService = mocked3.constructed().get(0);
@@ -105,10 +105,10 @@ public class PMClientTest {
 
     @Test
     public void testLogin() {
-        new PMClient("1", "1", "1");
+        new PMClient("1", "1");
         when(sessionManager.getApiKey()).thenReturn("getApiKeyResponse");
-        String result = pMClient.login();
-        Assert.assertEquals(result, "https://login.paytmmoney.com/merchant-login?apiKey=getApiKeyResponse");
+        String result = pMClient.login("stateKey");
+        Assert.assertEquals(result, "https://login.paytmmoney.com/merchant-login?apiKey=getApiKeyResponse&state=stateKey");
     }
 
 //    @Test(expected = ApplicationException.class)
@@ -205,7 +205,7 @@ public class PMClientTest {
 
     @Test
     public void testGetSecurityMaster() throws Exception {
-        when(accountService.getSecurityMaster(any())).thenReturn("a, b, c");
+        when(accountService.getSecurityMaster()).thenReturn("a, b, c");
         String result = pMClient.getSecurityMaster();
         Assert.assertEquals(result, "a, b, c");
     }

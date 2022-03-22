@@ -26,37 +26,37 @@ public class ApiUtilsTest {
     @Test
     public void testGetAccessTokenEndpoint() {
         String result = ApiUtils.getAccessTokenEndpoint("api_key", "request_token");
-        Assert.assertEquals(result, "https://developer-stg.paytmmoney.com/accounts/v1/gettoken?apiKey=api_key&requestToken=request_token");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/accounts/v1/gettoken?apiKey=api_key&requestToken=request_token");
     }
 
     @Test
     public void testGetTradeDetailsEndpoint() {
         String result = ApiUtils.getTradeDetailsEndpoint("101", "1", "E");
-        Assert.assertEquals(result, "https://developer-stg.paytmmoney.com/orders/v1/trade-details?order_no=101&leg_no=1&segment=E");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/orders/v1/trade-details?order_no=101&leg_no=1&segment=E");
     }
 
     @Test
     public void testGetPositionDetailsEndpoint() {
         String result = ApiUtils.getPositionDetailsEndpoint("371", "I", "E");
-        Assert.assertEquals(result, "https://developer-stg.paytmmoney.com/orders/v1/position-details?security_id=371&product=I&exchange=E");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/orders/v1/position-details?security_id=371&product=I&exchange=E");
     }
 
     @Test
     public void testGetFundSummaryEndpoint() {
         String result = ApiUtils.getFundSummaryEndpoint();
-        Assert.assertEquals(result, "https://developer-stg.paytmmoney.com/accounts/v1/funds/summary?config=true");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/accounts/v1/funds/summary?config=true");
     }
 
     @Test
     public void testGetEdisStatuEndpoint() {
         String result = ApiUtils.getEdisStatuEndpoint("10131");
-        Assert.assertEquals(result, "https://developer-stg.paytmmoney.com/edis/v1/status?edis_request_id=10131");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/edis/v1/status?edis_request_id=10131");
     }
 
     @Test
     public void testGetOrderMarginCalculatorEndpoint() {
         String result = ApiUtils.getOrderMarginCalculatorEndpoint("N", "NSE", "E", "772", "B", 0, 0.0, "I", 0.0);
-        Assert.assertEquals(result, "https://developer-stg.paytmmoney.com/margin/v1/order/calculator?source=N&exchange=NSE&segment=E&security_id=772&txn_type=B&quantity=0&price=0.0&product=I&trigger_price=0.0");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/margin/v1/order/calculator?source=N&exchange=NSE&segment=E&security_id=772&txn_type=B&quantity=0&price=0.0&product=I&trigger_price=0.0");
     }
 
     @Test
@@ -67,8 +67,8 @@ public class ApiUtilsTest {
 
     @Test
     public void testGetHttpEntityCsv() {
-        HttpEntity<String> result = ApiUtils.getHttpEntityCsv("accessToken");
-        Assert.assertEquals(result.getHeaders().getContentType(), null);
+        HttpEntity<String> result = ApiUtils.getHttpEntityCsv();
+        Assert.assertEquals(result.getHeaders().getContentType().toString(), "text/csv");
     }
 
     @Test

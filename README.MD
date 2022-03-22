@@ -2,20 +2,20 @@
 
 The official Java client for communicating with [PaytmMoney Equity API](https://www.paytmmoney.com/stocks/).
 
-PMApi Connect is a set of REST-like APIs that expose many capabilities required to build a complete investment and
+PMClient is a set of REST-like APIs that expose many capabilities required to build a complete investment and
 trading platform. Execute orders in real time, manage user portfolio, and more, with the simple HTTP API collection.
 
 [PaytmMoney Technology Pvt Ltd](https://www.paytmmoney.com/) (c) 2021. Licensed under the MIT License.
 
 ## Documentation
 
-[comment]: <> (- [Kite Connect HTTP API documentation]&#40;https://kite.trade/docs/connect/v3/&#41;)
+[comment]: <> (- [PM Client HTTP API documentation]&#40;https://business.paytm.com/docs;)
 
-[comment]: <> (- [Java library documentation]&#40;https://kite.trade/docs/javakiteconnect/v3/&#41;)
+[comment]: <> (- [Java library documentation]&#40;https://business.paytm.com/docs;)
 
 ## Usage
 
-[comment]: <> (- [Download Kite Connect 3 jar file]&#40;https://github.com/zerodhatech/javakiteconnect/tree/master/dist&#41; and include it in your build path.)
+[comment]: <> (- [Download PM Client 1 jar file]&#40;https://github.com/paytmmoney/javaPMClient/tree/pmClient1/dist; and include it in your build path.)
 
 - Include com.paytmmoney.equities.pmclient into build path from maven. Use version 3.8.2
 
@@ -43,7 +43,8 @@ User need to generate session or set access token to use Api's
 
 ```java
 //Get login url. Use this url in browser to login user, after authenticating user you will get requestToken. Use the same to get accessToken.
-String url=pmClient.login();
+//stateKey : Variable key which merchant/fintech company expects Paytm Money to return with Request Token. This can be string.
+String url=pmClient.login("stateKey");
 
 // Once requestToken is obtained user can generate accessToken by calling generateSession,
 String session=pmClient.generateSession("request_token");

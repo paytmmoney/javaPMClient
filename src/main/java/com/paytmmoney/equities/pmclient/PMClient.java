@@ -7,19 +7,7 @@ import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
-import com.paytmmoney.equities.pmclient.response.EdisResDto;
-import com.paytmmoney.equities.pmclient.response.EdisStatusResDto;
-import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
-import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
-import com.paytmmoney.equities.pmclient.response.OrderBookDto;
-import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
-import com.paytmmoney.equities.pmclient.response.OrderResDto;
-import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
-import com.paytmmoney.equities.pmclient.response.PositionDto;
-import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
-import com.paytmmoney.equities.pmclient.response.TpinGenerateResDto;
-import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
-import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
+import com.paytmmoney.equities.pmclient.response.*;
 import com.paytmmoney.equities.pmclient.service.AccountService;
 import com.paytmmoney.equities.pmclient.service.OrderService;
 import com.paytmmoney.equities.pmclient.service.SessionManagerService;
@@ -51,8 +39,8 @@ public class PMClient {
         orderService = new OrderServiceImpl();
     }
 
-    public String login() {
-        return ApiConstants.LOGIN_URL + sessionManager.getApiKey();
+    public String login(String state_key) {
+        return ApiConstants.LOGIN_URL + sessionManager.getApiKey() + ApiConstants.LOGIN_URL_PARAM + state_key;
     }
 
     public void setAccessToken(String accessToken) {
@@ -61,6 +49,10 @@ public class PMClient {
 
     public String generateSession(String requestToken) throws ApplicationException {
         return sessionManagerService.generateSession(sessionManager, requestToken);
+    }
+
+    public UserDetailsResDto getUserDetails() throws ApplicationException {
+        return accountService.getUserDetails(sessionManager);
     }
 
     public String logout() throws ApplicationException {
@@ -109,7 +101,7 @@ public class PMClient {
     }
 
     public String getSecurityMaster() throws ApplicationException {
-        return accountService.getSecurityMaster(sessionManager);
+        return accountService.getSecurityMaster();
     }
 
 
