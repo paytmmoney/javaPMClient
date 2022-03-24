@@ -98,4 +98,6 @@ public class OrderBookDataDto {
     private String validity;
     private String platform;
     private String channel;
+    @JsonProperty("instrument_type")
+    private String instrumentType;
 }
