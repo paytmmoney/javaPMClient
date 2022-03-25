@@ -200,7 +200,7 @@ public class AccountServiceImplTest {
 
     @Test
     public void testGetHoldingsData() throws Exception {
-        UserHoldingDto userHoldingDto = new UserHoldingDto(new UserHoldingDataDto(Arrays.<UserHoldingResultDto>asList(new UserHoldingResultDto("bsePmlId", "bseSecurityId", "bseSymbol", "bseTickSize", "cagr", "costPrice", "displayName", "exchange", "exchangeInstName", Boolean.TRUE, "isinCode", "lastTradedPrice", "mcapType", "nsePmlId", "nseSecurityId", "nseSymbol", "nseTickSize", (double) 0, "quantity", 1L, "remainingQuantity", "rowNo", "sector", "securitySourceType", "segment", "utilizedQuantity", "xirr"))), new Meta("displayMessage"));
+        UserHoldingDto userHoldingDto = new UserHoldingDto(new UserHoldingDataDto(Arrays.<UserHoldingResultDto>asList(new UserHoldingResultDto("bsePmlId", "bseSecurityId", "bseSymbol", "bseTickSize", "cagr", "costPrice", "displayName", "exchange", "exchangeInstName", Boolean.TRUE, "isinCode", "lastTradedPrice", "mcapType", "nsePmlId", "nseSecurityId", "nseSymbol", "nseTickSize", (double) 0, "quantity", 1L, "remainingQuantity", "rowNo", "sector", "securitySourceType", "segment", "utilizedQuantity", "xirr","nseSeries","bseSeries"))), new Meta("displayMessage"));
         ResponseEntity<UserHoldingDto> response = new ResponseEntity<UserHoldingDto>(userHoldingDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
