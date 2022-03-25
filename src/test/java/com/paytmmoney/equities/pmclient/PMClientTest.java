@@ -156,9 +156,9 @@ public class PMClientTest {
 
     @Test
     public void testGetPosition() throws Exception {
-        when(accountService.getPosition(any())).thenReturn(new PositionDto(Arrays.<PositionDataDto>asList(new PositionDataDto((double) 0, "clientId", (double) 0, "displayName", "displayPosStatus", "displayPosType", "displayProduct", "exchange", "expiryDate", "instrument", "isin", (double) 0, 1L, "mktType", (double) 0, 1L, (double) 0, "optType", "product", (double) 0, "securityId", "segment", (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0)), "message", "status"));
+        when(accountService.getPosition(any())).thenReturn(new PositionDto(Arrays.<PositionDataDto>asList(new PositionDataDto((double) 0, "clientId", (double) 0, "displayName", "displayPosStatus", "displayPosType", "displayProduct", "exchange", "expiryDate", "instrument", "isin", (double) 0, 1L, "mktType", (double) 0, 1L, (double) 0, "optType", "product", (double) 0, "securityId", "segment", (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0,"instrument_type")), "message", "status"));
         PositionDto result = pMClient.getPosition();
-        Assert.assertEquals(result, new PositionDto(Arrays.<PositionDataDto>asList(new PositionDataDto((double) 0, "clientId", (double) 0, "displayName", "displayPosStatus", "displayPosType", "displayProduct", "exchange", "expiryDate", "instrument", "isin", (double) 0, 1L, "mktType", (double) 0, 1L, (double) 0, "optType", "product", (double) 0, "securityId", "segment", (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0)), "message", "status"));
+        Assert.assertEquals(result, new PositionDto(Arrays.<PositionDataDto>asList(new PositionDataDto((double) 0, "clientId", (double) 0, "displayName", "displayPosStatus", "displayPosType", "displayProduct", "exchange", "expiryDate", "instrument", "isin", (double) 0, 1L, "mktType", (double) 0, 1L, (double) 0, "optType", "product", (double) 0, "securityId", "segment", (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0,"instrument_type")), "message", "status"));
     }
 
     @Test

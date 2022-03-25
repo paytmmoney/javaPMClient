@@ -20,7 +20,7 @@ trading platform. Execute orders in real time, manage user portfolio, and more, 
 - Include com.paytmmoney.equities.pmclient into build path from maven. Use version 3.8.2
 
 - To use pmclient in **Android**, you need to include jar file in the libs directory and add the following line in
-  you module's gradle file ``` compile files('libs/pmclient-1.0.0.jar') ```
+  you module's gradle file ``` compile files('dist/pmclient-1.0.0.jar') ```
 
 ## API usage
 
