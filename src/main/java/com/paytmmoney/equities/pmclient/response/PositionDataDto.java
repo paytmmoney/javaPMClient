@@ -82,4 +82,6 @@ public class PositionDataDto {
     private Double totSellValCf;
     @JsonProperty("tot_sell_val_day")
     private Double totSellValDay;
+    @JsonProperty("instrument_type")
+    private String instrumentType;
 }

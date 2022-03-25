@@ -125,7 +125,7 @@ public class AccountServiceImplTest {
 
     @Test
     public void testGetPosition() throws Exception {
-        PositionDto positionDto = new PositionDto(Arrays.<PositionDataDto>asList(new PositionDataDto((double) 0, "clientId", (double) 0, "displayName", "displayPosStatus", "displayPosType", "displayProduct", "exchange", "expiryDate", "instrument", "isin", (double) 0, 1L, "mktType", (double) 0, 1L, (double) 0, "optType", "product", (double) 0, "securityId", "segment", (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0)), "message", "status");
+        PositionDto positionDto = new PositionDto(Arrays.<PositionDataDto>asList(new PositionDataDto((double) 0, "clientId", (double) 0, "displayName", "displayPosStatus", "displayPosType", "displayProduct", "exchange", "expiryDate", "instrument", "isin", (double) 0, 1L, "mktType", (double) 0, 1L, (double) 0, "optType", "product", (double) 0, "securityId", "segment", (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0, 1L, 1L, 1L, (double) 0, (double) 0, (double) 0,"instrument_type")), "message", "status");
         ResponseEntity<PositionDto> response = new ResponseEntity<PositionDto>(positionDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
