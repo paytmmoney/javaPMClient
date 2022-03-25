@@ -60,4 +60,8 @@ public class UserHoldingResultDto {
     @JsonProperty("utilized_quantity")
     private String utilizedQuantity;
     private String xirr;
+    @JsonProperty("nse_series")
+    private String nseSeries;
+    @JsonProperty("bse_series")
+    private String bseSeries;
 }
