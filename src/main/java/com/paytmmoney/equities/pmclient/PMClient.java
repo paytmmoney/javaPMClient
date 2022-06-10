@@ -106,8 +106,8 @@ public class PMClient {
         return accountService.postScriptMarginCalculator(sessionManager, scriptMarginCalReqDto);
     }
 
-    public String getSecurityMaster() throws ApplicationException {
-        return accountService.getSecurityMaster();
+    public String getSecurityMaster(String scrip_type, String exchange) throws ApplicationException {
+        return accountService.getSecurityMaster(scrip_type, exchange);
     }
 
 

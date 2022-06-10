@@ -72,6 +72,13 @@ public class ApiUtils {
                 .encode().toUriString();
     }
 
+    public static String getSecurityMasterEndpoint(String scrip_type, String exchange) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
+                .queryParam(ApiConstants.EXCHANGE, exchange)
+                .encode().toUriString();
+    }
+
     public static HttpEntity<String> getHttpEntity(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

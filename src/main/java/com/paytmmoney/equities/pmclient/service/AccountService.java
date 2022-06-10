@@ -31,5 +31,5 @@ public interface AccountService {
     ScriptMarginCalResDto postScriptMarginCalculator(
             SessionManager sessionManager, ScriptMarginCalReqDto scriptMarginCalReqDto) throws ApplicationException;
 
-    String getSecurityMaster() throws ApplicationException;
+    String getSecurityMaster(String scrip_type, String exchange) throws ApplicationException;
 }

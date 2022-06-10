@@ -54,6 +54,7 @@ public class ApiConstants {
     public static final String PRICE = "price";
     public static final String TRIGGER_PRICE = "trigger_price";
     public static final String EDIS_REQUEST_ID = "edis_request_id";
+    public static final String SCRIP_TYPE = "scrip_type";
     public static final String DATA = "data";
     public static final String CONT = "cont";
     public static final String EXPIRY = "expiry";
