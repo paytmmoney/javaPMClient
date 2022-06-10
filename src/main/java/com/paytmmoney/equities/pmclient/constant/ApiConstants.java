@@ -31,6 +31,7 @@ public class ApiConstants {
     public static final String EDIS_TPIN_GENERATE_ENDPOINT = API_HOST + "/edis/v1/generate/tpin";
     public static final String EDIS_TPIN_VALIDATION_ENDPOINT = API_HOST + "/edis/v1/validate/tpin";
     public static final String EDIS_TPIN_STATUS_ENDPOINT = API_HOST + "/edis/v1/status";
+    public static final String PRICE_CHART_DETAIL_ENDPOINT = API_HOST + "/data/v1/price-charts/sym";
 
 
     public final static String TEXT = "text";
@@ -53,5 +54,16 @@ public class ApiConstants {
     public static final String PRICE = "price";
     public static final String TRIGGER_PRICE = "trigger_price";
     public static final String EDIS_REQUEST_ID = "edis_request_id";
+    public static final String DATA = "data";
+    public static final String CONT = "cont";
+    public static final String EXPIRY = "expiry";
+    public static final String FROM_DATE = "fromDate";
+    public static final String INSTRUMENT_TYPE = "instType";
+    public static final String INTERVAL = "interval";
+    public static final String MONTH_ID = "monthId";
+    public static final String SERIES = "series";
+    public static final String STRIKE = "strike";
+    public static final String SYMBOL = "symbol";
+    public static final String TO_DATE = "toDate";
 
 }

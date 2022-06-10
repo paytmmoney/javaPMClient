@@ -6,12 +6,15 @@ import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
+import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.response.*;
 import com.paytmmoney.equities.pmclient.service.AccountService;
+import com.paytmmoney.equities.pmclient.service.ChartDetailService;
 import com.paytmmoney.equities.pmclient.service.OrderService;
 import com.paytmmoney.equities.pmclient.service.SessionManagerService;
 import com.paytmmoney.equities.pmclient.service.impl.AccountServiceImpl;
+import com.paytmmoney.equities.pmclient.service.impl.ChartDetailServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.OrderServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ public class PMClient {
     private SessionManagerService sessionManagerService = null;
     private AccountService accountService = null;
     private OrderService orderService = null;
+    private ChartDetailService chartDetailService = null;
 
 
     public PMClient(String apiKey, String apiSecretKey) {
@@ -30,6 +34,7 @@ public class PMClient {
         sessionManagerService = new SessionManagerServiceImpl();
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
+        chartDetailService = new ChartDetailServiceImpl();
     }
 
     public PMClient(String apiKey, String apiSecretKey, String accessToken) {
@@ -37,6 +42,7 @@ public class PMClient {
         sessionManagerService = new SessionManagerServiceImpl();
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
+        chartDetailService = new ChartDetailServiceImpl();
     }
 
     public String login(String state_key) {
@@ -133,6 +139,10 @@ public class PMClient {
 
     public EdisResDto validateEdisTpin(EdisValidateReqDto edisValidateReqDto) throws ApplicationException {
         return orderService.validateEdisTpin(sessionManager, edisValidateReqDto);
+    }
+
+    public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
+        return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
     }
 
 }
