@@ -4,7 +4,9 @@ import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisIsin;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
+import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
 import com.paytmmoney.equities.pmclient.response.EdisDataResDto;
@@ -19,6 +21,9 @@ import com.paytmmoney.equities.pmclient.response.FundSummaryDataDto;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDebitDto;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
 import com.paytmmoney.equities.pmclient.response.FundsSummary;
+import com.paytmmoney.equities.pmclient.response.GTTDataResDto;
+import com.paytmmoney.equities.pmclient.response.GTTDataTransactionResDto;
+import com.paytmmoney.equities.pmclient.response.GTTResDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDataDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueResultDto;
@@ -33,6 +38,7 @@ import com.paytmmoney.equities.pmclient.response.PositionDataDto;
 import com.paytmmoney.equities.pmclient.response.PositionDetailDataDto;
 import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
 import com.paytmmoney.equities.pmclient.response.PositionDto;
+import com.paytmmoney.equities.pmclient.response.PriceChartResDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDataDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginListResDto;
@@ -44,9 +50,13 @@ import com.paytmmoney.equities.pmclient.response.UserHoldingDataDto;
 import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
 import com.paytmmoney.equities.pmclient.response.UserHoldingResultDto;
 import com.paytmmoney.equities.pmclient.service.AccountService;
+import com.paytmmoney.equities.pmclient.service.ChartDetailService;
+import com.paytmmoney.equities.pmclient.service.GTTService;
 import com.paytmmoney.equities.pmclient.service.OrderService;
 import com.paytmmoney.equities.pmclient.service.SessionManagerService;
 import com.paytmmoney.equities.pmclient.service.impl.AccountServiceImpl;
+import com.paytmmoney.equities.pmclient.service.impl.ChartDetailServiceImpl;
+import com.paytmmoney.equities.pmclient.service.impl.GTTServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.OrderServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import org.junit.After;
@@ -54,6 +64,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -74,11 +85,15 @@ public class PMClientTest {
     MockedConstruction<SessionManagerServiceImpl> mocked2;
     MockedConstruction<AccountServiceImpl> mocked3;
     MockedConstruction<OrderServiceImpl> mocked4;
+    MockedConstruction<GTTServiceImpl> mocked5;
+    MockedConstruction<ChartDetailServiceImpl> mocked6;
 
     private SessionManager sessionManager;
     private SessionManagerService sessionManagerService;
     private AccountService accountService;
     private OrderService orderService;
+    private GTTService gttService;
+    private ChartDetailService chartDetailService;
     private PMClient pMClient;
 
     @Before
@@ -87,11 +102,15 @@ public class PMClientTest {
         mocked2 = Mockito.mockConstruction(SessionManagerServiceImpl.class);
         mocked3 = Mockito.mockConstruction(AccountServiceImpl.class);
         mocked4 = Mockito.mockConstruction(OrderServiceImpl.class);
+        mocked5 = Mockito.mockConstruction(GTTServiceImpl.class);
+        mocked6 = Mockito.mockConstruction(ChartDetailServiceImpl.class);
         pMClient = new PMClient("1", "1","1");
         sessionManager = mocked1.constructed().get(0);
         sessionManagerService = mocked2.constructed().get(0);
         accountService = mocked3.constructed().get(0);
         orderService = mocked4.constructed().get(0);
+        gttService = mocked5.constructed().get(0);
+        chartDetailService = mocked6.constructed().get(0);
     }
 
     @After
@@ -100,6 +119,8 @@ public class PMClientTest {
         mocked2.close();
         mocked3.close();
         mocked4.close();
+        mocked5.close();
+        mocked6.close();
     }
 
 
@@ -205,8 +226,8 @@ public class PMClientTest {
 
     @Test
     public void testGetSecurityMaster() throws Exception {
-        when(accountService.getSecurityMaster()).thenReturn("a, b, c");
-        String result = pMClient.getSecurityMaster();
+        when(accountService.getSecurityMaster("scrip_type","exchange")).thenReturn("a, b, c");
+        String result = pMClient.getSecurityMaster("scrip_type", "exchange");
         Assert.assertEquals(result, "a, b, c");
     }
 
@@ -258,5 +279,69 @@ public class PMClientTest {
         EdisResDto result = pMClient.validateEdisTpin(new EdisValidateReqDto(Arrays.<EdisIsin>asList(new EdisIsin("isin", 1L, true)), "tradeType"));
         Assert.assertEquals(result, new EdisResDto(new EdisDataResDto(new EdisParamResDto("dPId", "reqId", "transDtls", "version"), "redirectionUrl", "edisRequestId", "tradingDate", Arrays.<EdisIsin>asList(new EdisIsin("isin", 1L, true))), new Meta("displayMessage")));
     }
+
+    @Test
+    public void testPriceChartDetails() throws Exception {
+        when(chartDetailService.priceChartDetails(any(), any())).thenReturn(new PriceChartResDto(Arrays.asList(Arrays.asList("open", "high", "low", "close"))));
+        PriceChartResDto result = pMClient.priceChartDetails(new PriceChartReqDto());
+        Assert.assertEquals(result, new PriceChartResDto(Arrays.asList(Arrays.asList("open", "high", "low", "close"))));
+    }
+
+    @Test
+    public void testCreateGtt() throws Exception {
+        when(gttService.createGTT(any(), any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.createGtt(new GTTOrderReqDto());
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testUpdateGtt() throws Exception {
+        when(gttService.updateGTT(any(), any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.updateGtt("id", new GTTOrderReqDto());
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testDeleteGtt() throws Exception {
+        when(gttService.deleteGTT(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.deleteGtt("id");
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testGetGtt() throws Exception {
+        when(gttService.getGTT(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.getGtt("id");
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testGetAllGtt() throws Exception {
+        when(gttService.getAllGTT(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.getAllGtt("pml_id","status");
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testGetGttAggregate() throws Exception {
+        when(gttService.getGTTAggregate(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.getGttAggregate();
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testGetGttExpiry() throws Exception {
+        when(gttService.getGTTExpiry(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.getGttExpiry("pml_id");
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
+    @Test
+    public void testGetGttByInstructionId() throws Exception {
+        when(gttService.getGTTByInstructionId(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
+        GTTResDto result = pMClient.getGttByInstructionId("id");
+        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+    }
+
 }
 

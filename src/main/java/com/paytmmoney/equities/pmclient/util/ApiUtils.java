@@ -6,7 +6,9 @@ import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
+import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -71,6 +73,13 @@ public class ApiUtils {
                 .encode().toUriString();
     }
 
+    public static String getSecurityMasterEndpoint(String scrip_type, String exchange) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
+                .queryParam(ApiConstants.EXCHANGE, exchange)
+                .encode().toUriString();
+    }
+
     public static HttpEntity<String> getHttpEntity(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -123,6 +132,22 @@ public class ApiUtils {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
         return new HttpEntity<>(edisValidateReqDto, headers);
+    }
+
+    public static HttpEntity<PriceChartReqDto> getHttpEntityForPost(
+            String accessToken, PriceChartReqDto priceChartReqDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        return new HttpEntity<>(priceChartReqDto, headers);
+    }
+
+    public static HttpEntity<GTTOrderReqDto> getHttpEntityForPost(
+            String accessToken, GTTOrderReqDto gttOrderReqDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        return new HttpEntity<>(gttOrderReqDto, headers);
     }
 
 

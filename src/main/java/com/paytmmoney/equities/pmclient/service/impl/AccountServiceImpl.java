@@ -174,10 +174,10 @@ public class AccountServiceImpl implements AccountService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public String getSecurityMaster() throws ApplicationException {
+    public String getSecurityMaster(String scrip_type, String exchange) throws ApplicationException {
         ResponseEntity<String> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.SECURITY_MASTER_ENDPOINT, HttpMethod.GET,
+            response = restTemplate.exchange(ApiUtils.getSecurityMasterEndpoint(scrip_type, exchange), HttpMethod.GET,
                     ApiUtils.getHttpEntityCsv(), String.class);
             return response.getBody();
         } catch (Exception e) {
