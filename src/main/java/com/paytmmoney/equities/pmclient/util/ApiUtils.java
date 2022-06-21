@@ -6,6 +6,7 @@ import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
@@ -139,6 +140,14 @@ public class ApiUtils {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
         return new HttpEntity<>(priceChartReqDto, headers);
+    }
+
+    public static HttpEntity<GTTOrderReqDto> getHttpEntityForPost(
+            String accessToken, GTTOrderReqDto gttOrderReqDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        return new HttpEntity<>(gttOrderReqDto, headers);
     }
 
 

@@ -32,6 +32,10 @@ public class ApiConstants {
     public static final String EDIS_TPIN_VALIDATION_ENDPOINT = API_HOST + "/edis/v1/validate/tpin";
     public static final String EDIS_TPIN_STATUS_ENDPOINT = API_HOST + "/edis/v1/status";
     public static final String PRICE_CHART_DETAIL_ENDPOINT = API_HOST + "/data/v1/price-charts/sym";
+    public static final String GTT = API_HOST + "/gtt/v1/gtt";
+    public static final String GTT_AGGREGATE = API_HOST + GTT + "/aggregate";
+    public static final String GTT_EXPIRY = API_HOST + GTT + "/expiry-date";
+    public static final String GTT_BY_INSTRUCTION_ID = API_HOST + GTT + "/instructions";
 
 
     public final static String TEXT = "text";

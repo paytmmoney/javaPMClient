@@ -5,16 +5,19 @@ import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.response.*;
 import com.paytmmoney.equities.pmclient.service.AccountService;
 import com.paytmmoney.equities.pmclient.service.ChartDetailService;
+import com.paytmmoney.equities.pmclient.service.GTTService;
 import com.paytmmoney.equities.pmclient.service.OrderService;
 import com.paytmmoney.equities.pmclient.service.SessionManagerService;
 import com.paytmmoney.equities.pmclient.service.impl.AccountServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.ChartDetailServiceImpl;
+import com.paytmmoney.equities.pmclient.service.impl.GTTServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.OrderServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,7 @@ public class PMClient {
     private AccountService accountService = null;
     private OrderService orderService = null;
     private ChartDetailService chartDetailService = null;
+    private GTTService gttService = null;
 
 
     public PMClient(String apiKey, String apiSecretKey) {
@@ -35,6 +39,7 @@ public class PMClient {
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
         chartDetailService = new ChartDetailServiceImpl();
+        gttService = new GTTServiceImpl();
     }
 
     public PMClient(String apiKey, String apiSecretKey, String accessToken) {
@@ -43,6 +48,7 @@ public class PMClient {
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
         chartDetailService = new ChartDetailServiceImpl();
+        gttService = new GTTServiceImpl();
     }
 
     public String login(String state_key) {
@@ -143,6 +149,39 @@ public class PMClient {
 
     public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
         return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
+    }
+
+    //GTT API
+    public GTTResDto createGtt(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
+        return gttService.createGTT(sessionManager, gttOrderReqDto);
+    }
+
+    public GTTResDto updateGtt(String id, GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
+        return gttService.updateGTT(sessionManager, gttOrderReqDto);
+    }
+
+    public GTTResDto deleteGtt(String id) throws ApplicationException {
+        return gttService.deleteGTT(sessionManager);
+    }
+
+    public GTTResDto getGtt(String id) throws ApplicationException {
+        return gttService.getGTT(sessionManager);
+    }
+
+    public GTTResDto getAllGtt(String pmlId, String status) throws ApplicationException {
+        return gttService.getAllGTT(sessionManager);
+    }
+
+    public GTTResDto getGttAggregate() throws ApplicationException {
+        return gttService.getGTTAggregate(sessionManager);
+    }
+
+    public GTTResDto getGttExpiry(String pmlId) throws ApplicationException {
+        return gttService.getGTTExpiry(sessionManager);
+    }
+
+    public GTTResDto getGttByInstructionId(String id) throws ApplicationException {
+        return gttService.getGTTByInstructionId(sessionManager);
     }
 
 }
