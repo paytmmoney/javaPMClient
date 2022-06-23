@@ -21,6 +21,7 @@ import com.paytmmoney.equities.pmclient.service.impl.GTTServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.OrderServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 public class PMClient {
@@ -112,7 +113,7 @@ public class PMClient {
         return accountService.postScriptMarginCalculator(sessionManager, scriptMarginCalReqDto);
     }
 
-    public String getSecurityMaster(String scrip_type, String exchange) throws ApplicationException {
+    public String getSecurityMaster(@Nullable String scrip_type, @Nullable String exchange) throws ApplicationException {
         return accountService.getSecurityMaster(scrip_type, exchange);
     }
 
@@ -152,36 +153,36 @@ public class PMClient {
     }
 
     //GTT API
-    public GTTResDto createGtt(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
+    public GTTOrderResDto createGtt(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
         return gttService.createGTT(sessionManager, gttOrderReqDto);
     }
 
-    public GTTResDto updateGtt(String id, GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
-        return gttService.updateGTT(sessionManager, gttOrderReqDto);
+    public GTTOrderResDto updateGtt(String id, GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
+        return gttService.updateGTT(sessionManager, id, gttOrderReqDto);
     }
 
-    public GTTResDto deleteGtt(String id) throws ApplicationException {
-        return gttService.deleteGTT(sessionManager);
+    public GTTOrderResDto deleteGtt(String id) throws ApplicationException {
+        return gttService.deleteGTT(sessionManager, id);
     }
 
-    public GTTResDto getGtt(String id) throws ApplicationException {
-        return gttService.getGTT(sessionManager);
+    public GTTOrderResDto getGtt(String id) throws ApplicationException {
+        return gttService.getGTT(sessionManager, id);
     }
 
-    public GTTResDto getAllGtt(String pmlId, String status) throws ApplicationException {
-        return gttService.getAllGTT(sessionManager);
+    public GTTOrderResDto getAllGtt(@Nullable String pmlId, @Nullable String status) throws ApplicationException {
+        return gttService.getAllGTT(sessionManager, pmlId, status);
     }
 
-    public GTTResDto getGttAggregate() throws ApplicationException {
+    public GTTOrderResDto getGttAggregate() throws ApplicationException {
         return gttService.getGTTAggregate(sessionManager);
     }
 
-    public GTTResDto getGttExpiry(String pmlId) throws ApplicationException {
-        return gttService.getGTTExpiry(sessionManager);
+    public GTTOrderResDto getGttExpiry(String pmlId) throws ApplicationException {
+        return gttService.getGTTExpiry(sessionManager, pmlId);
     }
 
-    public GTTResDto getGttByInstructionId(String id) throws ApplicationException {
-        return gttService.getGTTByInstructionId(sessionManager);
+    public GTTOrderResDto getGttByInstructionId(String id) throws ApplicationException {
+        return gttService.getGTTByInstructionId(sessionManager, id);
     }
 
 }

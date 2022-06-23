@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
@@ -73,10 +74,23 @@ public class ApiUtils {
                 .encode().toUriString();
     }
 
-    public static String getSecurityMasterEndpoint(String scrip_type, String exchange) {
+    public static String getSecurityMasterEndpoint(@Nullable String scrip_type, @Nullable String exchange) {
         return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
                 .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
                 .queryParam(ApiConstants.EXCHANGE, exchange)
+                .encode().toUriString();
+    }
+
+    public static String getGttByIdOrStatusEndpoint(@Nullable String pml_id, @Nullable String status) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                .queryParam(ApiConstants.STATUS, status)
+                .encode().toUriString();
+    }
+
+    public static String getGttExpiryEndpoint(String pml_id) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_EXPIRY)
+                .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
                 .encode().toUriString();
     }
 

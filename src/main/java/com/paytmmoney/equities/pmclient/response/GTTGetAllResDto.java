@@ -11,11 +11,11 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GTTMetaResDto {
+public class GTTGetAllResDto {
 
-    @JsonProperty(ApiConstants.STATUS)
-    private String status;
+    @JsonProperty(ApiConstants.DATA)
+    private GTTGetAllDataResDTO data;
 
-    @JsonProperty(ApiConstants.DISPLAY_MESSAGE)
-    private String displayMessage;
+    @JsonProperty(ApiConstants.META)
+    private GTTMetaResDto meta;
 }

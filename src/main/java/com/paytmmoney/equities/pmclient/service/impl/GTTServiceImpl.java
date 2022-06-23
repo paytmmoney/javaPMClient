@@ -5,14 +5,16 @@ import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
-import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
-import com.paytmmoney.equities.pmclient.response.GTTResDto;
+import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
 import com.paytmmoney.equities.pmclient.service.GTTService;
 import com.paytmmoney.equities.pmclient.util.ApiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
@@ -22,13 +24,13 @@ public class GTTServiceImpl implements GTTService {
 
     public GTTServiceImpl() { restTemplate = new RestTemplate();}
 
-    public GTTResDto createGTT(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
+    public GTTOrderResDto createGTT(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
             ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTOrderResDto> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), gttOrderReqDto), GTTResDto.class);
+                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), gttOrderReqDto), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->createGTT:", e);
@@ -37,12 +39,12 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto getGTT(SessionManager sessionManager) throws ApplicationException {
+    public GTTOrderResDto getGTT(SessionManager sessionManager, String id) throws ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTOrderResDto> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTResDto.class);
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getGTT:", e);
@@ -51,13 +53,13 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto updateGTT(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
+    public GTTOrderResDto updateGTT(SessionManager sessionManager, String id, GTTOrderReqDto gttOrderReqDto) throws
             ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTOrderResDto> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.PUT,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), gttOrderReqDto), GTTResDto.class);
+                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), gttOrderReqDto), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->updateGTT:", e);
@@ -66,12 +68,12 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto deleteGTT(SessionManager sessionManager) throws ApplicationException {
+    public GTTOrderResDto deleteGTT(SessionManager sessionManager, String id) throws ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTOrderResDto> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.DELETE,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTResDto.class);
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->deleteGTT:", e);
@@ -80,12 +82,12 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto getAllGTT(SessionManager sessionManager) throws ApplicationException {
+    public GTTGetAllResDto getAllGTT(SessionManager sessionManager, @Nullable String pml_id, @Nullable String status) throws ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTGetAllResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTResDto.class);
+            response = restTemplate.exchange(ApiUtils.getGttByIdOrStatusEndpoint(pml_id, status), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTGetAllResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getAllGTT:", e);
@@ -94,12 +96,12 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto getGTTAggregate(SessionManager sessionManager) throws ApplicationException {
+    public GTTAggregateResDto getGTTAggregate(SessionManager sessionManager) throws ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTAggregateResDto> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.GTT_AGGREGATE, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTResDto.class);
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTAggregateResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getGTTAggregate:", e);
@@ -108,12 +110,12 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto getGTTExpiry(SessionManager sessionManager) throws ApplicationException {
+    public GTTOrderResDto getGTTExpiry(SessionManager sessionManager, String pmlId) throws ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTOrderResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.GTT_EXPIRY, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTResDto.class);
+            response = restTemplate.exchange(ApiUtils.getGttExpiryEndpoint(pmlId), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getGTTExpiry:", e);
@@ -122,12 +124,12 @@ public class GTTServiceImpl implements GTTService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public GTTResDto getGTTByInstructionId(SessionManager sessionManager) throws ApplicationException {
+    public GTTOrderResDto getGTTByInstructionId(SessionManager sessionManager, String id) throws ApplicationException {
         ApiUtils.isSessionExpired(sessionManager);
-        ResponseEntity<GTTResDto> response = null;
+        ResponseEntity<GTTOrderResDto> response = null;
         try {
             response = restTemplate.exchange(ApiConstants.GTT_BY_INSTRUCTION_ID, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTResDto.class);
+                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getGTTByInstructionId:", e);

@@ -21,9 +21,9 @@ import com.paytmmoney.equities.pmclient.response.FundSummaryDataDto;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDebitDto;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
 import com.paytmmoney.equities.pmclient.response.FundsSummary;
-import com.paytmmoney.equities.pmclient.response.GTTDataResDto;
-import com.paytmmoney.equities.pmclient.response.GTTDataTransactionResDto;
-import com.paytmmoney.equities.pmclient.response.GTTResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderDataResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderDataTransactionResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDataDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueResultDto;
@@ -64,7 +64,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -289,58 +288,58 @@ public class PMClientTest {
 
     @Test
     public void testCreateGtt() throws Exception {
-        when(gttService.createGTT(any(), any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.createGtt(new GTTOrderReqDto());
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.createGTT(any(), any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto("id", "","","","","","","","","", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("",1D,"",1,"",1D,"",1D,"")), "", "", "", "")));
+        GTTOrderResDto result = pMClient.createGtt(new GTTOrderReqDto());
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testUpdateGtt() throws Exception {
-        when(gttService.updateGTT(any(), any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.updateGtt("id", new GTTOrderReqDto());
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.updateGTT(any(), any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.updateGtt("id", new GTTOrderReqDto());
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testDeleteGtt() throws Exception {
-        when(gttService.deleteGTT(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.deleteGtt("id");
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.deleteGTT(any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.deleteGtt("id");
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testGetGtt() throws Exception {
-        when(gttService.getGTT(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.getGtt("id");
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.getGTT(any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.getGtt("id");
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testGetAllGtt() throws Exception {
-        when(gttService.getAllGTT(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.getAllGtt("pml_id","status");
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.getAllGTT(any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.getAllGtt("pml_id","status");
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testGetGttAggregate() throws Exception {
-        when(gttService.getGTTAggregate(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.getGttAggregate();
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.getGTTAggregate(any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.getGttAggregate();
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testGetGttExpiry() throws Exception {
-        when(gttService.getGTTExpiry(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.getGttExpiry("pml_id");
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.getGTTExpiry(any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.getGttExpiry("pml_id");
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
     @Test
     public void testGetGttByInstructionId() throws Exception {
-        when(gttService.getGTTByInstructionId(any())).thenReturn(new GTTResDto(new GTTDataResDto()));
-        GTTResDto result = pMClient.getGttByInstructionId("id");
-        Assert.assertEquals(result, new GTTResDto(new GTTDataResDto()));
+        when(gttService.getGTTByInstructionId(any())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto()));
+        GTTOrderResDto result = pMClient.getGttByInstructionId("id");
+        Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto()));
     }
 
 }

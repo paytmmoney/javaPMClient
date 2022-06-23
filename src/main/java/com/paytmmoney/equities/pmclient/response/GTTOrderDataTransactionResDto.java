@@ -1,4 +1,4 @@
-package com.paytmmoney.equities.pmclient.request;
+package com.paytmmoney.equities.pmclient.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,14 +6,12 @@ import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GTTTransactionDetailsReqDTO {
+public class GTTOrderDataTransactionResDto {
 
     @JsonProperty(ApiConstants.EXECUTION_REF_ID)
     private String executionRefId;
@@ -41,5 +39,4 @@ public class GTTTransactionDetailsReqDTO {
 
     @JsonProperty(ApiConstants.TRIGGERED_AT_TYPE)
     private String triggeredAtType;
-
 }

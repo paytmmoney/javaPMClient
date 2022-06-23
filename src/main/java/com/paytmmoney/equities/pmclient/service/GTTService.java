@@ -3,26 +3,28 @@ package com.paytmmoney.equities.pmclient.service;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
-import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
-import com.paytmmoney.equities.pmclient.response.GTTResDto;
+import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
+import org.springframework.lang.Nullable;
 
 public interface GTTService {
 
-    GTTResDto createGTT(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
+    GTTOrderResDto createGTT(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
             ApplicationException;
 
-    GTTResDto getGTT(SessionManager sessionManager) throws ApplicationException;
+    GTTOrderResDto getGTT(SessionManager sessionManager, String id) throws ApplicationException;
 
-    GTTResDto updateGTT(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
+    GTTOrderResDto updateGTT(SessionManager sessionManager, String id, GTTOrderReqDto gttOrderReqDto) throws
             ApplicationException;
 
-    GTTResDto deleteGTT(SessionManager sessionManager) throws ApplicationException;
+    GTTOrderResDto deleteGTT(SessionManager sessionManager, String id) throws ApplicationException;
 
-    GTTResDto getAllGTT(SessionManager sessionManager) throws ApplicationException;
+    GTTGetAllResDto getAllGTT(SessionManager sessionManager, @Nullable String pml_id, @Nullable String status) throws ApplicationException;
 
-    GTTResDto getGTTAggregate(SessionManager sessionManager) throws ApplicationException;
+    GTTAggregateResDto getGTTAggregate(SessionManager sessionManager) throws ApplicationException;
 
-    GTTResDto getGTTExpiry(SessionManager sessionManager) throws ApplicationException;
+    GTTOrderResDto getGTTExpiry(SessionManager sessionManager, String pmlId) throws ApplicationException;
 
-    GTTResDto getGTTByInstructionId(SessionManager sessionManager) throws ApplicationException;
+    GTTOrderResDto getGTTByInstructionId(SessionManager sessionManager, String id) throws ApplicationException;
 }

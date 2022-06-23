@@ -7,15 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GTTMetaResDto {
+public class GTTGetAllDataResDTO {
 
-    @JsonProperty(ApiConstants.STATUS)
-    private String status;
+    @JsonProperty(ApiConstants.GTTS)
+    private List<GTTOrderDataResDto> gttOrderDataResDtoList;
 
-    @JsonProperty(ApiConstants.DISPLAY_MESSAGE)
-    private String displayMessage;
 }
