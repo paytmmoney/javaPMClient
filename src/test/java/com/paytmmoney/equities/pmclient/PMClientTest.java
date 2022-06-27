@@ -233,21 +233,21 @@ public class PMClientTest {
     @Test
     public void testPlaceOrder() throws Exception {
         when(orderService.placeOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.placeOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        OrderResDto result = pMClient.placeOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", null, null, null));
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 
     @Test
     public void testModifyOrder() throws Exception {
         when(orderService.modifyOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.modifyOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        OrderResDto result = pMClient.modifyOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", null, null,null));
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 
     @Test
     public void testCancelOrder() throws Exception {
         when(orderService.cancelOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.cancelOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        OrderResDto result = pMClient.cancelOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", null, null, null));
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 

@@ -169,11 +169,11 @@ public class PMClient {
         return gttService.getGTT(sessionManager, id);
     }
 
-    public GTTOrderResDto getAllGtt(@Nullable String pmlId, @Nullable String status) throws ApplicationException {
+    public GTTGetAllResDto getAllGtt(@Nullable String pmlId, @Nullable String status) throws ApplicationException {
         return gttService.getAllGTT(sessionManager, pmlId, status);
     }
 
-    public GTTOrderResDto getGttAggregate() throws ApplicationException {
+    public GTTAggregateResDto getGttAggregate() throws ApplicationException {
         return gttService.getGTTAggregate(sessionManager);
     }
 

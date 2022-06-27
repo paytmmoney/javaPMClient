@@ -107,5 +107,8 @@ public class ApiConstants {
     public static final String GTT_INSTRUMENT_TYPE = "instrument_type";
     public static final String LOT_SIZE = "lot_size";
     public static final String TICK_SIZE = "tick_size";
+    public static final String TAG_TYPE = "tag_type";
+    public static final String TAG_ID = "tag_id";
+    public static final String ALGO_MODULE = "algo_module";
 
 }
