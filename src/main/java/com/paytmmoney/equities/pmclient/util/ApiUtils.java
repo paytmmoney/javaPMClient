@@ -21,6 +21,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
 
+import static com.paytmmoney.equities.pmclient.constant.ApiConstants.FORWARD_SLASH;
+
 public class ApiUtils {
 
     public static String getAccessTokenEndpoint(String apiKey, String requestToken) {
@@ -86,6 +88,10 @@ public class ApiUtils {
                 .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
                 .queryParam(ApiConstants.STATUS, status)
                 .encode().toUriString();
+    }
+
+    public static String gttByIdEndpoint(String id) {
+        return ApiConstants.GTT + FORWARD_SLASH + id;
     }
 
     public static String getGttExpiryEndpoint(String pml_id) {

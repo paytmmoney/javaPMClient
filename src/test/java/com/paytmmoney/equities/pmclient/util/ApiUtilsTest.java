@@ -83,11 +83,11 @@ public class ApiUtilsTest {
         Assert.assertEquals(result.getBody().getSource().toString(), "source");
     }
 
-    @Test
-    public void testGetHttpEntityForPost3() {
-        HttpEntity<OrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
-        Assert.assertEquals(result.getBody().getClientId().toString(), "clientId");
-    }
+//    @Test
+//    public void testGetHttpEntityForPost3() {
+//        HttpEntity<OrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+//        Assert.assertEquals(result.getBody().getClientId().toString(), "clientId");
+//    }
 
     @Test
     public void testGetHttpEntityForPost4() {

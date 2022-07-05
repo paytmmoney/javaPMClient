@@ -6,14 +6,17 @@ import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GTTAggregateDataResDto {
+public class GTTAggregateDataResDto implements Serializable {
 
     @JsonProperty(ApiConstants.PENDING)
     private List<GTTAggregateStatusResDto> pending;

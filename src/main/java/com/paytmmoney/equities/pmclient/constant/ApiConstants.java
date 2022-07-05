@@ -111,4 +111,6 @@ public class ApiConstants {
     public static final String TAG_ID = "tag_id";
     public static final String ALGO_MODULE = "algo_module";
 
+    public static final String FORWARD_SLASH = "/";
+
 }
