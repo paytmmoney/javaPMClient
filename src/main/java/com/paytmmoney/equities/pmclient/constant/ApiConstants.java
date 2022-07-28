@@ -3,7 +3,7 @@ package com.paytmmoney.equities.pmclient.constant;
 public class ApiConstants {
     public static final String LOGIN_HOST = "https://login.paytmmoney.com";
     public static final String LOGIN_URL_PARAM = "&state=";
-    public static final String API_HOST = "https://developer-stg.paytmmoney.com";
+    public static final String API_HOST = "https://developer.paytmmoney.com";
     public static final String LOGIN_URL = LOGIN_HOST + "/merchant-login?apiKey=";
     public static final String ACCESS_TOKEN_URL = API_HOST + "/accounts/v1/gettoken";
     public static final String USER_DETAILS_URL = API_HOST + "/accounts/v1/user/details";
