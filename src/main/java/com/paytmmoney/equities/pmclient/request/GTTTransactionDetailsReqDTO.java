@@ -19,25 +19,25 @@ public class GTTTransactionDetailsReqDTO {
     private String executionRefId;
 
     @JsonProperty(ApiConstants.LIMIT_PRICE)
-    private double limitPrice;
+    private Double limitPrice;
 
     @JsonProperty(ApiConstants.NOTIFICATION_REF_ID)
     private String notificationRefId;
 
     @JsonProperty(ApiConstants.QUANTITY)
-    private int quantity;
+    private Integer quantity;
 
     @JsonProperty(ApiConstants.SUB_TYPE)
     private String subType;
 
     @JsonProperty(ApiConstants.TRIGGER_PRICE)
-    private double triggerPrice;
+    private Double triggerPrice;
 
     @JsonProperty(ApiConstants.TRIGGERED_AT)
     private String triggeredAt;
 
     @JsonProperty(ApiConstants.TRIGGERED_AT_PRICE)
-    private double triggeredAtPrice;
+    private Double triggeredAtPrice;
 
     @JsonProperty(ApiConstants.TRIGGERED_AT_TYPE)
     private String triggeredAtType;
