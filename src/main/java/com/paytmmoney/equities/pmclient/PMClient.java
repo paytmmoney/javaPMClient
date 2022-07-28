@@ -23,6 +23,8 @@ import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 
+import java.util.List;
+
 @Slf4j
 public class PMClient {
 
@@ -113,8 +115,8 @@ public class PMClient {
         return accountService.postScriptMarginCalculator(sessionManager, scriptMarginCalReqDto);
     }
 
-    public String getSecurityMaster(@Nullable String scrip_type, @Nullable String exchange) throws ApplicationException {
-        return accountService.getSecurityMaster(scrip_type, exchange);
+    public String getSecurityMaster(@Nullable List<String> scripTypeList, @Nullable String exchange) throws ApplicationException {
+        return accountService.getSecurityMaster(scripTypeList, exchange);
     }
 
 

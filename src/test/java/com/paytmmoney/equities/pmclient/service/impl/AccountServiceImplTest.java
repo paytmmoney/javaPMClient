@@ -45,6 +45,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.when;
@@ -309,7 +310,7 @@ public class AccountServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(response);
-        String result = accountServiceImpl.getSecurityMaster("scrip_type", "exchange");
+        String result = accountServiceImpl.getSecurityMaster(new ArrayList<>(), "exchange");
         Assert.assertEquals(result, "a,b,c");
     }
 
@@ -321,6 +322,6 @@ public class AccountServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(null);
-        accountServiceImpl.getSecurityMaster("scrip_type", "exchange");
+        accountServiceImpl.getSecurityMaster(new ArrayList<>(), "exchange");
     }
 }

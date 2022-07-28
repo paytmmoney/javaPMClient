@@ -68,6 +68,7 @@ import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -225,8 +226,8 @@ public class PMClientTest {
 
     @Test
     public void testGetSecurityMaster() throws Exception {
-        when(accountService.getSecurityMaster("scrip_type","exchange")).thenReturn("a, b, c");
-        String result = pMClient.getSecurityMaster("scrip_type", "exchange");
+        when(accountService.getSecurityMaster(new ArrayList<>(),"exchange")).thenReturn("a, b, c");
+        String result = pMClient.getSecurityMaster(new ArrayList<>(), "exchange");
         Assert.assertEquals(result, "a, b, c");
     }
 

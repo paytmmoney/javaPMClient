@@ -10,6 +10,7 @@ import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -77,21 +78,53 @@ public class ApiUtils {
     }
 
     public static String getSecurityMasterEndpoint(@Nullable String scrip_type, @Nullable String exchange) {
-        return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
-                .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
-                .queryParam(ApiConstants.EXCHANGE, exchange)
-                .encode().toUriString();
+        if (StringUtils.isNotEmpty(scrip_type) && StringUtils.isEmpty(exchange)){
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                    .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
+                    .encode().toUriString();
+        } else if (StringUtils.isEmpty(scrip_type) && StringUtils.isNotEmpty(exchange)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                    .queryParam(ApiConstants.EXCHANGE, exchange)
+                    .encode().toUriString();
+        } else if (StringUtils.isNotEmpty(scrip_type) && StringUtils.isNotEmpty(exchange)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                    .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
+                    .queryParam(ApiConstants.EXCHANGE, exchange)
+                    .encode().toUriString();
+        }
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT).encode().toUriString();
     }
 
     public static String getGttByIdOrStatusEndpoint(@Nullable String pml_id, @Nullable String status) {
-        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
-                .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
-                .queryParam(ApiConstants.STATUS, status)
-                .encode().toUriString();
+        if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .encode().toUriString();
+        } else if (StringUtils.isEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        } else if (StringUtils.isNotEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        }
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT).encode().toUriString();
     }
 
     public static String gttByIdEndpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
         return ApiConstants.GTT + FORWARD_SLASH + id;
+    }
+
+    public static String gttByInstructionIdEndpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT_BY_INSTRUCTION_ID + FORWARD_SLASH + id;
     }
 
     public static String getGttExpiryEndpoint(String pml_id) {

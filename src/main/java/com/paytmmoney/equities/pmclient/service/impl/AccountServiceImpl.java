@@ -13,7 +13,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
+import java.util.List;
+
+import static com.paytmmoney.equities.pmclient.constant.ApiConstants.COMMA;
 
 @Slf4j
 public class AccountServiceImpl implements AccountService {
@@ -175,10 +181,12 @@ public class AccountServiceImpl implements AccountService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public String getSecurityMaster(@Nullable String scrip_type, @Nullable String exchange) throws ApplicationException {
+    public String getSecurityMaster(@Nullable List<String> scripTypeList, @Nullable String exchange) throws ApplicationException {
         ResponseEntity<String> response = null;
         try {
-            response = restTemplate.exchange(ApiUtils.getSecurityMasterEndpoint(scrip_type, exchange), HttpMethod.GET,
+            String scripType = null;
+            if (!CollectionUtils.isEmpty(scripTypeList)){ scripType = String.join(COMMA,scripTypeList); }
+            response = restTemplate.exchange(ApiUtils.getSecurityMasterEndpoint(scripType, exchange), HttpMethod.GET,
                     ApiUtils.getHttpEntityCsv(), String.class);
             return response.getBody();
         } catch (Exception e) {

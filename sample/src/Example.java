@@ -104,7 +104,7 @@ public class Example {
 
 
             //To get security master api details
-            String securityMasterValue = pmClient.getSecurityMaster("scrip_type", "exchange");
+            String securityMasterValue = pmClient.getSecurityMaster(new ArrayList<>(), "exchange");
             //  System.out.println("Security master value details : " + securityMasterValue.toString());
             FileWriter writer = new FileWriter("securityMasterData.csv");
             writer.append(securityMasterValue);

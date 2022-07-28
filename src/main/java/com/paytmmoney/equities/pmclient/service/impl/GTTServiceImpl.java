@@ -1,5 +1,6 @@
 package com.paytmmoney.equities.pmclient.service.impl;
 
+import com.google.gson.Gson;
 import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
@@ -29,6 +30,9 @@ public class GTTServiceImpl implements GTTService {
         ApiUtils.isSessionExpired(sessionManager);
         ResponseEntity<GTTOrderResDto> response = null;
         try {
+            Gson gson = new Gson();
+            String json = gson.toJson(gttOrderReqDto);
+            System.out.println("Create GTT Req DTO : "+json);
             response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.POST,
                     ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), gttOrderReqDto), GTTOrderResDto.class);
             return response.getBody();
@@ -74,6 +78,7 @@ public class GTTServiceImpl implements GTTService {
         try {
             response = restTemplate.exchange(ApiUtils.gttByIdEndpoint(id), HttpMethod.DELETE,
                     ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTOrderResDto.class);
+            System.out.println(response.getBody());
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->deleteGTT:", e);
@@ -128,7 +133,7 @@ public class GTTServiceImpl implements GTTService {
         ApiUtils.isSessionExpired(sessionManager);
         ResponseEntity<GTTOrderResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.GTT_BY_INSTRUCTION_ID, HttpMethod.GET,
+            response = restTemplate.exchange(ApiUtils.gttByInstructionIdEndpoint(id), HttpMethod.GET,
                     ApiUtils.getHttpEntity(sessionManager.getAccessToken()), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {

@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class GTTAggregateResDto implements Serializable {
 
     @JsonProperty(ApiConstants.DATA)
-    private GTTOrderDataResDto data;
+    private GTTAggregateDataResDto data;
 
     @JsonProperty(ApiConstants.META)
     private GTTMetaResDto meta;
