@@ -52,7 +52,7 @@ public class GTTOrderDataResDto implements Serializable {
     private String transactionType;
 
     @JsonProperty(ApiConstants.TRANSACTION_DETAILS)
-    private List<GTTTransactionDetailsReqDTO> transactionDetails;
+    private List<GTTOrderDataTransactionResDto> transactionDetails;
 
     @JsonProperty(ApiConstants.SET_PRICE)
     private String setPrice;
