@@ -1,6 +1,5 @@
 package com.paytmmoney.equities.pmclient.service.impl;
 
-import com.google.gson.Gson;
 import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
@@ -30,9 +29,6 @@ public class GTTServiceImpl implements GTTService {
         ApiUtils.isSessionExpired(sessionManager);
         ResponseEntity<GTTOrderResDto> response = null;
         try {
-            Gson gson = new Gson();
-            String json = gson.toJson(gttOrderReqDto);
-            System.out.println("Create GTT Req DTO : "+json);
             response = restTemplate.exchange(ApiConstants.GTT, HttpMethod.POST,
                     ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), gttOrderReqDto), GTTOrderResDto.class);
             return response.getBody();
