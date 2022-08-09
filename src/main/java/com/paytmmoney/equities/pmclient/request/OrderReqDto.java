@@ -4,6 +4,7 @@ package com.paytmmoney.equities.pmclient.request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -55,4 +56,10 @@ public class OrderReqDto extends CommonOrderReqDto {
     private UUID edisAuthOtpUuid;
     @JsonProperty("edis_txn_id")
     private String edisTxnId;
+    @JsonProperty(ApiConstants.TAG_TYPE)
+    private String tagType;
+    @JsonProperty(ApiConstants.TAG_ID)
+    private String tagId;
+    @JsonProperty(ApiConstants.ALGO_MODULE)
+    private String algoModule;
 }
