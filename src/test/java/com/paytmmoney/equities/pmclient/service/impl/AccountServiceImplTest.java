@@ -28,9 +28,12 @@ import com.paytmmoney.equities.pmclient.response.ScriptMarginListResDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginTotalResDto;
 import com.paytmmoney.equities.pmclient.response.TradeDetailsDataDto;
 import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
+import com.paytmmoney.equities.pmclient.response.UserDetailsResDataDto;
+import com.paytmmoney.equities.pmclient.response.UserDetailsResDto;
 import com.paytmmoney.equities.pmclient.response.UserHoldingDataDto;
 import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
 import com.paytmmoney.equities.pmclient.response.UserHoldingResultDto;
+import com.paytmmoney.equities.pmclient.response.UserMeta;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +73,33 @@ public class AccountServiceImplTest {
     @After
     public void initMock() {
         mocked.close();
+    }
+
+    @Test
+    public void testGetUserDetails() throws Exception {
+        UserDetailsResDto userDetailsResDto = new UserDetailsResDto(new UserDetailsResDataDto("kycName",Long.valueOf(0l),Arrays.asList("activeSegments")), new UserMeta("requestId","responseId","code","message","displayMessage"));
+        ResponseEntity<UserDetailsResDto> response = new ResponseEntity<UserDetailsResDto>(userDetailsResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<UserDetailsResDto>>any())
+        ).thenReturn(response);
+        UserDetailsResDto result = accountServiceImpl.getUserDetails(sessionManager);
+        Assert.assertEquals(result.getData().getKycName(), "kycName");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testGetUserDetailsException() throws Exception {
+        UserDetailsResDto userDetailsResDto = new UserDetailsResDto(new UserDetailsResDataDto("kycName",Long.valueOf(0l),Arrays.asList("activeSegments")), new UserMeta("requestId","responseId","code","message","displayMessage"));
+        ResponseEntity<UserDetailsResDto> response = new ResponseEntity<UserDetailsResDto>(userDetailsResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<UserDetailsResDto>>any())
+        ).thenReturn(null);
+        accountServiceImpl.getUserDetails(sessionManager);
     }
 
     @Test
