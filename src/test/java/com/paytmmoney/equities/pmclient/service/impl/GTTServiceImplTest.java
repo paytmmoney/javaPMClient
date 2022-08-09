@@ -13,18 +13,27 @@ import com.paytmmoney.equities.pmclient.response.GTTOrderDataResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderDataTransactionResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
 import org.junit.After;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-class GTTServiceImplTest {
+public class GTTServiceImplTest {
 
     MockedConstruction<RestTemplate> mocked;
     RestTemplate restTemplate;
@@ -32,6 +41,7 @@ class GTTServiceImplTest {
 
     SessionManager sessionManager;
 
+    @Before
     public void setUp() {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         gttServiceImpl = new GTTServiceImpl();
@@ -44,52 +54,147 @@ class GTTServiceImplTest {
         mocked.close();
     }
 
-    @Test
-    void testCreateGTT() throws Exception {
-        GTTOrderResDto result = gttServiceImpl.createGTT(new SessionManager(null, null, "accessToken"), new GTTOrderReqDto("exchange", "orderType", "pmlId", "productType", "securityId", "segment", "setPrice", Arrays.<GTTTransactionDetailsReqDTO>asList(new GTTTransactionDetailsReqDTO(Double.valueOf(0), Integer.valueOf(0), Double.valueOf(0))), "transactionType", "triggerType"));
-        Assertions.assertEquals(new GTTOrderResDto(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"), new GTTMetaResDto("status", "displayMessage")), result);
+    private GTTOrderResDto getGTTOrderResDTO () {
+        GTTOrderDataTransactionResDto gttOrderDataTransactionResDto = GTTOrderDataTransactionResDto.builder()
+                .executionRefId("executionRefId").limitPrice(Double.valueOf(0.0d)).notificationRefId("notificationRefId")
+                .quantity(Integer.valueOf(0)).subType("subType").triggerPrice(Double.valueOf(0.0d)).triggeredAt("triggeredAt")
+                .triggeredAtPrice(Double.valueOf(0.0d)).triggeredAtType("triggeredAtType").build();
+        List<GTTOrderDataTransactionResDto> gttOrderDataTransactionResDtoList = new ArrayList<>();
+        gttOrderDataTransactionResDtoList.add(gttOrderDataTransactionResDto);
+        GTTOrderDataResDto gttOrderDataResDto = GTTOrderDataResDto.builder().id("id").instructionId("instructionId")
+                .segment("segment").exchange("exchange").securityId("securityId").pmlId("pmlId").name("name").userId("name")
+                .status("status").transactionType("transactionType").transactionDetails(gttOrderDataTransactionResDtoList)
+                .setPrice("setPrice").orderType("orderType").productType("productType").triggerType("triggerType")
+                .cancellationCode("cancellationCode").cancellationReason("cancellationReason").expiryDate("expiryDate")
+                .createdAt("createdAt").updatedAt("updatedAt").deletedAt("deletedAt").requestMetaData("requestMetaData").build();
+        GTTMetaResDto gttMetaResDto = GTTMetaResDto.builder().displayMessage("displayMessage").status("status").build();
+        return GTTOrderResDto.builder().data(gttOrderDataResDto).meta(gttMetaResDto).build();
     }
 
     @Test
-    void testGetGTT() throws Exception {
-        GTTOrderResDto result = gttServiceImpl.getGTT(new SessionManager(null, null, "accessToken"), "id");
-        Assertions.assertEquals(new GTTOrderResDto(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testCreateGTT() throws Exception {
+        GTTOrderReqDto gttOrderReqDto = new GTTOrderReqDto("exchange", "orderType", "pmlId", "productType", "securityId", "segment", "setPrice", Arrays.<GTTTransactionDetailsReqDTO>asList(new GTTTransactionDetailsReqDTO(Double.valueOf(0.0d), Integer.valueOf(0), Double.valueOf(0.0d))), "transactionType", "triggerType");
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        ResponseEntity<GTTOrderResDto> response = new ResponseEntity<GTTOrderResDto>(gttOrderResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTOrderResDto>>any())
+        ).thenReturn(response);
+        GTTOrderResDto result = gttServiceImpl.createGTT(sessionManager, gttOrderReqDto);
+        Assert.assertEquals(result.getData().getId(), "id");
     }
 
     @Test
-    void testUpdateGTT() throws Exception {
-        GTTOrderResDto result = gttServiceImpl.updateGTT(new SessionManager(null, null, "accessToken"), "id", new GTTOrderReqDto("exchange", "orderType", "pmlId", "productType", "securityId", "segment", "setPrice", Arrays.<GTTTransactionDetailsReqDTO>asList(new GTTTransactionDetailsReqDTO(Double.valueOf(0), Integer.valueOf(0), Double.valueOf(0))), "transactionType", "triggerType"));
-        Assertions.assertEquals(new GTTOrderResDto(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testGetGTT() throws Exception {
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        ResponseEntity<GTTOrderResDto> response = new ResponseEntity<GTTOrderResDto>(gttOrderResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTOrderResDto>>any())
+        ).thenReturn(response);
+        GTTOrderResDto result = gttServiceImpl.getGTT(sessionManager, "id");
+        Assert.assertEquals(result.getData().getId(), "id");
     }
 
     @Test
-    void testDeleteGTT() throws Exception {
-        GTTOrderResDto result = gttServiceImpl.deleteGTT(new SessionManager(null, null, "accessToken"), "id");
-        Assertions.assertEquals(new GTTOrderResDto(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testUpdateGTT() throws Exception {
+        GTTOrderReqDto gttOrderReqDto = new GTTOrderReqDto("exchange", "orderType", "pmlId", "productType", "securityId", "segment", "setPrice", Arrays.<GTTTransactionDetailsReqDTO>asList(new GTTTransactionDetailsReqDTO(Double.valueOf(0.0d), Integer.valueOf(0), Double.valueOf(0.0d))), "transactionType", "triggerType");
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        ResponseEntity<GTTOrderResDto> response = new ResponseEntity<GTTOrderResDto>(gttOrderResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTOrderResDto>>any())
+        ).thenReturn(response);
+        GTTOrderResDto result = gttServiceImpl.updateGTT(sessionManager, "id", gttOrderReqDto);
+        Assert.assertEquals(result.getData().getId(), "id");
     }
 
     @Test
-    void testGetAllGTT() throws Exception {
-        GTTGetAllResDto result = gttServiceImpl.getAllGTT(new SessionManager(null, null, "accessToken"), "pml_id", "status");
-        Assertions.assertEquals(new GTTGetAllResDto(new GTTGetAllDataResDTO(Arrays.<GTTOrderDataResDto>asList(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"))), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testDeleteGTT() throws Exception {
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        ResponseEntity<GTTOrderResDto> response = new ResponseEntity<GTTOrderResDto>(gttOrderResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTOrderResDto>>any())
+        ).thenReturn(response);
+        GTTOrderResDto result = gttServiceImpl.deleteGTT(sessionManager, "id");
+        Assert.assertEquals(result.getData().getId(), "id");
     }
 
     @Test
-    void testGetGTTAggregate() throws Exception {
-        GTTAggregateResDto result = gttServiceImpl.getGTTAggregate(new SessionManager(null, null, "accessToken"));
-        Assertions.assertEquals(new GTTAggregateResDto(new GTTAggregateDataResDto(Arrays.<GTTAggregateStatusResDto>asList(new GTTAggregateStatusResDto("name", "pmlId", "count", "securityId", "exchange", "instrumentType", "segment", "lotSize", "tickSize")), Arrays.<GTTAggregateStatusResDto>asList(new GTTAggregateStatusResDto("name", "pmlId", "count", "securityId", "exchange", "instrumentType", "segment", "lotSize", "tickSize"))), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testGetAllGTT() throws Exception {
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        List<GTTOrderDataResDto> gttOrderDataResDtos = new ArrayList<>();
+        gttOrderDataResDtos.add(gttOrderResDto.getData());
+        GTTGetAllDataResDTO gttGetAllDataResDTO = GTTGetAllDataResDTO.builder().gtts(gttOrderDataResDtos).build();
+        GTTGetAllResDto gttGetAllResDto = GTTGetAllResDto.builder().data(gttGetAllDataResDTO).build();
+        ResponseEntity<GTTGetAllResDto> response = new ResponseEntity<GTTGetAllResDto>(gttGetAllResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTGetAllResDto>>any())
+        ).thenReturn(response);
+        GTTGetAllResDto result = gttServiceImpl.getAllGTT(sessionManager,"pml_id", "status");
+        Assert.assertEquals(result.getData().getGtts().get(0).getId(),"id");
     }
 
     @Test
-    void testGetGTTExpiry() throws Exception {
-        GTTOrderResDto result = gttServiceImpl.getGTTExpiry(new SessionManager(null, null, "accessToken"), "pmlId");
-        Assertions.assertEquals(new GTTOrderResDto(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testGetGTTAggregate() throws Exception {
+        List<GTTAggregateStatusResDto> gttAggregateStatusResDtos = new ArrayList<>();
+        GTTAggregateStatusResDto gttAggregateStatusResDto = GTTAggregateStatusResDto.builder().name("name").pmlId("pmlId")
+                .count("count").securityId("securityId").exchange("exchange").instrumentType("instrumentType").segment("segment")
+                .lotSize("lotSize").tickSize("tickSize").build();
+        gttAggregateStatusResDtos.add(gttAggregateStatusResDto);
+        GTTAggregateDataResDto gttAggregateDataResDto = GTTAggregateDataResDto.builder().pending(gttAggregateStatusResDtos)
+                .triggered(gttAggregateStatusResDtos).build();
+        GTTMetaResDto gttMetaResDto = GTTMetaResDto.builder().displayMessage("displayMessage").status("status").build();
+        GTTAggregateResDto gttAggregateResDto = GTTAggregateResDto.builder().data(gttAggregateDataResDto).meta(gttMetaResDto).build();
+        ResponseEntity<GTTAggregateResDto> response = new ResponseEntity<GTTAggregateResDto>(gttAggregateResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTAggregateResDto>>any())
+        ).thenReturn(response);
+        GTTAggregateResDto result = gttServiceImpl.getGTTAggregate(sessionManager);
+        Assert.assertEquals(result.getData().getPending().get(0).getName(), "name");
     }
 
     @Test
-    void testGetGTTByInstructionId() throws Exception {
-        GTTOrderResDto result = gttServiceImpl.getGTTByInstructionId(new SessionManager(null, null, "accessToken"), "id");
-        Assertions.assertEquals(new GTTOrderResDto(new GTTOrderDataResDto("id", "instructionId", "segment", "exchange", "securityId", "pmlId", "name", "userId", "status", "transactionType", Arrays.<GTTOrderDataTransactionResDto>asList(new GTTOrderDataTransactionResDto("executionRefId", Double.valueOf(0), "notificationRefId", Integer.valueOf(0), "subType", Double.valueOf(0), "triggeredAt", Double.valueOf(0), "triggeredAtType")), "setPrice", "orderType", "triggerType", "productType", "cancellationCode", "cancellationReason", "expiryDate", "createdAt", "updatedAt", "deletedAt", "requestMetaData"), new GTTMetaResDto("status", "displayMessage")), result);
+    public void testGetGTTExpiry() throws Exception {
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        ResponseEntity<GTTOrderResDto> response = new ResponseEntity<GTTOrderResDto>(gttOrderResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTOrderResDto>>any())
+        ).thenReturn(response);
+        GTTOrderResDto result = gttServiceImpl.getGTTExpiry(sessionManager, "pmlId");
+        Assert.assertEquals(result.getData().getExpiryDate(),"expiryDate");
+    }
+
+    @Test
+    public void testGetGTTByInstructionId() throws Exception {
+        GTTOrderResDto gttOrderResDto = getGTTOrderResDTO();
+        ResponseEntity<GTTOrderResDto> response = new ResponseEntity<GTTOrderResDto>(gttOrderResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<GTTOrderResDto>>any())
+        ).thenReturn(response);
+        GTTOrderResDto result = gttServiceImpl.getGTTByInstructionId(sessionManager, "id");
+        Assert.assertEquals(result.getData().getId(), "id");
     }
 }
 

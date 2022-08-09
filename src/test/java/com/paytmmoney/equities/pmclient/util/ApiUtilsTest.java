@@ -5,7 +5,10 @@ import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisIsin;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTTransactionDetailsReqDTO;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
+import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
 import org.junit.Before;
@@ -60,6 +63,84 @@ public class ApiUtilsTest {
     }
 
     @Test
+    public void testGetSecurityMasterEndpoint() {
+        String result = ApiUtils.getSecurityMasterEndpoint("scrip_type","exchange");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master?scrip_type=scrip_type&exchange=exchange");
+    }
+
+    @Test
+    public void testGetSecurityMasterEndpoint1() {
+        String result = ApiUtils.getSecurityMasterEndpoint(null,"exchange");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master?exchange=exchange");
+    }
+
+    @Test
+    public void testGetSecurityMasterEndpoint2() {
+        String result = ApiUtils.getSecurityMasterEndpoint("scrip_type",null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master?scrip_type=scrip_type");
+    }
+
+    @Test
+    public void testGetSecurityMasterEndpoint3() {
+        String result = ApiUtils.getSecurityMasterEndpoint(null,null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusEndpoint() {
+        String result = ApiUtils.getGttByIdOrStatusEndpoint("pml_id","status");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt?pml-id=pml_id&status=status");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusEndpoint1() {
+        String result = ApiUtils.getGttByIdOrStatusEndpoint(null,"status");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt?status=status");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusEndpoint2() {
+        String result = ApiUtils.getGttByIdOrStatusEndpoint("pml_id",null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt?pml-id=pml_id");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusEndpoint3() {
+        String result = ApiUtils.getGttByIdOrStatusEndpoint(null,null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt");
+    }
+
+    @Test
+    public void testGttByIdEndpoint() {
+        String result = ApiUtils.gttByIdEndpoint("id");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt/id");
+    }
+
+    @Test
+    public void testGttByIdEndpoint1() {
+        String result = ApiUtils.gttByIdEndpoint(null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt/null");
+    }
+
+    @Test
+    public void testGttByInstructionIdEndpoint() {
+        String result = ApiUtils.gttByInstructionIdEndpoint("id");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt/instructions/id");
+    }
+
+    @Test
+    public void testGttByInstructionIdEndpoint1() {
+        String result = ApiUtils.gttByInstructionIdEndpoint(null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt/instructions/null");
+    }
+
+    @Test
+    public void testGetGttExpiryEndpoint() {
+        String result = ApiUtils.getGttExpiryEndpoint("pml-id");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt/expiry-date?pml-id=pml-id");
+    }
+
+    @Test
     public void testGetHttpEntity() {
         HttpEntity<String> result = ApiUtils.getHttpEntity("accessToken");
         Assert.assertEquals(result.getHeaders().getContentType().toString(), "application/json");
@@ -97,8 +178,14 @@ public class ApiUtilsTest {
 
     @Test
     public void testGetHttpEntityForPost5() {
-        HttpEntity<EdisValidateReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new EdisValidateReqDto(Arrays.<EdisIsin>asList(new EdisIsin("isin", Long.valueOf(1), true)), "tradeType"));
-        Assert.assertEquals(result.getBody().getTradeType(), "tradeType");
+        HttpEntity<PriceChartReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new PriceChartReqDto(false,"exchange","expiry", "fromDate", "instType", "interval","monthId","series","strike","symbol","toDate"));
+        Assert.assertEquals(result.getBody().getExchange(), "exchange");
+    }
+
+    @Test
+    public void testGetHttpEntityForPost6() {
+        HttpEntity<GTTOrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new GTTOrderReqDto("exchange","orderType","pmlId","productType","securityId","segment","setPrice",Arrays.<GTTTransactionDetailsReqDTO>asList(new GTTTransactionDetailsReqDTO(Double.valueOf(0.0d),Integer.valueOf(0),Double.valueOf(0.0d))),"transactionType","triggerType"));
+        Assert.assertEquals(result.getBody().getPmlId(), "pmlId");
     }
 
     @Test

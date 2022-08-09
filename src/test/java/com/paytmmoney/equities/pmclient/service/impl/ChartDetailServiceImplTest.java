@@ -4,7 +4,8 @@ import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.response.PriceChartResDto;
 import org.junit.After;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedConstruction;
@@ -19,10 +20,10 @@ import org.testng.Assert;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-class ChartDetailServiceImplTest {
+public class ChartDetailServiceImplTest {
 
     MockedConstruction<RestTemplate> mocked;
     RestTemplate restTemplate;
@@ -30,6 +31,7 @@ class ChartDetailServiceImplTest {
 
     SessionManager sessionManager;
 
+    @Before
     public void setUp() {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         chartDetailServiceImpl = new ChartDetailServiceImpl();
@@ -43,8 +45,8 @@ class ChartDetailServiceImplTest {
     }
 
     @Test
-    void testPriceChartDetails() throws Exception {
-        PriceChartResDto priceChartResDto = new PriceChartResDto(Arrays.<List<String>>asList(Arrays.<String>asList("dataS")));
+    public void testPriceChartDetails() throws Exception {
+        PriceChartResDto priceChartResDto = new PriceChartResDto(Arrays.<List<String>>asList(Arrays.<String>asList("data")));
         ResponseEntity<PriceChartResDto> response = new ResponseEntity<PriceChartResDto>(priceChartResDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
@@ -53,6 +55,6 @@ class ChartDetailServiceImplTest {
                 ArgumentMatchers.<Class<PriceChartResDto>>any())
         ).thenReturn(response);
         PriceChartResDto result = chartDetailServiceImpl.priceChartDetails(sessionManager, new PriceChartReqDto(false,"exchange","expiry","fromDate","instType","interval","monthId","series","strike","symbol","toDate"));
-        Assert.assertEquals(result.getData(),List.class);
+        Assert.assertEquals(result.getData().get(0).get(0),"data");
     }
 }
