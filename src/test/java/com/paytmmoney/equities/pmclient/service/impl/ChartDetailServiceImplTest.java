@@ -1,5 +1,6 @@
 package com.paytmmoney.equities.pmclient.service.impl;
 
+import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.response.PriceChartResDto;
@@ -56,5 +57,18 @@ public class ChartDetailServiceImplTest {
         ).thenReturn(response);
         PriceChartResDto result = chartDetailServiceImpl.priceChartDetails(sessionManager, new PriceChartReqDto(false,"exchange","expiry","fromDate","instType","interval","monthId","series","strike","symbol","toDate"));
         Assert.assertEquals(result.getData().get(0).get(0),"data");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testPriceChartDetailsException() throws Exception {
+        PriceChartResDto priceChartResDto = new PriceChartResDto(Arrays.<List<String>>asList(Arrays.<String>asList("data")));
+        ResponseEntity<PriceChartResDto> response = new ResponseEntity<PriceChartResDto>(priceChartResDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<PriceChartResDto>>any())
+        ).thenReturn(null);
+        chartDetailServiceImpl.priceChartDetails(sessionManager, new PriceChartReqDto(false,"exchange","expiry","fromDate","instType","interval","monthId","series","strike","symbol","toDate"));
     }
 }
