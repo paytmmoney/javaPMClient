@@ -59,7 +59,7 @@ public class OrderServiceImplTest {
     @Test
     public void testPlaceOrderRegular() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId","tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.INTRADAY.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -75,7 +75,7 @@ public class OrderServiceImplTest {
     @Test
     public void testPlaceOrderBracket() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.BRACKET.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -91,7 +91,7 @@ public class OrderServiceImplTest {
     @Test
     public void testPlaceOrderCover() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.COVER.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -112,13 +112,13 @@ public class OrderServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<OrderResDto>>any())
         ).thenReturn(null);
-        orderServiceImpl.placeOrder(sessionManager, new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        orderServiceImpl.placeOrder(sessionManager, new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule"));
     }
 
     @Test
     public void testModifyOrderRegular() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.INTRADAY.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -134,7 +134,7 @@ public class OrderServiceImplTest {
     @Test
     public void testModifyOrderBracket() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.BRACKET.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -150,7 +150,7 @@ public class OrderServiceImplTest {
     @Test
     public void testModifyOrderCover() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.COVER.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -171,13 +171,13 @@ public class OrderServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<OrderResDto>>any())
         ).thenReturn(null);
-        orderServiceImpl.modifyOrder(sessionManager, new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        orderServiceImpl.modifyOrder(sessionManager, new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule"));
     }
 
     @Test
     public void testCancelOrder() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.INTRADAY.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -193,7 +193,7 @@ public class OrderServiceImplTest {
     @Test
     public void testCancelOrderBracket() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.BRACKET.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -209,7 +209,7 @@ public class OrderServiceImplTest {
     @Test
     public void testCancelOrderCover() throws Exception {
         OrderResDto orderResDto = new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo","","",1)), "error_code", "message", "status", "uuid");
-        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId");
+        OrderReqDto orderReqDto = new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule");
         orderReqDto.setProduct(OrderProductType.COVER.getOrderType());
         ResponseEntity<OrderResDto> response = new ResponseEntity<OrderResDto>(orderResDto, HttpStatus.OK);
         when(restTemplate.exchange(
@@ -230,7 +230,7 @@ public class OrderServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<OrderResDto>>any())
         ).thenReturn(null);
-        orderServiceImpl.cancelOrder(sessionManager, new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        orderServiceImpl.cancelOrder(sessionManager, new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", "tagType","tagId","algoModule"));
     }
 
     @Test

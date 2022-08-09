@@ -194,7 +194,7 @@ HoldingValueDto userHoldingValue=pmClient.getHoldingsValue();
 * Get holdings data of User
 
 ```java
-UserHoldingDto userHoldingData=pmClient.getHoldingsData()
+UserHoldingDto userHoldingData=pmClient.getHoldingsData();
 ```
 
 ### Order Margin
@@ -202,7 +202,7 @@ UserHoldingDto userHoldingData=pmClient.getHoldingsData()
 * GET Order Margin Cal
 
 ```java
-OrderMarginCalDto orderMargin=pmClient.getOrderMarginCalculator(source,exchange,segment,securityId,txnType,qty,price,product,triggerPrice)
+OrderMarginCalDto orderMargin=pmClient.getOrderMarginCalculator(source,exchange,segment,securityId,txnType,qty,price,product,triggerPrice);
 ```
 
 ### Order Margin Calculate
@@ -210,16 +210,18 @@ OrderMarginCalDto orderMargin=pmClient.getOrderMarginCalculator(source,exchange,
 * Post Order Margin Cal
 
 ```java
-ScriptMarginCalResDto scriptMarginCalResDto=pmClient.postScriptMarginCalculator(scriptMarginCalReqDto)
+ScriptMarginCalResDto scriptMarginCalResDto=pmClient.postScriptMarginCalculator(scriptMarginCalReqDto);
 ```
 
 ### Security Master
 
 * Get security master
+* User can filter by scrip_type or exchange
+* NOTE: Both not to be passed together
 
 ```java
 //it returns response in csv format
-String csv=pmClient.getSecurityMaster()
+String csv=pmClient.getSecurityMaster(scripType, exchange);
 ```
 
 ### eDis TPIN Generate
@@ -227,7 +229,7 @@ String csv=pmClient.getSecurityMaster()
 * Generate TPIN for eDIS
 
 ```java
-TpinGenerateResDto tpinGenerateResDto=pmClient.generateEdisTpin()
+TpinGenerateResDto tpinGenerateResDto=pmClient.generateEdisTpin();
 ```
 
 ### eDis Validate
@@ -235,7 +237,7 @@ TpinGenerateResDto tpinGenerateResDto=pmClient.generateEdisTpin()
 * Validate for eDIS
 
 ```java
-EdisResDto edisResDto=pmClient.validateEdisTpin(edisValidateReqDto)
+EdisResDto edisResDto=pmClient.validateEdisTpin(edisValidateReqDto);
 ```
 
 ### eDis status
@@ -243,5 +245,59 @@ EdisResDto edisResDto=pmClient.validateEdisTpin(edisValidateReqDto)
 * Get status for eDIS
 
 ```java
-EdisResDto edisResDto=pmClient.getEdisStatus(edisReqId)
+EdisResDto edisResDto=pmClient.getEdisStatus(edisReqId);
+```
+
+### Price Chart
+* To get data for the candle stick(ohlc) of time period.
+```java
+PriceChartResDto priceChartResDto=pmClient.priceChartDetails(priceChartReqDto);
+```
+
+### Create GTT
+* To create a GTT order.
+```java
+GTTOrderResDto gTTOrderResDto=pmClient.createGtt(gttOrderReqDto);
+```
+
+### Get All GTT
+* To get all GTT or get by pml_id or status.
+```java
+GTTGetAllResDto gTTGetAllResDto=pmClient.getAllGtt(pmlId,status);
+```
+
+### Get GTT
+* To get GTT by Id.
+```java
+GTTOrderResDto gTTOrderResDto=pmClient.getGtt(id);
+```
+
+### Update GTT
+* To update GTT by Id.
+```java
+GTTOrderResDto gTTOrderResDto=pmClient.updateGtt(id, gttOrderReqDto);
+```
+
+### Delete GTT
+* To Delete GTT by Id.
+```java
+GTTOrderResDto gTTOrderResDto=pmClient.deleteGtt(id);
+```
+
+### Get Expiry
+* To get expiry of the GTT.
+```java
+GTTOrderResDto gTTOrderResDto=pmClient.getGttExpiry(pmlId)
+```
+
+### Get Aggregate
+* To get the aggregate of the GTTs.
+```java
+GTTAggregateResDto gTTAggregateResDto=pmClient.getGttAggregate()
+```
+
+### Get GTT InstructionId
+* To GTT by InstructionId.
+```java
+GTTOrderResDto gTTOrderResDto=pmClient.getGttByInstructionId(id)
 ```

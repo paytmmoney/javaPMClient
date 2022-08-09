@@ -4,6 +4,9 @@ import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.response.*;
+import org.springframework.lang.Nullable;
+
+import java.util.List;
 
 public interface AccountService {
     OrderBookDto getOrderBook(SessionManager sessionManager) throws ApplicationException;
@@ -31,5 +34,5 @@ public interface AccountService {
     ScriptMarginCalResDto postScriptMarginCalculator(
             SessionManager sessionManager, ScriptMarginCalReqDto scriptMarginCalReqDto) throws ApplicationException;
 
-    String getSecurityMaster() throws ApplicationException;
+    String getSecurityMaster(@Nullable List<String> scrip_type, @Nullable String exchange) throws ApplicationException;
 }

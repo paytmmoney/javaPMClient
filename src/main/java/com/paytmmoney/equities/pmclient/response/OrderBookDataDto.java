@@ -3,6 +3,7 @@ package com.paytmmoney.equities.pmclient.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -100,4 +101,10 @@ public class OrderBookDataDto {
     private String channel;
     @JsonProperty("instrument_type")
     private String instrumentType;
+    @JsonProperty(ApiConstants.TAG_TYPE)
+    private String tagType;
+    @JsonProperty(ApiConstants.TAG_ID)
+    private String tagId;
+    @JsonProperty(ApiConstants.ALGO_MODULE)
+    private String algoModule;
 }

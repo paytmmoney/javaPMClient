@@ -31,6 +31,11 @@ public class ApiConstants {
     public static final String EDIS_TPIN_GENERATE_ENDPOINT = API_HOST + "/edis/v1/generate/tpin";
     public static final String EDIS_TPIN_VALIDATION_ENDPOINT = API_HOST + "/edis/v1/validate/tpin";
     public static final String EDIS_TPIN_STATUS_ENDPOINT = API_HOST + "/edis/v1/status";
+    public static final String PRICE_CHART_DETAIL_ENDPOINT = API_HOST + "/data/v1/price-charts/sym";
+    public static final String GTT = API_HOST + "/gtt/v1/gtt";
+    public static final String GTT_AGGREGATE = GTT + "/aggregate";
+    public static final String GTT_EXPIRY = GTT + "/expiry-date";
+    public static final String GTT_BY_INSTRUCTION_ID = GTT + "/instructions";
 
 
     public final static String TEXT = "text";
@@ -53,5 +58,60 @@ public class ApiConstants {
     public static final String PRICE = "price";
     public static final String TRIGGER_PRICE = "trigger_price";
     public static final String EDIS_REQUEST_ID = "edis_request_id";
+    public static final String SCRIP_TYPE = "scrip_type";
+    public static final String DATA = "data";
+    public static final String CONT = "cont";
+    public static final String EXPIRY = "expiry";
+    public static final String FROM_DATE = "fromDate";
+    public static final String INSTRUMENT_TYPE = "instType";
+    public static final String INTERVAL = "interval";
+    public static final String MONTH_ID = "monthId";
+    public static final String SERIES = "series";
+    public static final String STRIKE = "strike";
+    public static final String SYMBOL = "symbol";
+    public static final String TO_DATE = "toDate";
+
+    public static final String META = "meta";
+    public static final String ID = "id";
+    public static final String INSTRUCTION_ID = "instruction_id";
+    public static final String NAME = "name";
+    public static final String USER_ID = "user_id";
+    public static final String STATUS = "status";
+    public static final String CANCELLATION_CODE = "cancellation_code";
+    public static final String CANCELLATION_REASON = "cancellation_reason";
+    public static final String EXPIRY_DATE = "expiry_date";
+    public static final String CREATED_AT = "created_at";
+    public static final String UPDATED_AT = "updated_at";
+    public static final String DELETED_AT = "deleted_at";
+    public static final String REQUEST_METADATA = "request_metadata";
+    public static final String DISPLAY_MESSAGE = "displayMessage";
+    public static final String ORDER_TYPE = "order_type";
+    public static final String PML_ID = "pml_id";
+    public static final String PML_ID_PARAM = "pml-id";
+    public static final String PRODUCT_TYPE = "product_type";
+    public static final String SET_PRICE = "set_price";
+    public static final String TRANSACTION_DETAILS = "transaction_details";
+    public static final String EXECUTION_REF_ID = "execution_ref_id";
+    public static final String LIMIT_PRICE = "limit_price";
+    public static final String NOTIFICATION_REF_ID = "notification_ref_id";
+    public static final String SUB_TYPE = "sub_type";
+    public static final String TRIGGERED_AT = "triggered_at";
+    public static final String TRIGGERED_AT_PRICE = "triggered_at_price";
+    public static final String TRIGGERED_AT_TYPE = "triggered_at_type";
+    public static final String TRANSACTION_TYPE = "transaction_type";
+    public static final String TRIGGER_TYPE = "trigger_type";
+    public static final String GTTS = "gtts";
+    public static final String PENDING = "pending";
+    public static final String TRIGGERED = "triggered";
+    public static final String COUNT = "count";
+    public static final String GTT_INSTRUMENT_TYPE = "instrument_type";
+    public static final String LOT_SIZE = "lot_size";
+    public static final String TICK_SIZE = "tick_size";
+    public static final String TAG_TYPE = "tag_type";
+    public static final String TAG_ID = "tag_id";
+    public static final String ALGO_MODULE = "algo_module";
+
+    public static final String FORWARD_SLASH = "/";
+    public static final String COMMA = ",";
 
 }

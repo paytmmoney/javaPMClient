@@ -6,17 +6,23 @@ import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
+import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
+
+import static com.paytmmoney.equities.pmclient.constant.ApiConstants.FORWARD_SLASH;
 
 public class ApiUtils {
 
@@ -68,6 +74,62 @@ public class ApiUtils {
                 .queryParam(ApiConstants.PRICE, price)
                 .queryParam(ApiConstants.PRODUCT, product)
                 .queryParam(ApiConstants.TRIGGER_PRICE, triggerPrice)
+                .encode().toUriString();
+    }
+
+    public static String getSecurityMasterEndpoint(@Nullable String scrip_type, @Nullable String exchange) {
+        if (StringUtils.isNotEmpty(scrip_type) && StringUtils.isEmpty(exchange)){
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                    .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
+                    .encode().toUriString();
+        } else if (StringUtils.isEmpty(scrip_type) && StringUtils.isNotEmpty(exchange)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                    .queryParam(ApiConstants.EXCHANGE, exchange)
+                    .encode().toUriString();
+        } else if (StringUtils.isNotEmpty(scrip_type) && StringUtils.isNotEmpty(exchange)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT)
+                    .queryParam(ApiConstants.SCRIP_TYPE, scrip_type)
+                    .queryParam(ApiConstants.EXCHANGE, exchange)
+                    .encode().toUriString();
+        }
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.SECURITY_MASTER_ENDPOINT).encode().toUriString();
+    }
+
+    public static String getGttByIdOrStatusEndpoint(@Nullable String pml_id, @Nullable String status) {
+        if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .encode().toUriString();
+        } else if (StringUtils.isEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        } else if (StringUtils.isNotEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT)
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        }
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT).encode().toUriString();
+    }
+
+    public static String gttByIdEndpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT + FORWARD_SLASH + id;
+    }
+
+    public static String gttByInstructionIdEndpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT_BY_INSTRUCTION_ID + FORWARD_SLASH + id;
+    }
+
+    public static String getGttExpiryEndpoint(String pml_id) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_EXPIRY)
+                .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
                 .encode().toUriString();
     }
 
@@ -123,6 +185,22 @@ public class ApiUtils {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
         return new HttpEntity<>(edisValidateReqDto, headers);
+    }
+
+    public static HttpEntity<PriceChartReqDto> getHttpEntityForPost(
+            String accessToken, PriceChartReqDto priceChartReqDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        return new HttpEntity<>(priceChartReqDto, headers);
+    }
+
+    public static HttpEntity<GTTOrderReqDto> getHttpEntityForPost(
+            String accessToken, GTTOrderReqDto gttOrderReqDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        return new HttpEntity<>(gttOrderReqDto, headers);
     }
 
 
