@@ -36,7 +36,7 @@ public class ApiConstants {
     public static final String GTT_AGGREGATE = GTT + "/aggregate";
     public static final String GTT_EXPIRY = GTT + "/expiry-date";
     public static final String GTT_BY_INSTRUCTION_ID = GTT + "/instructions";
-
+    public static final String WEBSOCKET_URL = "wss://developer-ws.paytmmoney.com/broadcast/user/v1/data?x_jwt_token=";
 
     public final static String TEXT = "text";
     public static final String CSV = "csv";
