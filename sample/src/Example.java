@@ -38,6 +38,9 @@ public class Example {
     public static void main(String[] args) {
         Example t = new Example();
         t.executeApis();
+        ArrayList<PreferenceDto> preferenceList = new ArrayList<>();
+        preferenceList.add(new PreferenceDto("ADD", "FULL", "EQUITY", "NSE", "3456"));
+        t.tickerUsage("your_public_access_token", preferenceList);
     }
 
     public void executeApis() {
