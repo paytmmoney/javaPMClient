@@ -23,21 +23,17 @@ public class Example {
     }
 
     public void executeApis() {
-        pmClient = new PMClient("2a96c8cf9e8a43e2b3f16cd724352ff3",
-                "8c2f104b19ce4fcba2401f0824f98133");
-//                , "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyMzAsImV4cCI6MTY3NTUzNTM5OX0.1bzbvRFJa5j-C00YaIj5Qqk5tDJK5AtAnA9oikw2aA8",
-//                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyMzAsImV4cCI6MTY3NTUzNTM5OX0.MbGI3i1Km0vU50cfAUJU1yVXuFW_NXTNRGdfRs5OoXM",
-//                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyMzAsImV4cCI6MTY3NTUzNTM5OX0.U4aQ-C5X_EyhpErw8-rt1tqAJoBtw13OXEd38Bf45kc");
+        pmClient = new PMClient("api_key",
+                "api_secret");
         try {
-//            System.out.println(pmClient.login("state_key"));
-//            String str = "";
-//            str =
-//            pmClient.generateSession("f4f73b8fc6054c488d093642b4fc01bf");
-            pmClient.setAccessToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyNDgsImV4cCI6MTY3NTUzNTM5OX0.uDIcN7Xr4wHJf3d4Fzfyl6DCZvht5BN3EvzODa_NiQg");
-            pmClient.setPublicAccessToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyNDgsImV4cCI6MTY3NTUzNTM5OX0.JGCADhEk1rdS_Km6DsasCEEPC6EFKk7jvqoupoyRGq8");
-            pmClient.setReadAccessToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyNDgsImV4cCI6MTY3NTUzNTM5OX0.RczXLjuHF8ITRWUel7mkdmzD1VGbt3Tp8oU41I1ktZY");
+            System.out.println(pmClient.login("state_key"));
+            String str = "";
+            str =
+            pmClient.generateSession("request_token");
+//            pmClient.setAccessToken("access_token");
+//            pmClient.setPublicAccessToken("public_access_token");
+//            pmClient.setReadAccessToken("read_access_token");
 
-//            System.out.println(str);
 //
             UserDetailsResDto userDetailsResDto = pmClient.getUserDetails();
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
