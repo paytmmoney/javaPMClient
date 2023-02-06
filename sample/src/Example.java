@@ -39,7 +39,22 @@ public class Example {
         Example t = new Example();
         t.executeApis();
         ArrayList<PreferenceDto> preferenceList = new ArrayList<>();
-        preferenceList.add(new PreferenceDto("ADD", "FULL", "EQUITY", "NSE", "3456"));
+
+        /**
+         * PreferenceDto Format
+         *
+        actionType - 'ADD', 'REMOVE'
+        modeType - 'LTP', 'FULL', 'QUOTE'
+        scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
+        exchangeType - 'BSE', 'NSE'
+        scripId -
+         */
+        preferenceList.add(new PreferenceDto(
+                "ADD",
+                "FULL",
+                "EQUITY",
+                "NSE",
+                "3456"));
         t.tickerUsage("your_public_access_token", preferenceList);
     }
 
@@ -49,8 +64,7 @@ public class Example {
         try {
             System.out.println(pmClient.login("state_key"));
             String str = "";
-            str =
-            pmClient.generateSession("request_token");
+            str = pmClient.generateSession("request_token");
 //            pmClient.setAccessToken("access_token");
 //            pmClient.setPublicAccessToken("public_access_token");
 //            pmClient.setReadAccessToken("read_access_token");
@@ -58,7 +72,7 @@ public class Example {
             UserDetailsResDto userDetailsResDto = pmClient.getUserDetails();
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
 
-            Object livePriceData = pmClient.getLiveMarketData("FULL","NSE","6705","EQUITY");
+            Object livePriceData = pmClient.getLiveMarketData("FULL", "NSE", "6705", "EQUITY");
             System.out.println("livePriceData:" + livePriceData);
 
             // To check Funds Summary api
