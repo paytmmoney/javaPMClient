@@ -28,4 +28,6 @@ public interface OrderService {
     EdisResDto validateEdisTpin(SessionManager sessionManager,
                                 EdisValidateReqDto edisValidateReqDto) throws ApplicationException;
 
+    Object getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException;
+
 }

@@ -30,11 +30,11 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResDto placeOrder(SessionManager sessionManager,
                                   OrderReqDto orderReqDto) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.PLACE_BRACKET_ORDER_ENDPOINT[1]);
         ResponseEntity<OrderResDto> response = null;
         try {
             response = restTemplate.exchange(getUrlForPlaceOrder(orderReqDto.getProduct()), HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), orderReqDto), OrderResDto.class);
+                    ApiUtils.getHttpEntityForPost(jwtToken, orderReqDto), OrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->placeOrder:", e);
@@ -45,11 +45,11 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResDto modifyOrder(SessionManager sessionManager,
                                    OrderReqDto orderReqDto) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.BRACKET_MODIFY_ORDER_ENDPOINT[1]);
         ResponseEntity<OrderResDto> response = null;
         try {
             response = restTemplate.exchange(getUrlForModifyOrder(orderReqDto.getProduct()), HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), orderReqDto), OrderResDto.class);
+                    ApiUtils.getHttpEntityForPost(jwtToken, orderReqDto), OrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->modifyOrder:", e);
@@ -60,11 +60,11 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResDto cancelOrder(SessionManager sessionManager,
                                    OrderReqDto orderReqDto) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.BRACKET_CANCEL_ORDER_ENDPOINT[1]);
         ResponseEntity<OrderResDto> response = null;
         try {
             response = restTemplate.exchange(getUrlForCancelOrder(orderReqDto.getProduct()), HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), orderReqDto), OrderResDto.class);
+                    ApiUtils.getHttpEntityForPost(jwtToken, orderReqDto), OrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->cancelOrder:", e);
@@ -75,11 +75,11 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResDto convertOrder(SessionManager sessionManager,
                                     ConvertOrderReqDto convertOrderReqDto) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.REGULAR_CONVERT_ORDER_ENDPOINT[1]);
         ResponseEntity<OrderResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.REGULAR_CONVERT_ORDER_ENDPOINT, HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), convertOrderReqDto),
+            response = restTemplate.exchange(ApiConstants.REGULAR_CONVERT_ORDER_ENDPOINT[0][0], HttpMethod.POST,
+                    ApiUtils.getHttpEntityForPost(jwtToken, convertOrderReqDto),
                     OrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
@@ -90,11 +90,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public TpinGenerateResDto generateEdisTpin(SessionManager sessionManager) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.EDIS_TPIN_GENERATE_ENDPOINT[1]);
         ResponseEntity<TpinGenerateResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.EDIS_TPIN_GENERATE_ENDPOINT, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), TpinGenerateResDto.class);
+            response = restTemplate.exchange(ApiConstants.EDIS_TPIN_GENERATE_ENDPOINT[0][0], HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), TpinGenerateResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->generateEdisTpin:", e);
@@ -104,11 +104,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public EdisStatusResDto getEdisStatus(SessionManager sessionManager, String edisReqId) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.EDIS_TPIN_STATUS_ENDPOINT[1]);
         ResponseEntity<EdisStatusResDto> response = null;
         try {
             response = restTemplate.exchange(ApiUtils.getEdisStatuEndpoint(edisReqId), HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), EdisStatusResDto.class);
+                    ApiUtils.getHttpEntity(jwtToken), EdisStatusResDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getEdisStatus:", e);
@@ -119,12 +119,28 @@ public class OrderServiceImpl implements OrderService {
 
     public EdisResDto validateEdisTpin(SessionManager sessionManager,
                                        EdisValidateReqDto edisValidateReqDto) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.EDIS_TPIN_VALIDATION_ENDPOINT[1]);
         ResponseEntity<EdisResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.EDIS_TPIN_VALIDATION_ENDPOINT, HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getAccessToken(), edisValidateReqDto),
+            response = restTemplate.exchange(ApiConstants.EDIS_TPIN_VALIDATION_ENDPOINT[0][0], HttpMethod.POST,
+                    ApiUtils.getHttpEntityForPost(jwtToken, edisValidateReqDto),
                     EdisResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in OrderServiceImpl->validateEdisTpin:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    @Override
+    public Object getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.LIVE_MARKET_DATA[1]);
+        ResponseEntity<Object> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.getLiveMarketDataEndpoint(mode, pref), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken),
+                    Object.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->validateEdisTpin:", e);
@@ -135,31 +151,31 @@ public class OrderServiceImpl implements OrderService {
 
     private String getUrlForPlaceOrder(String productId) {
         if (productId.equals(OrderProductType.BRACKET.getOrderType()))
-            return ApiConstants.BRACKET_ORDER_ENDPOINT;
+            return ApiConstants.PLACE_BRACKET_ORDER_ENDPOINT[0][0];
 
         if (productId.equals(OrderProductType.COVER.getOrderType()))
-            return ApiConstants.COVER_ORDER_ENDPOINT;
+            return ApiConstants.PLACE_COVER_ORDER_ENDPOINT[0][0];
 
-        return ApiConstants.REGULAR_ORDER_ENDPOINT;
+        return ApiConstants.PLACE_REGULAR_ORDER_ENDPOINT[0][0];
     }
 
     private String getUrlForModifyOrder(String productId) {
         if (productId.equals(OrderProductType.BRACKET.getOrderType()))
-            return ApiConstants.BRACKET_MODIFY_ORDER_ENDPOINT;
+            return ApiConstants.BRACKET_MODIFY_ORDER_ENDPOINT[0][0];
 
         if (productId.equals(OrderProductType.COVER.getOrderType()))
-            return ApiConstants.COVER_MODIFY_ORDER_ENDPOINT;
+            return ApiConstants.COVER_MODIFY_ORDER_ENDPOINT[0][0];
 
-        return ApiConstants.REGULAR_MODIFY_ORDER_ENDPOINT;
+        return ApiConstants.REGULAR_MODIFY_ORDER_ENDPOINT[0][0];
     }
 
     private String getUrlForCancelOrder(String productId) {
         if (productId.equals(OrderProductType.BRACKET.getOrderType()))
-            return ApiConstants.BRACKET_CANCEL_ORDER_ENDPOINT;
+            return ApiConstants.BRACKET_CANCEL_ORDER_ENDPOINT[0][0];
 
         if (productId.equals(OrderProductType.COVER.getOrderType()))
-            return ApiConstants.COVER_CANCEL_ORDER_ENDPOINT;
+            return ApiConstants.COVER_CANCEL_ORDER_ENDPOINT[0][0];
 
-        return ApiConstants.REGULAR_CANCEL_ORDER_ENDPOINT;
+        return ApiConstants.REGULAR_CANCEL_ORDER_ENDPOINT[0][0];
     }
 }

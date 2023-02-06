@@ -23,53 +23,63 @@ public class Example {
     }
 
     public void executeApis() {
-        pmClient = new PMClient("apiKey",
-                "apiSecret");
+        pmClient = new PMClient("2a96c8cf9e8a43e2b3f16cd724352ff3",
+                "8c2f104b19ce4fcba2401f0824f98133");
+//                , "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyMzAsImV4cCI6MTY3NTUzNTM5OX0.1bzbvRFJa5j-C00YaIj5Qqk5tDJK5AtAnA9oikw2aA8",
+//                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyMzAsImV4cCI6MTY3NTUzNTM5OX0.MbGI3i1Km0vU50cfAUJU1yVXuFW_NXTNRGdfRs5OoXM",
+//                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyMzAsImV4cCI6MTY3NTUzNTM5OX0.U4aQ-C5X_EyhpErw8-rt1tqAJoBtw13OXEd38Bf45kc");
         try {
-            System.out.println(pmClient.login("state_key"));
-            String str = "";
-             str = pmClient.generateSession("requestToken");
-            pmClient.setAccessToken("accessToken");
-            System.out.println(str);
+//            System.out.println(pmClient.login("state_key"));
+//            String str = "";
+//            str =
+//            pmClient.generateSession("f4f73b8fc6054c488d093642b4fc01bf");
+            pmClient.setAccessToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyNDgsImV4cCI6MTY3NTUzNTM5OX0.uDIcN7Xr4wHJf3d4Fzfyl6DCZvht5BN3EvzODa_NiQg");
+            pmClient.setPublicAccessToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyNDgsImV4cCI6MTY3NTUzNTM5OX0.JGCADhEk1rdS_Km6DsasCEEPC6EFKk7jvqoupoyRGq8");
+            pmClient.setReadAccessToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJtZXJjaGFudCIsImlzcyI6InBheXRtbW9uZXkiLCJpZCI6MTAyNDgsImV4cCI6MTY3NTUzNTM5OX0.RczXLjuHF8ITRWUel7mkdmzD1VGbt3Tp8oU41I1ktZY");
 
+//            System.out.println(str);
+//
             UserDetailsResDto userDetailsResDto = pmClient.getUserDetails();
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
 
-            // To check Funds Summary api
-            FundSummaryDto fundSummaryDto = pmClient.getFundSummary();
-            System.out.println("fundSummaryDto:" + fundSummaryDto.toString());
+            Object livePriceData = pmClient.getLiveMarketData("FULL","NSE","6705","EQUITY");
+            System.out.println("livePriceData:" + livePriceData);
 
-            //To check order book api
-            OrderBookDto orderBookDto = pmClient.getOrderBook();
-            System.out.println("orderBookDto:" + orderBookDto.toString());
+//            // To check Funds Summary api
+//            FundSummaryDto fundSummaryDto = pmClient.getFundSummary();
+//            System.out.println("fundSummaryDto:" + fundSummaryDto.toString());
+//
+//            //To check order book api
+//            OrderBookDto orderBookDto = pmClient.getOrderBook();
+//            System.out.println("orderBookDto:" + orderBookDto.toString());
+//
+//            //To check positions api
+//            PositionDto positionDto = pmClient.getPosition();
+//            System.out.println("positionDto:" + positionDto.toString());
+//
+//            //To check Holding value api
+//            HoldingValueDto holdingsValue = pmClient.getHoldingsValue();
+//            System.out.println("holdingsValue:" + holdingsValue.toString());
+//
+//            //To check user holdings api
+//            UserHoldingDto userHoldingDto = pmClient.getHoldingsData();
+//            System.out.println("userHoldingDto:" + userHoldingDto.toString());
+//
+//            //To get margin calculator
+//            OrderMarginCalDto orderMarginValue = pmClient.getOrderMarginCalculator("N", "NSE", "E", "772", "B", 100, 0.00, "C", 0.00);
+//            System.out.println("Order Margin value api details : " + orderMarginValue.toString());
+//
+////            To get trade details
+//            TradeDetailsDto tradeDetailValue = pmClient.getTradeDetails("812201042761", "1", "E");
+//            System.out.println("Trade details: " + tradeDetailValue.toString());
+//
+//            //To get position details api response code
+//            PositionDetailDto positionDetailsValue = pmClient.getPositionDetails("532215", "C", "BSE");
+//            System.out.println("Position details API response: " + positionDetailsValue.toString());
 
-            //To check positions api
-            PositionDto positionDto = pmClient.getPosition();
-            System.out.println("positionDto:" + positionDto.toString());
-
-            //To check Holding value api
-            HoldingValueDto holdingsValue = pmClient.getHoldingsValue();
-            System.out.println("holdingsValue:" + holdingsValue.toString());
-
-            //To check user holdings api
-            UserHoldingDto userHoldingDto = pmClient.getHoldingsData();
-            System.out.println("userHoldingDto:" + userHoldingDto.toString());
-
-            //To get margin calculator
-            OrderMarginCalDto orderMarginValue = pmClient.getOrderMarginCalculator("N", "NSE", "E", "772", "B", 100, 0.00, "C", 0.00);
-            System.out.println("Order Margin value api details : " + orderMarginValue.toString());
-
-            //To get trade details
-            TradeDetailsDto tradeDetailValue = pmClient.getTradeDetails("812201042761", "1", "E");
-            System.out.println("Trade details: " + tradeDetailValue.toString());
-
-            //To get position details api response code
-            PositionDetailDto positionDetailsValue = pmClient.getPositionDetails("532215", "C", "BSE");
-            System.out.println("Position details API response: " + positionDetailsValue.toString());
-
-            //To get scrips Margin calculator api response code
-            ScriptMarginCalResDto scriptMarginCalResDto = pmClient.postScriptMarginCalculator(getScriptMarginCalReqDto());
-            System.out.println("Scrip margin calc API response: " + scriptMarginCalResDto.toString());
+//            //To get scrips Margin calculator api response code
+//            ScriptMarginCalResDto scriptMarginCalResDto = pmClient.postScriptMarginCalculator(getScriptMarginCalReqDto());
+//            System.out.println("Scrip margin calc API response: " + scriptMarginCalResDto.toString());
 
 //            //To check eDIS flows
 //            //Generate Tpin
@@ -98,30 +108,27 @@ public class Example {
 //            System.out.println(convertEIDSOrderResp.toString());
 
 
-          /*  OrderReqDto orderReqDto = getRegularPlaceOrder();
-            OrderResDto resp = pmClient.placeOrder(orderReqDto);
-            System.out.println(resp.toString());*/
+//            OrderReqDto orderReqDto = getRegularPlaceOrder();
+//            OrderResDto resp = pmClient.placeOrder(orderReqDto);
+//            System.out.println(resp.toString());
 
 
             //To get security master api details
-            String securityMasterValue = pmClient.getSecurityMaster(new ArrayList<>(), "exchange");
-            //  System.out.println("Security master value details : " + securityMasterValue.toString());
-            FileWriter writer = new FileWriter("securityMasterData.csv");
-            writer.append(securityMasterValue);
-            writer.flush();
-            writer.close();
+//            String securityMasterValue = pmClient.getSecurityMaster("security_master.csv");
+//            //  System.out.println("Security master value details : " + securityMasterValue.toString());
+//            FileWriter writer = new FileWriter("securityMasterData.csv");
+//            writer.append(securityMasterValue);
+//            writer.flush();
+//            writer.close();
 
-//          String csv = pmClient.getSecurityMaster();
-//          System.out.println("csv:"+ csv);
-            executeOrder(null, null, "new", "regular");
-            executeOrder(null, null, "new", "bracket");
-            executeOrder(null, null, "new", "cover");
-
+//            executeOrder(null, null, "new", "regular");
+//            executeOrder(null, null, "new", "bracket");
+//            executeOrder(null, null, "new", "cover");
             //   executeConvertOrder(null, null, "new");
 
             // To convert regular order
 
-         /*   OrderResDto orderRespDto = pmClient.placeOrder(getRegularPlaceOrder());
+/*          OrderResDto orderRespDto = pmClient.placeOrder(getRegularPlaceOrder());
             System.out.println("placed regular order:" + orderRespDto.toString());
 
             String orderNum = orderRespDto.getData().get(0).getOrderNo();
