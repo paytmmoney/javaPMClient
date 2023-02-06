@@ -1,5 +1,4 @@
-package com.paytmmoney.equities.pmclient;
-
+import com.paytmmoney.equities.pmclient.PMClient;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.PreferenceDto;
 import com.paytmmoney.equities.pmclient.model.Tick;
@@ -42,17 +41,22 @@ public class Example {
     }
 
     public void executeApis() {
-        pmClient = new PMClient("apiKey",
-                "apiSecret");
+        pmClient = new PMClient("api_key",
+                "api_secret");
         try {
             System.out.println(pmClient.login("state_key"));
             String str = "";
-            str = pmClient.generateSession("requestToken");
-            pmClient.setAccessToken("accessToken");
-            System.out.println(str);
+            str =
+            pmClient.generateSession("request_token");
+//            pmClient.setAccessToken("access_token");
+//            pmClient.setPublicAccessToken("public_access_token");
+//            pmClient.setReadAccessToken("read_access_token");
 
             UserDetailsResDto userDetailsResDto = pmClient.getUserDetails();
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
+
+            Object livePriceData = pmClient.getLiveMarketData("FULL","NSE","6705","EQUITY");
+            System.out.println("livePriceData:" + livePriceData);
 
             // To check Funds Summary api
             FundSummaryDto fundSummaryDto = pmClient.getFundSummary();
@@ -123,7 +127,7 @@ public class Example {
 
 
             //To get security master api details
-            String securityMasterValue = pmClient.getSecurityMaster(new ArrayList<>(), "exchange");
+            String securityMasterValue = pmClient.getSecurityMaster("file_name");
             //  System.out.println("Security master value details : " + securityMasterValue.toString());
             FileWriter writer = new FileWriter("securityMasterData.csv");
             writer.append(securityMasterValue);
