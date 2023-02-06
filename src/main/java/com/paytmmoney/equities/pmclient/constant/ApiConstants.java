@@ -67,6 +67,9 @@ public class ApiConstants {
     // live market data endpoints
     public static final String[][] LIVE_MARKET_DATA = {{API_HOST + "/data/v1/price/live"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
 
+    // websocket endpoint
+    public static final String WEBSOCKET_URL = "wss://developer-ws.paytmmoney.com/broadcast/user/v1/data?x_jwt_token=";
+
 
     public final static String TEXT = "text";
     public static final String CSV = "csv";
