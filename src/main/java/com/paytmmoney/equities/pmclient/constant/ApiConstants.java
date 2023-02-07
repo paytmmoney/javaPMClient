@@ -67,6 +67,10 @@ public class ApiConstants {
     // live market data endpoints
     public static final String[][] LIVE_MARKET_DATA = {{API_HOST + "/data/v1/price/live"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
 
+    // fno endpoints
+    public static final String[][] FNO_OPTION_CHAIN = {{API_HOST+"/fno/v1/option-chain"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
+    public static final String[][] FNO_OPTION_CHAIN_CONFIG = {{API_HOST+"/fno/v1/option-chain/config"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
+
     // websocket endpoint
     public static final String WEBSOCKET_URL = "wss://developer-ws.paytmmoney.com/broadcast/user/v1/data?x_jwt_token=";
 
@@ -148,6 +152,7 @@ public class ApiConstants {
     public static final String CHANNEL_ID = "channel_id";
     public static final String MODE = "mode";
     public static final String PREF = "pref";
+    public static final String TYPE = "type";
 
     public static final String FORWARD_SLASH = "/";
     public static final String COMMA = ",";

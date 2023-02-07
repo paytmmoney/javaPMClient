@@ -75,6 +75,12 @@ public class Example {
             Object livePriceData = pmClient.getLiveMarketData("FULL", "NSE", "6705", "EQUITY");
             System.out.println("livePriceData:" + livePriceData);
 
+            Object optionChain = pmClient.getOptionChain("CALL", "ACC", "23-02-2023");
+            System.out.println("optionChain:" + optionChain);
+
+            Object optionChainConfig = pmClient.getOptionChainConfig("BANKNIFTY");
+            System.out.println("optionChainConfig:" + optionChainConfig);
+
             // To check Funds Summary api
             FundSummaryDto fundSummaryDto = pmClient.getFundSummary();
             System.out.println("fundSummaryDto:" + fundSummaryDto.toString());

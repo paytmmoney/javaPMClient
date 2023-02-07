@@ -174,9 +174,9 @@ public class PMClient {
         return orderService.validateEdisTpin(sessionManager, edisValidateReqDto);
     }
 
-    public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
-        return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
-    }
+//    public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
+//        return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
+//    }
 
     //GTT API
     public GTTOrderResDto createGtt(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
@@ -215,4 +215,14 @@ public class PMClient {
         String pref = exchange+COLON+scripId+COLON+scripType;
         return orderService.getLiveMarketData(sessionManager, mode, pref);
     }
+
+    // FNO API
+    public Object getOptionChain(String type, String symbol, String expiry) throws ApplicationException {
+        return orderService.getOptionChain(sessionManager, type, symbol, expiry);
+    }
+
+    public Object getOptionChainConfig(String symbol) throws ApplicationException {
+        return orderService.getOptionChainConfig(sessionManager, symbol);
+    }
+
 }

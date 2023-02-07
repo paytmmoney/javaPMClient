@@ -30,4 +30,8 @@ public interface OrderService {
 
     Object getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException;
 
+    Object getOptionChain(SessionManager sessionManager, String type, String symbol, String expiry) throws ApplicationException ;
+
+    Object getOptionChainConfig(SessionManager sessionManager, String symbol) throws ApplicationException;
+
 }

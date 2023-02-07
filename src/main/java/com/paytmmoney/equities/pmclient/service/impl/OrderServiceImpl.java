@@ -143,8 +143,38 @@ public class OrderServiceImpl implements OrderService {
                     Object.class);
             return response.getBody();
         } catch (Exception e) {
-            log.error("Exception in OrderServiceImpl->validateEdisTpin:", e);
+            log.error("Exception in OrderServiceImpl->getLiveMarketData:", e);
             ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    @Override
+    public Object getOptionChain(SessionManager sessionManager, String type, String symbol, String expiry) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.FNO_OPTION_CHAIN[1]);
+        ResponseEntity<Object> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.getOptionChainEndpoint(type,symbol,expiry), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken),
+                    Object.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in OrderServiceImpl->getOptionChain:", e);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    @Override
+    public Object getOptionChainConfig(SessionManager sessionManager, String symbol) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.FNO_OPTION_CHAIN_CONFIG[1]);
+        ResponseEntity<Object> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.getOptionChainConfigEndpoint(symbol), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken),
+                    Object.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in OrderServiceImpl->getOptionChainConfig:", e);
         }
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }

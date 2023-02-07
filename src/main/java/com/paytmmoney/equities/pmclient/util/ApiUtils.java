@@ -126,6 +126,20 @@ public class ApiUtils {
                 .encode().toUriString();
     }
 
+    public static String getOptionChainEndpoint(String type,String symbol,String expiry) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.FNO_OPTION_CHAIN[0][0])
+                .queryParam(ApiConstants.TYPE, type)
+                .queryParam(ApiConstants.SYMBOL, symbol)
+                .queryParam(ApiConstants.EXPIRY, expiry)
+                .encode().toUriString();
+    }
+
+    public static String getOptionChainConfigEndpoint(String symbol) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.FNO_OPTION_CHAIN_CONFIG[0][0])
+                .queryParam(ApiConstants.SYMBOL, symbol)
+                .encode().toUriString();
+    }
+
     public static HttpEntity<String> getHttpEntity(String jwtToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
