@@ -153,12 +153,6 @@ public class ApiUtils {
         return new HttpEntity<>(headers);
     }
 
-    public static HttpEntity<String> getHttpEntityCsv() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType(ApiConstants.TEXT, ApiConstants.CSV));
-        return new HttpEntity<>(headers);
-    }
-
     public static HttpEntity<String> getHttpEntityForPost(String apiKey, String apiSecretKey, String requestToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

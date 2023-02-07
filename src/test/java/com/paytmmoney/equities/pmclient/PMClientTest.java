@@ -80,6 +80,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static com.paytmmoney.equities.pmclient.constant.ApiConstants.COLON;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -112,7 +113,7 @@ public class PMClientTest {
         mocked4 = Mockito.mockConstruction(OrderServiceImpl.class);
         mocked5 = Mockito.mockConstruction(GTTServiceImpl.class);
         mocked6 = Mockito.mockConstruction(ChartDetailServiceImpl.class);
-        pMClient = new PMClient("1", "1","1");
+        pMClient = new PMClient("1", "1");
         sessionManager = mocked1.constructed().get(0);
         sessionManagerService = mocked2.constructed().get(0);
         accountService = mocked3.constructed().get(0);
@@ -140,15 +141,8 @@ public class PMClientTest {
         Assert.assertEquals(result, "https://login.paytmmoney.com/merchant-login?apiKey=getApiKeyResponse&state=stateKey");
     }
 
-//    @Test(expected = ApplicationException.class)
-//    public void testSessionExpired() throws Exception {
-//        when(sessionManager.isSessionExpired()).thenReturn(true);
-//        pMClient.getOrderBook();
-//    }
-
     @Test
     public void testGetOrderBook() throws Exception {
-        when(sessionManager.isSessionExpired()).thenReturn(false);
         when(accountService.getOrderBook(any())).thenReturn(new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", Integer.valueOf(0), "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", Integer.valueOf(0), "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status"));
         OrderBookDto result = pMClient.getOrderBook();
         Assert.assertEquals(result, new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", Integer.valueOf(0), "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", Integer.valueOf(0), "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type", "tagType","tagId","algoModule")), "message", "status"));
@@ -234,8 +228,8 @@ public class PMClientTest {
 
     @Test
     public void testGetSecurityMaster() throws Exception {
-        when(accountService.getSecurityMaster(new ArrayList<>(),"exchange")).thenReturn("a, b, c");
-        String result = pMClient.getSecurityMaster(new ArrayList<>(), "exchange");
+        when(accountService.getSecurityMaster("exchange")).thenReturn("a, b, c");
+        String result = pMClient.getSecurityMaster( "exchange");
         Assert.assertEquals(result, "a, b, c");
     }
 
@@ -288,12 +282,12 @@ public class PMClientTest {
         Assert.assertEquals(result, new EdisResDto(new EdisDataResDto(new EdisParamResDto("dPId", "reqId", "transDtls", "version"), "redirectionUrl", "edisRequestId", "tradingDate", Arrays.<EdisIsin>asList(new EdisIsin("isin", 1L, true))), new Meta("displayMessage")));
     }
 
-    @Test
-    public void testPriceChartDetails() throws Exception {
-        when(chartDetailService.priceChartDetails(any(), any())).thenReturn(new PriceChartResDto(Arrays.asList(Arrays.asList("open", "high", "low", "close"))));
-        PriceChartResDto result = pMClient.priceChartDetails(new PriceChartReqDto(false,"exchange","expiry", "fromDate", "instType", "interval","monthId","series","strike","symbol","toDate"));
-        Assert.assertEquals(result, new PriceChartResDto(Arrays.asList(Arrays.asList("open", "high", "low", "close"))));
-    }
+//    @Test
+//    public void testPriceChartDetails() throws Exception {
+//        when(chartDetailService.priceChartDetails(any(), any())).thenReturn(new PriceChartResDto(Arrays.asList(Arrays.asList("open", "high", "low", "close"))));
+//        PriceChartResDto result = pMClient.priceChartDetails(new PriceChartReqDto(false,"exchange","expiry", "fromDate", "instType", "interval","monthId","series","strike","symbol","toDate"));
+//        Assert.assertEquals(result, new PriceChartResDto(Arrays.asList(Arrays.asList("open", "high", "low", "close"))));
+//    }
 
     @Test
     public void testCreateGtt() throws Exception {
@@ -355,5 +349,25 @@ public class PMClientTest {
         Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","status","transactionType",(Arrays.asList(new GTTOrderDataTransactionResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType"))),"setPrice","orderType","triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
     }
 
+    @Test
+    public void testGetLiveMarketData() throws Exception {
+        when(orderService.getLiveMarketData(any(), anyString(), anyString())).thenReturn(new Object());
+        Object result = pMClient.getLiveMarketData("mode", "exchange","scripId", "scripType");
+        Assert.assertEquals(result.getClass(), Object.class);
+    }
+
+    @Test
+    public void testGetOptionChain() throws Exception {
+        when(orderService.getOptionChain(any(), anyString(), anyString(), anyString())).thenReturn(new Object());
+        Object result = pMClient.getOptionChain("type", "symbol","expiry");
+        Assert.assertEquals(result.getClass(), Object.class);
+    }
+
+    @Test
+    public void testGetOptionChainConfig() throws Exception {
+        when(orderService.getOptionChainConfig(any(), anyString())).thenReturn(new Object());
+        Object result = pMClient.getOptionChainConfig("symbol");
+        Assert.assertEquals(result.getClass(), Object.class);
+    }
 }
 

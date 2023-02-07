@@ -65,21 +65,18 @@ public class Example {
             System.out.println(pmClient.login("state_key"));
             String str = "";
             str = pmClient.generateSession("request_token");
+
 //            pmClient.setAccessToken("access_token");
 //            pmClient.setPublicAccessToken("public_access_token");
 //            pmClient.setReadAccessToken("read_access_token");
 
+            // To check user details
             UserDetailsResDto userDetailsResDto = pmClient.getUserDetails();
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
 
+            // To check live price
             Object livePriceData = pmClient.getLiveMarketData("FULL", "NSE", "6705", "EQUITY");
             System.out.println("livePriceData:" + livePriceData);
-
-            Object optionChain = pmClient.getOptionChain("CALL", "ACC", "23-02-2023");
-            System.out.println("optionChain:" + optionChain);
-
-            Object optionChainConfig = pmClient.getOptionChainConfig("BANKNIFTY");
-            System.out.println("optionChainConfig:" + optionChainConfig);
 
             // To check Funds Summary api
             FundSummaryDto fundSummaryDto = pmClient.getFundSummary();
@@ -162,6 +159,14 @@ public class Example {
             executeOrder(null, null, "new", "regular");
             executeOrder(null, null, "new", "bracket");
             executeOrder(null, null, "new", "cover");
+
+            //To get option chain details
+            Object optionChain = pmClient.getOptionChain("CALL", "symbol", "expiry");
+            System.out.println("optionChain:" + optionChain);
+
+            //To get option chain config details
+            Object optionChainConfig = pmClient.getOptionChainConfig("symbol");
+            System.out.println("optionChainConfig:" + optionChainConfig);
 
             //   executeConvertOrder(null, null, "new");
 
