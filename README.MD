@@ -29,15 +29,15 @@ Create PMClient object to use SDK for any call Order or Account API.
 ```java
 //Initialize PMClient using apiKey and apiSecretKey.User needs to create an object of SDK, by passing apiKey and SecretKey
 PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key");
-// Initialize PMClient using apiKey, apiSecretKey and accessToken if you have already
-PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","accessToken");
+// Initialize PMClient using apiKey, apiSecretKey and jwt tokens if you have already
+PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","accessToken","publicAccessToken","readAccessToken");
 ```
 
 User need to generate session or set access token to use Api's
 
 1) A user can call the login method and get the login URL.
 2) A user manually executes a login url in the browser and fetches requestToken after authentication (validating
-   username, pasword, OTP and passcode).
+   username, password, OTP and passcode).
 3) A user can call the generate_sessions method after pass requestToken to generate a session (access_token/jwt token)
 4) Users can call the logout method to invalidate the session.
 
@@ -221,7 +221,7 @@ ScriptMarginCalResDto scriptMarginCalResDto=pmClient.postScriptMarginCalculator(
 
 ```java
 //it returns response in csv format
-String csv=pmClient.getSecurityMaster(scripType, exchange);
+String securityMaster=pmClient.getSecurityMaster("file_name");
 ```
 
 ### eDis TPIN Generate
@@ -246,12 +246,6 @@ EdisResDto edisResDto=pmClient.validateEdisTpin(edisValidateReqDto);
 
 ```java
 EdisResDto edisResDto=pmClient.getEdisStatus(edisReqId);
-```
-
-### Price Chart
-* To get data for the candle stick(ohlc) of time period.
-```java
-PriceChartResDto priceChartResDto=pmClient.priceChartDetails(priceChartReqDto);
 ```
 
 ### Create GTT
@@ -300,4 +294,22 @@ GTTAggregateResDto gTTAggregateResDto=pmClient.getGttAggregate()
 * To GTT by InstructionId.
 ```java
 GTTOrderResDto gTTOrderResDto=pmClient.getGttByInstructionId(id)
+```
+
+### Get Live Price via API
+* To Get Live Price Data via API
+```java
+Object livePriceData=pmClient.getLiveMarketData("mode", "exchange", "scripId", "scripType")
+```
+
+### Get Option Chain
+* To Get Option Chain using type, symbol and expiry (in DD-MM-YYYY format)
+```java
+Object optionChain=pmClient.getOptionChain("type", "symbol", "expiry")
+```
+
+### Get Option Chain Config
+* To Get Option Chain Config using symbol
+```java
+Object optionChainConfig=pmClient.getLiveMarketData("symbol")
 ```
