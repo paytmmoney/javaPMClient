@@ -509,7 +509,7 @@ public class Example {
             @Override
             public void onError(ApplicationException applicationException) {
                 //handle here.
-                System.out.println("Exception in WebSocketClient: " + applicationException);
+                System.out.println("Exception in WebSocketClient: " + applicationException.message + " statusCode: " + applicationException.getCode());
             }
 
             @Override

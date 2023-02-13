@@ -13,6 +13,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
+import javax.websocket.DeploymentException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -147,6 +148,9 @@ public class WebSocketClient {
     public void connect() {
         try {
             ContainerProvider.getWebSocketContainer().connectToServer(this, URI.create(wsUrl));
+        } catch (DeploymentException e) {
+            if (onErrorListener != null)
+                onErrorListener.onError(new ApplicationException("UNAUTHORIZED", 401));
         } catch (Exception e) {
             if (onErrorListener != null)
                 onErrorListener.onError(e);
