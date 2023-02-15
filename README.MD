@@ -3,24 +3,37 @@
 The official Java client for communicating with [PaytmMoney Equity API](https://www.paytmmoney.com/stocks/).
 
 PMClient is a set of REST-like APIs that expose many capabilities required to build a complete investment and
-trading platform. Execute orders in real time, manage user portfolio, and more, with the simple HTTP API collection.
+trading platform. Execute orders in real time, manage user portfolio, stream live market data (WebSockets), and more, with the simple HTTP API collection.
 
 [PaytmMoney Technology Pvt Ltd](https://www.paytmmoney.com/) (c) 2022. Licensed under the MIT License.
 
-## Documentation
+## Api Documentation
 
-[comment]: <> (- [PM Client HTTP API documentation]&#40;https://business.paytm.com/docs;)
-
-[comment]: <> (- [Java library documentation]&#40;https://business.paytm.com/docs;)
+- [PaytmMoney API documentation](https://developer.paytmmoney.com/docs/api/logout/)
 
 ## Usage
 
-[comment]: <> (- [Download PM Client 1 jar file]&#40;https://github.com/paytmmoney/javaPMClient/tree/pmClient1/dist; and include it in your build path.)
+- [Download PMClient jar file](https://github.com/paytmmoney/javaPMClient/tree/master/dist) and include it in your build path.
 
-- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 3.8.2
+- This jar will work only in springboot application.
+
+- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.0.jar') ```
+
+- For maven project, you can add this line in pom.xml
+- ``` java
+  <dependency>
+  <groupId>com.paytmmoney.equities</groupId>
+  <artifactId>pmclient</artifactId>
+  <version>1.1.0</version>
+  <scope>system</scope>
+  <systemPath>${basedir}/libs/pmclient-1.1.0.jar</systemPath>
+  </dependency>
+  ```
+
+- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.0
 
 - To use pmclient in **Android**, you need to include jar file in the libs directory and add the following line in
-  you module's gradle file ``` compile files('dist/pmclient-1.0.0.jar') ```
+  you module's gradle file ``` compile files('dist/pmclient-1.1.0.jar') ```
 
 ## API usage
 
@@ -52,9 +65,11 @@ String session=pmClient.generateSession("request_token");
 
 After successfully generate session, All api use same session to call Paytmmoney Api's
 
+### To manually set the jwt tokens,
 ```java
-// Set access Token if you have already. In this case, Don't need to call generateSession method
-pmClient.setAccessToken(userModel.accessToken);
+pm.set_access_token("your_access_token")
+pm.set_public_access_token("your_public_access_token")
+pm.set_read_access_token("your_read_access_token")
 ```
 
 ### Place Order
@@ -313,3 +328,97 @@ Object optionChain=pmClient.getOptionChain("type", "symbol", "expiry")
 ```java
 Object optionChainConfig=pmClient.getLiveMarketData("symbol")
 ```
+
+## WebSocket live streaming data
+```java
+    /**
+     * Demonstrates Broadcast connection, subscribing for preferences
+     *
+     * @param accessToken public access token
+     * @param preferences list of preferences to be subscribed
+     */
+    public void tickerUsage(String accessToken, ArrayList<PreferenceDto> preferences) {
+
+        /** To get live price use websocket connection.
+         * It is recommended to use only one websocket connection at any point of time and make sure you stop connection, once user goes out of app.
+         */
+        final WebSocketClient webSocketClient = new WebSocketClient(accessToken);
+
+        /** Set onOpen listener to listen to connection open event.*/
+        webSocketClient.setOnOpenListener(new OnOpenListener() {
+            @Override
+            public void onOpen() {
+                /** Subscribe list of preferences.
+                 * */
+                webSocketClient.subscribe(preferences);
+            }
+        });
+
+        /** Set onClose listener to listen to connection close event.*/
+        webSocketClient.setOnCloseListener(new OnCloseListener() {
+            @Override
+            public void onClose(String closeReason) {
+                System.out.println("Connection Closed: " + closeReason);
+            }
+        });
+
+        /** Set onError listener to listen to errors.*/
+        webSocketClient.setOnErrorListener(new OnErrorListener() {
+
+            @Override
+            public void onError(Exception exception) {
+                System.out.println("Exception in WebSocketClient: " + exception.getMessage());
+            }
+
+            @Override
+            public void onError(ApplicationException applicationException) {
+                //handle here.
+                System.out.println("Exception in WebSocketClient: " + applicationException.message + " statusCode: " + applicationException.getCode());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                System.out.println("Exception occurred for this session: " + errorMessage);
+            }
+        });
+
+        /** Set onMessage listener to listen to message arrival event.*/
+        webSocketClient.setOnMessageListener(new OnMessageListener() {
+            @Override
+            public void onMessage(ArrayList<Tick> response) {
+                for (Tick tick : response)
+                    System.out.println("tick: " + tick);
+            }
+        });
+
+        /** create a websocket connection with broadcast server.*/
+        webSocketClient.connect();
+
+        while (true) {
+            // to make sure this method never terminates, and we keep on getting live data
+        }
+    }
+```
+
+* Call above method using the code below
+```java
+        ArrayList<PreferenceDto> preferenceList = new ArrayList<>();
+
+        /**
+         * PreferenceDto Format
+         *
+         actionType - 'ADD', 'REMOVE'
+         modeType - 'LTP', 'FULL', 'QUOTE'
+         scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
+         exchangeType - 'BSE', 'NSE'
+         scripId -
+         */
+        preferenceList.add(new PreferenceDto(
+        "ADD",
+        "FULL",
+        "EQUITY",
+        "NSE",
+        "3456"));
+        tickerUsage("your_public_access_token", preferenceList);
+```
+For more details, take a look at Example.java in sample/src directory.
