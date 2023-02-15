@@ -48,14 +48,7 @@ public class OrderReqDto extends CommonOrderReqDto {
     @JsonProperty("remarks")
     private String transactionId;
 
-    @JsonProperty("edis_auth_mode")
-    private String edisAuthMode;
-    @JsonProperty("edis_auth_code")
-    private String edisAuthCode;
-    @JsonProperty("edis_auth_otp_uuid")
-    private UUID edisAuthOtpUuid;
-    @JsonProperty("edis_txn_id")
-    private String edisTxnId;
+
     @JsonProperty(ApiConstants.TAG_TYPE)
     private String tagType;
     @JsonProperty(ApiConstants.TAG_ID)

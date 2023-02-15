@@ -37,12 +37,4 @@ public class ConvertOrderReqDto {
     private String transactionId;
     @JsonProperty("client_id")
     private String clientId;
-    @JsonProperty("edis_auth_mode")
-    private String edisAuthMode;
-    @JsonProperty("edis_auth_code")
-    private String edisAuthCode;
-    @JsonProperty("edis_auth_otp_uuid")
-    private UUID edisAuthOtpUuid;
-    @JsonProperty("edis_txn_id")
-    private String edisTxnId;
 }
