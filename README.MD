@@ -328,6 +328,7 @@ Object optionChainConfig=pmClient.getLiveMarketData("symbol")
 ```
 
 ## WebSocket live streaming data
+* To use websocket client in your project, add below method -
 ```java
     /**
      * Demonstrates Broadcast connection, subscribing for preferences
@@ -398,7 +399,7 @@ Object optionChainConfig=pmClient.getLiveMarketData("symbol")
     }
 ```
 
-* Call above method using the code below
+* Call above added method using the code below - 
 ```java
         ArrayList<PreferenceDto> preferenceList = new ArrayList<>();
 
@@ -411,12 +412,15 @@ Object optionChainConfig=pmClient.getLiveMarketData("symbol")
          exchangeType - 'BSE', 'NSE'
          scripId -
          */
+
+        // In this way, you can add as many preferences as you like in your list
         preferenceList.add(new PreferenceDto(
         "ADD",
         "FULL",
         "EQUITY",
         "NSE",
         "3456"));
+        
         tickerUsage("your_public_access_token", preferenceList);
 ```
 For more details, take a look at Example.java in sample/src directory.
