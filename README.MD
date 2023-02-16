@@ -231,7 +231,7 @@ ScriptMarginCalResDto scriptMarginCalResDto=pmClient.postScriptMarginCalculator(
 
 * Get security master
 * User can filter by fileName
-
+* To get the supported fileName [API Doc for fileNames](https://developer.paytmmoney.com/docs/api/security-master/)
 ```java
 //it returns response in csv format
 String securityMaster=pmClient.getSecurityMaster("fileName");
@@ -324,7 +324,7 @@ Object optionChain=pmClient.getOptionChain("type", "symbol", "expiry")
 ### Get Option Chain Config
 * To Get Option Chain Config using symbol
 ```java
-Object optionChainConfig=pmClient.getLiveMarketData("symbol")
+Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
 ```
 
 ## WebSocket live streaming data
