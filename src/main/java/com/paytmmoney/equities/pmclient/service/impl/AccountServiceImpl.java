@@ -183,7 +183,10 @@ public class AccountServiceImpl implements AccountService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
-    public String getSecurityMaster(String fileName) throws ApplicationException {
+    public String getSecurityMaster(String fileName) throws Exception {
+        if (fileName.isEmpty()){
+            throw new Exception(MessageConstants.FILE_NAME_NULL);
+        }
         ResponseEntity<String> response = null;
         try {
             String scripType = null;

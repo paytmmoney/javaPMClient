@@ -140,7 +140,7 @@ public class PMClient {
         return accountService.postScriptMarginCalculator(sessionManager, scriptMarginCalReqDto);
     }
 
-    public String getSecurityMaster(String fileName) throws ApplicationException {
+    public String getSecurityMaster(String fileName) throws Exception {
         return accountService.getSecurityMaster(fileName);
     }
 
