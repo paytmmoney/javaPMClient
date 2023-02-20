@@ -43,7 +43,7 @@ Create PMClient object to use SDK for any call Order or Account API.
 //Initialize PMClient using apiKey and apiSecretKey.User needs to create an object of SDK, by passing apiKey and SecretKey
 PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key");
 // Initialize PMClient using apiKey, apiSecretKey and jwt tokens if you have already
-        PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","accessToken","publicAccessToken","readAccessToken");
+PMClient pmClient=new PMClient("your_apiKey","your_api_secret_key","accessToken","publicAccessToken","readAccessToken");
 ```
 
 User need to generate session or set access token to use Api's
@@ -60,16 +60,16 @@ User need to generate session or set access token to use Api's
 String url=pmClient.login("stateKey");
 
 // Once requestToken is obtained user can generate accessToken by calling generateSession,
-        String session=pmClient.generateSession("request_token");
+String session=pmClient.generateSession("request_token");
 ```
 
 After successfully generate session, All api use same session to call Paytmmoney Api's
 
 ### To manually set the jwt tokens,
 ```java
-        pmClient.setAccessToken("your_access_token");
-        pmClient.setPublicAccessToken("your_public_access_token");
-        pmClient.setReadAccessToken("your_read_access_token");
+pmClient.setAccessToken("your_access_token");
+pmClient.setPublicAccessToken("your_public_access_token");
+pmClient.setReadAccessToken("your_read_access_token");
 ```
 
 ### Place Order

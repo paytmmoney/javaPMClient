@@ -147,7 +147,7 @@ public class Example {
 
 
             //To get security master api details
-            String securityMasterValue = pmClient.getSecurityMaster("file_name");
+            String securityMasterValue = pmClient.getSecurityMaster("fileName");
             //  System.out.println("Security master value details : " + securityMasterValue.toString());
             FileWriter writer = new FileWriter("securityMasterData.csv");
             writer.append(securityMasterValue);
