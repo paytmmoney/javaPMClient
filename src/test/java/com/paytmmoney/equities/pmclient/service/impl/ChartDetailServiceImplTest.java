@@ -37,7 +37,7 @@ public class ChartDetailServiceImplTest {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         chartDetailServiceImpl = new ChartDetailServiceImpl();
         restTemplate = mocked.constructed().get(0);
-        sessionManager = new SessionManager("1", "1", "1");
+        sessionManager = new SessionManager("1", "1","1","1","1");
     }
 
     @After

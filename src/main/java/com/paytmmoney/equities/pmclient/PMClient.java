@@ -9,7 +9,24 @@ import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
-import com.paytmmoney.equities.pmclient.response.*;
+import com.paytmmoney.equities.pmclient.response.EdisResDto;
+import com.paytmmoney.equities.pmclient.response.EdisStatusResDto;
+import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
+import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
+import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
+import com.paytmmoney.equities.pmclient.response.OrderBookDto;
+import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
+import com.paytmmoney.equities.pmclient.response.OrderResDto;
+import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
+import com.paytmmoney.equities.pmclient.response.PositionDto;
+import com.paytmmoney.equities.pmclient.response.PriceChartResDto;
+import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
+import com.paytmmoney.equities.pmclient.response.TpinGenerateResDto;
+import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
+import com.paytmmoney.equities.pmclient.response.UserDetailsResDto;
+import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
 import com.paytmmoney.equities.pmclient.service.AccountService;
 import com.paytmmoney.equities.pmclient.service.ChartDetailService;
 import com.paytmmoney.equities.pmclient.service.GTTService;
@@ -23,7 +40,7 @@ import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 
-import java.util.List;
+import static com.paytmmoney.equities.pmclient.constant.ApiConstants.COLON;
 
 @Slf4j
 public class PMClient {
@@ -45,8 +62,8 @@ public class PMClient {
         gttService = new GTTServiceImpl();
     }
 
-    public PMClient(String apiKey, String apiSecretKey, String accessToken) {
-        sessionManager = new SessionManager(apiKey, apiSecretKey, accessToken);
+    public PMClient(String apiKey, String apiSecretKey, String accessToken, String publicAccessToken, String readAccessToken) {
+        sessionManager = new SessionManager(apiKey, apiSecretKey, accessToken, publicAccessToken, readAccessToken);
         sessionManagerService = new SessionManagerServiceImpl();
         accountService = new AccountServiceImpl();
         orderService = new OrderServiceImpl();
@@ -60,6 +77,14 @@ public class PMClient {
 
     public void setAccessToken(String accessToken) {
         sessionManager.setAccessToken(accessToken);
+    }
+
+    public void setPublicAccessToken(String publicAccessToken) {
+        sessionManager.setPublicAccessToken(publicAccessToken);
+    }
+
+    public void setReadAccessToken(String readAccessToken) {
+        sessionManager.setReadAccessToken(readAccessToken);
     }
 
     public String generateSession(String requestToken) throws ApplicationException {
@@ -115,10 +140,9 @@ public class PMClient {
         return accountService.postScriptMarginCalculator(sessionManager, scriptMarginCalReqDto);
     }
 
-    public String getSecurityMaster(@Nullable List<String> scripTypeList, @Nullable String exchange) throws ApplicationException {
-        return accountService.getSecurityMaster(scripTypeList, exchange);
+    public String getSecurityMaster(String fileName) throws Exception {
+        return accountService.getSecurityMaster(fileName);
     }
-
 
     //Order API
     public OrderResDto placeOrder(OrderReqDto orderReqDto) throws ApplicationException {
@@ -150,9 +174,9 @@ public class PMClient {
         return orderService.validateEdisTpin(sessionManager, edisValidateReqDto);
     }
 
-    public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
-        return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
-    }
+//    public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
+//        return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
+//    }
 
     //GTT API
     public GTTOrderResDto createGtt(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
@@ -185,6 +209,20 @@ public class PMClient {
 
     public GTTOrderResDto getGttByInstructionId(String id) throws ApplicationException {
         return gttService.getGTTByInstructionId(sessionManager, id);
+    }
+
+    public Object getLiveMarketData(String mode, String exchange, String scripId, String scripType) throws ApplicationException {
+        String pref = exchange+COLON+scripId+COLON+scripType;
+        return orderService.getLiveMarketData(sessionManager, mode, pref);
+    }
+
+    // FNO API
+    public Object getOptionChain(String type, String symbol, String expiry) throws ApplicationException {
+        return orderService.getOptionChain(sessionManager, type, symbol, expiry);
+    }
+
+    public Object getOptionChainConfig(String symbol) throws ApplicationException {
+        return orderService.getOptionChainConfig(sessionManager, symbol);
     }
 
 }
