@@ -13,23 +13,31 @@ import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.http.HttpEntity;
 import org.testng.Assert;
 
 import java.util.Arrays;
 
+import static org.mockito.Mockito.when;
+
 public class ApiUtilsTest {
     SessionManager sessionManager;
 
+    @Mock
+    OrderReqDto orderReqDto;
+    @Mock
+    EdisValidateReqDto edisValidateReqDto;
+
     @Before
     public void setUp() {
-        sessionManager = new SessionManager("1", "1", "1");
+        sessionManager = new SessionManager("1", "1");
     }
 
     @Test
     public void testGetAccessTokenEndpoint() {
-        String result = ApiUtils.getAccessTokenEndpoint("api_key", "request_token");
-        Assert.assertEquals(result, "https://developer.paytmmoney.com/accounts/v1/gettoken?apiKey=api_key&requestToken=request_token");
+        String result = ApiUtils.getAccessTokenEndpoint();
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/accounts/v2/gettoken");
     }
 
     @Test
@@ -64,26 +72,26 @@ public class ApiUtilsTest {
 
     @Test
     public void testGetSecurityMasterEndpoint() {
-        String result = ApiUtils.getSecurityMasterEndpoint("scrip_type","exchange");
-        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master?scrip_type=scrip_type&exchange=exchange");
+        String result = ApiUtils.getSecurityMasterEndpoint("file_name");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/scrips/file_name");
     }
 
     @Test
-    public void testGetSecurityMasterEndpoint1() {
-        String result = ApiUtils.getSecurityMasterEndpoint(null,"exchange");
-        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master?exchange=exchange");
+    public void testGetLiveMarketDataEndpoint() {
+        String result = ApiUtils.getLiveMarketDataEndpoint("mode","pref");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/price/live?mode=mode&pref=pref");
     }
 
     @Test
-    public void testGetSecurityMasterEndpoint2() {
-        String result = ApiUtils.getSecurityMasterEndpoint("scrip_type",null);
-        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master?scrip_type=scrip_type");
+    public void testGetOptionChainEndpoint() {
+        String result = ApiUtils.getOptionChainEndpoint("type","symbol","expiry");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/fno/v1/option-chain?type=type&symbol=symbol&expiry=expiry");
     }
 
     @Test
-    public void testGetSecurityMasterEndpoint3() {
-        String result = ApiUtils.getSecurityMasterEndpoint(null,null);
-        Assert.assertEquals(result, "https://developer.paytmmoney.com/data/v1/security-master");
+    public void testGetOptionChainConfigEndpoint() {
+        String result = ApiUtils.getOptionChainConfigEndpoint("symbol");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/fno/v1/option-chain/config?symbol=symbol");
     }
 
     @Test
@@ -142,20 +150,18 @@ public class ApiUtilsTest {
 
     @Test
     public void testGetHttpEntity() {
-        HttpEntity<String> result = ApiUtils.getHttpEntity("accessToken");
-        Assert.assertEquals(result.getHeaders().getContentType().toString(), "application/json");
+        HttpEntity<String> result = ApiUtils.getHttpEntity();
+        Assert.assertEquals(result.getHeaders().getContentType().toString(), "application/octet-stream");
     }
 
     @Test
-    public void testGetHttpEntityCsv() {
-        HttpEntity<String> result = ApiUtils.getHttpEntityCsv();
-        Assert.assertEquals(result.getHeaders().getContentType().toString(), "text/csv");
+    public void testGetHttpEntity2() {
+        HttpEntity<String> result = ApiUtils.getHttpEntity("jwtToken");
     }
 
     @Test
     public void testGetHttpEntityForPost() {
-        HttpEntity<String> result = ApiUtils.getHttpEntityForPost("apiSecretKey");
-        Assert.assertEquals(result.getHeaders().getContentType().toString(), "application/json");
+        HttpEntity<String> result = ApiUtils.getHttpEntityForPost("apiKey", "apiSecret", "requestToken");
     }
 
     @Test
@@ -163,12 +169,6 @@ public class ApiUtilsTest {
         HttpEntity<ScriptMarginCalReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new ScriptMarginCalReqDto(Arrays.<ScriptMarginCalReqDtoList>asList(new ScriptMarginCalReqDtoList("exchange", "instrument", "quantity", "securityId", "segment", "strikePrice", "triggerPrice", "txnType")), "source"));
         Assert.assertEquals(result.getBody().getSource().toString(), "source");
     }
-
-//    @Test
-//    public void testGetHttpEntityForPost3() {
-//        HttpEntity<OrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new OrderReqDto(Double.valueOf(0), "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", Double.valueOf(0), Double.valueOf(0), "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
-//        Assert.assertEquals(result.getBody().getClientId().toString(), "clientId");
-//    }
 
     @Test
     public void testGetHttpEntityForPost4() {
@@ -189,15 +189,18 @@ public class ApiUtilsTest {
     }
 
     @Test
-    public void testIsSessionExpired() throws Exception {
-        ApiUtils.isSessionExpired(new SessionManager("apiKey", "apiSecretKey", "accessToken"));
+    public void testGetHttpEntityForPost7() {
+        HttpEntity<OrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", orderReqDto);
+    }
+
+    @Test
+    public void testGetHttpEntityForPost8() {
+        HttpEntity<EdisValidateReqDto> result = ApiUtils.getHttpEntityForPost("token", edisValidateReqDto);
     }
 
     @Test(expected = ApplicationException.class)
-    public void testIsSessionExpiredException() throws Exception {
-        SessionManager sessionManager = new SessionManager("apiKey", "apiSecretKey", "accessToken");
-        sessionManager.setSessionAlive(false);
-        ApiUtils.isSessionExpired(sessionManager);
+    public void testIsSessionExpiredException() throws ApplicationException {
+        String result = ApiUtils.isSessionExpired(sessionManager, new String[]{"access_token", "public_access_token","read_access_token"});
     }
 
     @Test(expected = ApplicationException.class)

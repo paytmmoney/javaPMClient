@@ -3,6 +3,7 @@ package com.paytmmoney.equities.pmclient.service.impl;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.response.AccessToken;
+import com.paytmmoney.equities.pmclient.response.TokenDataResponseDto;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ public class SessionManagerServiceImplTest {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         sessionManagerServiceImpl = new SessionManagerServiceImpl();
         restTemplate = mocked.constructed().get(0);
-        sessionManager = new SessionManager("1", "1", "1");
+        sessionManager = new SessionManager("1", "1","1","1","1");
     }
 
     @After
@@ -40,13 +41,13 @@ public class SessionManagerServiceImplTest {
 
     @Test
     public void testGenerateSession() throws Exception {
-        AccessToken accessToken = new AccessToken("data");
-        ResponseEntity<AccessToken> response = new ResponseEntity<AccessToken>(accessToken, HttpStatus.OK);
+        TokenDataResponseDto tokenDataResponseDto = new TokenDataResponseDto("1","1","1","1","1","1");
+        ResponseEntity<TokenDataResponseDto> response = new ResponseEntity<TokenDataResponseDto>(tokenDataResponseDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.any(HttpMethod.class),
                 ArgumentMatchers.any(),
-                ArgumentMatchers.<Class<AccessToken>>any())
+                ArgumentMatchers.<Class<TokenDataResponseDto>>any())
         ).thenReturn(response);
         String result = sessionManagerServiceImpl.generateSession(sessionManager, "requestToken");
         Assert.assertEquals(result, "200 OK Session Generated Successfully for given request token requestToken");

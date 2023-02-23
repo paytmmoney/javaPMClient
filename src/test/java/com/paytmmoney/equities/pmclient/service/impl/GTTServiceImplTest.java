@@ -47,7 +47,7 @@ public class GTTServiceImplTest {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         gttServiceImpl = new GTTServiceImpl();
         restTemplate = mocked.constructed().get(0);
-        sessionManager = new SessionManager("1", "1", "1");
+        sessionManager = new SessionManager("1", "1","1","1","1");
     }
 
     @After

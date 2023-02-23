@@ -48,7 +48,7 @@ public class OrderServiceImplTest {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         orderServiceImpl = new OrderServiceImpl();
         restTemplate = mocked.constructed().get(0);
-        sessionManager = new SessionManager("1", "1", "1");
+        sessionManager = new SessionManager("1", "1","1","1","1");
     }
 
     @After
@@ -334,5 +334,74 @@ public class OrderServiceImplTest {
                 ArgumentMatchers.<Class<EdisResDto>>any())
         ).thenReturn(null);
         orderServiceImpl.validateEdisTpin(sessionManager,new EdisValidateReqDto(Arrays.<EdisIsin>asList(new EdisIsin("isin", Long.valueOf(1), true)), "tradeType"));
+    }
+
+    @Test
+    public void testGetLiveMarketData() throws Exception {
+        ResponseEntity<Object> response = new ResponseEntity<Object>(new Object(), HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any())
+        ).thenReturn(response);
+        Object result = orderServiceImpl.getLiveMarketData(sessionManager, "mode","pref");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testGetLiveMarketDataException() throws Exception {
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any())
+        ).thenReturn(null);
+        orderServiceImpl.getLiveMarketData(sessionManager,"mode","pref");
+    }
+
+    @Test
+    public void testGetOptionChain() throws Exception {
+        ResponseEntity<Object> response = new ResponseEntity<Object>(new Object(), HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any())
+        ).thenReturn(response);
+        Object result = orderServiceImpl.getOptionChain(sessionManager, "type","symbol","expiry");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testGetOptionChainException() throws Exception {
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any())
+        ).thenReturn(null);
+        orderServiceImpl.getOptionChain(sessionManager,"type","symbol","expiry");
+    }
+
+    @Test
+    public void testGetOptionChainConfig() throws Exception {
+        ResponseEntity<Object> response = new ResponseEntity<Object>(new Object(), HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any())
+        ).thenReturn(response);
+        Object result = orderServiceImpl.getOptionChainConfig(sessionManager, "symbol");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testGetOptionChainConfigException() throws Exception {
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<Object>>any())
+        ).thenReturn(null);
+        orderServiceImpl.getOptionChainConfig(sessionManager,"symbol");
     }
 }

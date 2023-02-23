@@ -4,7 +4,7 @@ import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
-import com.paytmmoney.equities.pmclient.response.AccessToken;
+import com.paytmmoney.equities.pmclient.response.TokenDataResponseDto;
 import com.paytmmoney.equities.pmclient.service.SessionManagerService;
 import com.paytmmoney.equities.pmclient.util.ApiUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -26,17 +26,19 @@ public class SessionManagerServiceImpl implements SessionManagerService {
 
     public String generateSession(SessionManager sessionManager, String requestToken) throws ApplicationException {
         String returnMsg = null;
-        ResponseEntity<AccessToken> response = null;
+        ResponseEntity<TokenDataResponseDto> response = null;
         try {
             response = restTemplate.exchange(
-                    ApiUtils.getAccessTokenEndpoint(sessionManager.getApiKey(), requestToken),
+                    ApiUtils.getAccessTokenEndpoint(),
                     HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(sessionManager.getApiSecretKey()),
-                    AccessToken.class);
+                    ApiUtils.getHttpEntityForPost(sessionManager.getApiKey(), sessionManager.getApiSecretKey(), requestToken),
+                    TokenDataResponseDto.class);
 
             if (response.getStatusCode() == HttpStatus.OK) {
-                AccessToken accessToken = response.getBody();
-                sessionManager.setAccessToken(accessToken.getData());
+                TokenDataResponseDto tokenDataResponseDto = response.getBody();
+                sessionManager.setAccessToken(tokenDataResponseDto.getAccessToken());
+                sessionManager.setPublicAccessToken(tokenDataResponseDto.getPublicAccessToken());
+                sessionManager.setReadAccessToken(tokenDataResponseDto.getReadAccessToken());
                 returnMsg = response.getStatusCode() + MessageConstants.SESSION_GENERATE_SUCCESSFULLY + requestToken;
             } else {
                 returnMsg = response.getStatusCode() + MessageConstants.SESSION_GENERATE_FAILED + requestToken;
@@ -53,13 +55,15 @@ public class SessionManagerServiceImpl implements SessionManagerService {
     }
 
     public String logout(SessionManager sessionManager) throws ApplicationException {
-        ApiUtils.isSessionExpired(sessionManager);
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.LOGOUT_ENDPOINT[1]);
         ResponseEntity<String> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.LOGOUT_ENDPOINT, HttpMethod.GET,
-                    ApiUtils.getHttpEntity(sessionManager.getAccessToken()), String.class);
+            response = restTemplate.exchange(ApiConstants.LOGOUT_ENDPOINT[0][0], HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 sessionManager.setAccessToken(null);
+                sessionManager.setPublicAccessToken(null);
+                sessionManager.setReadAccessToken(null);
                 return response.getStatusCode() + MessageConstants.SESSION_EXPIRED;
             }
             throw new ApplicationException(response.getBody(), response.getStatusCode().value());
