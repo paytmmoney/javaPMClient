@@ -67,7 +67,7 @@ public class AccountServiceImplTest {
         mocked = Mockito.mockConstruction(RestTemplate.class);
         accountServiceImpl = new AccountServiceImpl();
         restTemplate = mocked.constructed().get(0);
-        sessionManager = new SessionManager("1", "1", "1");
+        sessionManager = new SessionManager("1", "1","1","1","1");
     }
 
     @After
@@ -340,18 +340,19 @@ public class AccountServiceImplTest {
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(response);
-        String result = accountServiceImpl.getSecurityMaster(new ArrayList<>(), "exchange");
+        String result = accountServiceImpl.getSecurityMaster("exchange");
         Assert.assertEquals(result, "a,b,c");
     }
 
     @Test(expected = ApplicationException.class)
     public void testGetSecurityMasterException() throws Exception {
+        ResponseEntity<String> response = new ResponseEntity<String>("a,b,c", HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.any(HttpMethod.class),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(null);
-        accountServiceImpl.getSecurityMaster(new ArrayList<>(), "exchange");
+        accountServiceImpl.getSecurityMaster("exchange");
     }
 }

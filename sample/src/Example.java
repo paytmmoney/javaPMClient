@@ -1,12 +1,30 @@
 import com.paytmmoney.equities.pmclient.PMClient;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
+import com.paytmmoney.equities.pmclient.model.PreferenceDto;
+import com.paytmmoney.equities.pmclient.model.Tick;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisIsin;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
-import com.paytmmoney.equities.pmclient.response.*;
+import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
+import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
+import com.paytmmoney.equities.pmclient.response.OrderBookDataDto;
+import com.paytmmoney.equities.pmclient.response.OrderBookDto;
+import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
+import com.paytmmoney.equities.pmclient.response.OrderResDto;
+import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
+import com.paytmmoney.equities.pmclient.response.PositionDto;
+import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
+import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
+import com.paytmmoney.equities.pmclient.response.UserDetailsResDto;
+import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
+import com.paytmmoney.equities.pmclient.ticker.OnCloseListener;
+import com.paytmmoney.equities.pmclient.ticker.OnErrorListener;
+import com.paytmmoney.equities.pmclient.ticker.OnMessageListener;
+import com.paytmmoney.equities.pmclient.ticker.OnOpenListener;
+import com.paytmmoney.equities.pmclient.ticker.WebSocketClient;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -20,20 +38,45 @@ public class Example {
     public static void main(String[] args) {
         Example t = new Example();
         t.executeApis();
+        ArrayList<PreferenceDto> preferenceList = new ArrayList<>();
+
+        /**
+         * PreferenceDto Format
+         *
+        actionType - 'ADD', 'REMOVE'
+        modeType - 'LTP', 'FULL', 'QUOTE'
+        scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
+        exchangeType - 'BSE', 'NSE'
+        scripId -
+         */
+        preferenceList.add(new PreferenceDto(
+                "ADD",
+                "FULL",
+                "EQUITY",
+                "NSE",
+                "3456"));
+        t.tickerUsage("your_public_access_token", preferenceList);
     }
 
     public void executeApis() {
-        pmClient = new PMClient("apiKey",
-                "apiSecret");
+        pmClient = new PMClient("api_key",
+                "api_secret");
         try {
             System.out.println(pmClient.login("state_key"));
             String str = "";
-             str = pmClient.generateSession("requestToken");
-            pmClient.setAccessToken("accessToken");
-            System.out.println(str);
+            str = pmClient.generateSession("request_token");
 
+//            pmClient.setAccessToken("access_token");
+//            pmClient.setPublicAccessToken("public_access_token");
+//            pmClient.setReadAccessToken("read_access_token");
+
+            // To check user details
             UserDetailsResDto userDetailsResDto = pmClient.getUserDetails();
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
+
+            // To check live price
+            Object livePriceData = pmClient.getLiveMarketData("FULL", "NSE", "6705", "EQUITY");
+            System.out.println("livePriceData:" + livePriceData);
 
             // To check Funds Summary api
             FundSummaryDto fundSummaryDto = pmClient.getFundSummary();
@@ -104,7 +147,7 @@ public class Example {
 
 
             //To get security master api details
-            String securityMasterValue = pmClient.getSecurityMaster(new ArrayList<>(), "exchange");
+            String securityMasterValue = pmClient.getSecurityMaster("fileName");
             //  System.out.println("Security master value details : " + securityMasterValue.toString());
             FileWriter writer = new FileWriter("securityMasterData.csv");
             writer.append(securityMasterValue);
@@ -116,6 +159,14 @@ public class Example {
             executeOrder(null, null, "new", "regular");
             executeOrder(null, null, "new", "bracket");
             executeOrder(null, null, "new", "cover");
+
+            //To get option chain details
+            Object optionChain = pmClient.getOptionChain("CALL", "symbol", "expiry");
+            System.out.println("optionChain:" + optionChain);
+
+            //To get option chain config details
+            Object optionChainConfig = pmClient.getOptionChainConfig("symbol");
+            System.out.println("optionChainConfig:" + optionChainConfig);
 
             //   executeConvertOrder(null, null, "new");
 
@@ -416,5 +467,71 @@ public class Example {
                 .build();
     }
 
+    /**
+     * Demonstrates Broadcast connection, subscribing for preferences
+     *
+     * @param accessToken public access token
+     * @param preferences list of preferences to be subscribed
+     */
+    public void tickerUsage(String accessToken, ArrayList<PreferenceDto> preferences) {
 
+        /** To get live price use websocket connection.
+         * It is recommended to use only one websocket connection at any point of time and make sure you stop connection, once user goes out of app.
+         */
+        final WebSocketClient webSocketClient = new WebSocketClient(accessToken);
+
+        /** Set onOpen listener to listen to connection open event.*/
+        webSocketClient.setOnOpenListener(new OnOpenListener() {
+            @Override
+            public void onOpen() {
+                /** Subscribe list of preferences.
+                 * */
+                webSocketClient.subscribe(preferences);
+            }
+        });
+
+        /** Set onClose listener to listen to connection close event.*/
+        webSocketClient.setOnCloseListener(new OnCloseListener() {
+            @Override
+            public void onClose(String closeReason) {
+                System.out.println("Connection Closed: " + closeReason);
+            }
+        });
+
+        /** Set onError listener to listen to errors.*/
+        webSocketClient.setOnErrorListener(new OnErrorListener() {
+
+            @Override
+            public void onError(Exception exception) {
+                System.out.println("Exception in WebSocketClient: " + exception.getMessage());
+            }
+
+            @Override
+            public void onError(ApplicationException applicationException) {
+                //handle here.
+                System.out.println("Exception in WebSocketClient: " + applicationException.message + " statusCode: " + applicationException.getCode());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                System.out.println("Exception occurred for this session: " + errorMessage);
+            }
+        });
+
+        /** Set onMessage listener to listen to message arrival event.*/
+        webSocketClient.setOnMessageListener(new OnMessageListener() {
+            @Override
+            public void onMessage(ArrayList<Tick> response) {
+                for (Tick tick : response)
+                    System.out.println("tick: " + tick);
+            }
+        });
+
+        /** create a websocket connection with broadcast server.*/
+        webSocketClient.connect();
+
+        while (true) {
+            // to make sure this method never terminates, and we keep on getting live data
+        }
+    }
 }
