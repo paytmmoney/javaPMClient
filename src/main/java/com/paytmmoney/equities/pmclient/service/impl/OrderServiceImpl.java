@@ -1,5 +1,9 @@
 package com.paytmmoney.equities.pmclient.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.enums.OrderProductType;
@@ -14,6 +18,7 @@ import com.paytmmoney.equities.pmclient.response.OrderResDto;
 import com.paytmmoney.equities.pmclient.response.TpinGenerateResDto;
 import com.paytmmoney.equities.pmclient.service.OrderService;
 import com.paytmmoney.equities.pmclient.util.ApiUtils;
+import com.paytmmoney.equities.pmclient.util.EpochConverterUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -141,7 +146,17 @@ public class OrderServiceImpl implements OrderService {
             response = restTemplate.exchange(ApiUtils.getLiveMarketDataEndpoint(mode, pref), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
                     Object.class);
-            return response.getBody();
+            Gson gson = new Gson();
+            JsonObject responseBody = gson.fromJson(gson.toJson(response.getBody()), JsonObject.class);
+            if (responseBody.has("data")) {
+                for (JsonElement tick : responseBody.getAsJsonArray("data")) {
+                    if (tick.getAsJsonObject().has("last_trade_time"))
+                        tick.getAsJsonObject().addProperty("last_trade_time", EpochConverterUtil.epochConverter(tick.getAsJsonObject().get("last_trade_time").getAsInt()));
+                    if (tick.getAsJsonObject().has("last_update_time"))
+                        tick.getAsJsonObject().addProperty("last_update_time", EpochConverterUtil.epochConverter(tick.getAsJsonObject().get("last_update_time").getAsInt()));
+                }
+            }
+            return responseBody;
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getLiveMarketData:", e);
             ApiUtils.handleException(response);
@@ -154,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.FNO_OPTION_CHAIN[1]);
         ResponseEntity<Object> response = null;
         try {
-            response = restTemplate.exchange(ApiUtils.getOptionChainEndpoint(type,symbol,expiry), HttpMethod.GET,
+            response = restTemplate.exchange(ApiUtils.getOptionChainEndpoint(type, symbol, expiry), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
                     Object.class);
             return response.getBody();

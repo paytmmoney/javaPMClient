@@ -17,6 +17,7 @@ public class Tick {
     private ArrayList<DepthPacket> mbpRowPacket;
     private float lastTradedPrice;
     private int lastTradedTime;
+    private int lastUpdatedTime;
     private int securityId;
     private byte tradable;
     private byte mode;
