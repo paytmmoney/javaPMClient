@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.paytmmoney.equities.pmclient.constant.ApiConstants;
+import com.paytmmoney.equities.pmclient.constant.ApplicationConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.enums.OrderProductType;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
@@ -142,18 +143,19 @@ public class OrderServiceImpl implements OrderService {
     public Object getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.LIVE_MARKET_DATA[1]);
         ResponseEntity<Object> response = null;
+        log.info("HELLO"+ApiUtils.getLiveMarketDataEndpoint(mode, pref));
         try {
             response = restTemplate.exchange(ApiUtils.getLiveMarketDataEndpoint(mode, pref), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
                     Object.class);
             Gson gson = new Gson();
             JsonObject responseBody = gson.fromJson(gson.toJson(response.getBody()), JsonObject.class);
-            if (responseBody.has("data")) {
-                for (JsonElement tick : responseBody.getAsJsonArray("data")) {
-                    if (tick.getAsJsonObject().has("last_trade_time"))
-                        tick.getAsJsonObject().addProperty("last_trade_time", EpochConverterUtil.epochConverter(tick.getAsJsonObject().get("last_trade_time").getAsInt()));
-                    if (tick.getAsJsonObject().has("last_update_time"))
-                        tick.getAsJsonObject().addProperty("last_update_time", EpochConverterUtil.epochConverter(tick.getAsJsonObject().get("last_update_time").getAsInt()));
+            if (responseBody.has(ApplicationConstants.DATA)) {
+                for (JsonElement tick : responseBody.getAsJsonArray(ApplicationConstants.DATA)) {
+                    if (tick.getAsJsonObject().has(ApplicationConstants.LAST_TRADE_TIME))
+                        tick.getAsJsonObject().addProperty(ApplicationConstants.LAST_TRADE_TIME, EpochConverterUtil.epochConverter(tick.getAsJsonObject().get(ApplicationConstants.LAST_TRADE_TIME).getAsInt()));
+                    if (tick.getAsJsonObject().has(ApplicationConstants.LAST_UPDATE_TIME))
+                        tick.getAsJsonObject().addProperty(ApplicationConstants.LAST_UPDATE_TIME, EpochConverterUtil.epochConverter(tick.getAsJsonObject().get(ApplicationConstants.LAST_UPDATE_TIME).getAsInt()));
                 }
             }
             return responseBody;

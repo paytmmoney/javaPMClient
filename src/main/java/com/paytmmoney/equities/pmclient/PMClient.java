@@ -211,8 +211,7 @@ public class PMClient {
         return gttService.getGTTByInstructionId(sessionManager, id);
     }
 
-    public Object getLiveMarketData(String mode, String exchange, String scripId, String scripType) throws ApplicationException {
-        String pref = exchange+COLON+scripId+COLON+scripType;
+    public Object getLiveMarketData(String mode, String pref) throws ApplicationException {
         return orderService.getLiveMarketData(sessionManager, mode, pref);
     }
 

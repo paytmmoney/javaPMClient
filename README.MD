@@ -312,7 +312,7 @@ GTTOrderResDto gTTOrderResDto=pmClient.getGttByInstructionId(id)
 ### Get Live Price via API
 * To Get Live Price Data via API
 ```java
-Object livePriceData=pmClient.getLiveMarketData("mode", "exchange", "scripId", "scripType")
+Object livePriceData=pmClient.getLiveMarketData("mode", preferences)
 ```
 
 ### Get Option Chain

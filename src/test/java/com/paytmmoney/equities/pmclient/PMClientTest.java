@@ -352,7 +352,7 @@ public class PMClientTest {
     @Test
     public void testGetLiveMarketData() throws Exception {
         when(orderService.getLiveMarketData(any(), anyString(), anyString())).thenReturn(new Object());
-        Object result = pMClient.getLiveMarketData("mode", "exchange","scripId", "scripType");
+        Object result = pMClient.getLiveMarketData("mode", "pref");
         Assert.assertEquals(result.getClass(), Object.class);
     }
 

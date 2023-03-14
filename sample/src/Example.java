@@ -75,7 +75,8 @@ public class Example {
             System.out.println("userDetailsDto:" + userDetailsResDto.toString());
 
             // To check live price
-            Object livePriceData = pmClient.getLiveMarketData("FULL", "NSE", "6705", "EQUITY");
+            String preferences = "NSE:13:INDEX,NSE:6705:EQUITY";
+            Object livePriceData = pmClient.getLiveMarketData("FULL", preferences);
             System.out.println("livePriceData:" + livePriceData);
 
             // To check Funds Summary api
