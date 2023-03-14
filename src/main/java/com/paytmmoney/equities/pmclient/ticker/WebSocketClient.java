@@ -332,7 +332,7 @@ public class WebSocketClient {
     private void processIndexLtpPacket(ArrayList<Tick> ticks, ByteBuffer packet, int position) {
         Tick tick = new Tick();
         tick.setLastTradedPrice(packet.getFloat(position + LTP_OFFSET));
-        tick.setLastUpdatedTime(EpochConverterUtil.epochConverter(packet.getInt(position + INDEX_LTP_LUT_OFFSET)));
+        tick.setLastUpdatedTime(EpochConverterUtil.epochConverter(packet.getLong(position + INDEX_LTP_LUT_OFFSET)));
         tick.setSecurityId(packet.getInt(position + INDEX_LTP_SECURITY_ID_OFFSET));
         tick.setTradable(packet.get(position + INDEX_LTP_TRADABLE_OFFSET));
         tick.setMode(packet.get(position + INDEX_LTP_MODETYPE_OFFSET));
@@ -384,7 +384,7 @@ public class WebSocketClient {
         tick.setLow(packet.getFloat(position + INDEX_FULL_LOW_OFFSET));
         tick.setChangePercent(packet.getFloat(position + INDEX_FULL_CHANGE_PERCENT_OFFSET));
         tick.setChangeAbsolute(Float.parseFloat(decimalFormat.format(packet.getFloat(position + INDEX_FULL_CHANGE_ABSOLUTE_OFFSET))));
-        tick.setLastUpdatedTime(EpochConverterUtil.epochConverter(packet.getInt(position + INDEX_FULL_LUT_OFFSET)));
+        tick.setLastUpdatedTime(EpochConverterUtil.epochConverter(packet.getLong(position + INDEX_FULL_LUT_OFFSET)));
         ticks.add(tick);
     }
 
@@ -398,7 +398,7 @@ public class WebSocketClient {
     private void processLtpPacket(ArrayList<Tick> ticks, ByteBuffer packet, int position) {
         Tick tick = new Tick();
         tick.setLastTradedPrice(packet.getFloat(position + LTP_OFFSET));
-        tick.setLastTradedTime(EpochConverterUtil.epochConverter(packet.getInt(position + LTP_LTT_OFFSET)));
+        tick.setLastTradedTime(EpochConverterUtil.epochConverter(packet.getLong(position + LTP_LTT_OFFSET)));
         tick.setSecurityId(packet.getInt(position + LTP_SECURITY_ID_OFFSET));
         tick.setTradable(packet.get(position + LTP_TRADABLE_OFFSET));
         tick.setMode(packet.get(position + LTP_MODETYPE_OFFSET));
@@ -417,7 +417,7 @@ public class WebSocketClient {
     private void processQuotePacket(ArrayList<Tick> ticks, ByteBuffer packet, int position) {
         Tick tick = new Tick();
         tick.setLastTradedPrice(packet.getFloat(position + LTP_OFFSET));
-        tick.setLastTradedTime(EpochConverterUtil.epochConverter(packet.getInt(position + QUOTE_LTT_OFFSET)));
+        tick.setLastTradedTime(EpochConverterUtil.epochConverter(packet.getLong(position + QUOTE_LTT_OFFSET)));
         tick.setSecurityId(packet.getInt(position + QUOTE_SECURITY_ID_OFFSET));
         tick.setTradable(packet.get(position + QUOTE_TRADABLE_OFFSET));
         tick.setMode(packet.get(position + QUOTE_MODETYPE_OFFSET));
@@ -461,7 +461,7 @@ public class WebSocketClient {
 
         tick.setMbpRowPacket(depthPacketList);
         tick.setLastTradedPrice(packet.getFloat(position + FULL_LTP_OFFSET));
-        tick.setLastTradedTime(EpochConverterUtil.epochConverter(packet.getInt(position + FULL_LTT_OFFSET)));
+        tick.setLastTradedTime(EpochConverterUtil.epochConverter(packet.getLong(position + FULL_LTT_OFFSET)));
         tick.setSecurityId(packet.getInt(position + FULL_SECURITY_ID_OFFSET));
         tick.setTradable(packet.get(position + FULL_TRADABLE_OFFSET));
         tick.setMode(packet.get(position + FULL_MODETYPE_OFFSET));

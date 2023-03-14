@@ -1,7 +1,6 @@
 package com.paytmmoney.equities.pmclient.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.paytmmoney.equities.pmclient.constant.ApiConstants;
@@ -143,7 +142,6 @@ public class OrderServiceImpl implements OrderService {
     public Object getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.LIVE_MARKET_DATA[1]);
         ResponseEntity<Object> response = null;
-        log.info("HELLO"+ApiUtils.getLiveMarketDataEndpoint(mode, pref));
         try {
             response = restTemplate.exchange(ApiUtils.getLiveMarketDataEndpoint(mode, pref), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
@@ -157,8 +155,8 @@ public class OrderServiceImpl implements OrderService {
                     if (tick.getAsJsonObject().has(ApplicationConstants.LAST_UPDATE_TIME))
                         tick.getAsJsonObject().addProperty(ApplicationConstants.LAST_UPDATE_TIME, EpochConverterUtil.epochConverter(tick.getAsJsonObject().get(ApplicationConstants.LAST_UPDATE_TIME).getAsInt()));
                 }
+                return responseBody;
             }
-            return responseBody;
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getLiveMarketData:", e);
             ApiUtils.handleException(response);

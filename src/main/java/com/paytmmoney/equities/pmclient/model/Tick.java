@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class Tick {
     private ArrayList<DepthPacket> mbpRowPacket;
     private float lastTradedPrice;
-    private int lastTradedTime;
-    private int lastUpdatedTime;
+    private long lastTradedTime;
+    private long lastUpdatedTime;
     private int securityId;
     private byte tradable;
     private byte mode;
