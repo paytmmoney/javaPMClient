@@ -450,12 +450,12 @@ public class WebSocketClient {
         for (int i = 0; i < DEPTH_PACKETS_COUNT; i++) {
             DepthPacket depthPacket = new DepthPacket();
             depthPacket.setPacketNo(i + 1);
-            depthPacket.setBuyQuantity(packet.getInt(DEPTH_BUY_QUANTITY_OFFSET + (i * DEPTH_PACKET_SIZE)));
-            depthPacket.setSellQuantity(packet.getInt(DEPTH_SELL_QUANTITY_OFFSET + (i * DEPTH_PACKET_SIZE)));
-            depthPacket.setBuyOrder(packet.getShort(DEPTH_BUY_ORDER_OFFSET + (i * DEPTH_PACKET_SIZE)));
-            depthPacket.setSellOrder(packet.getShort(DEPTH_SELL_ORDER_OFFSET + (i * DEPTH_PACKET_SIZE)));
-            depthPacket.setBuyPrice(packet.getFloat(DEPTH_BUY_PRICE_OFFSET + (i * DEPTH_PACKET_SIZE)));
-            depthPacket.setSellPrice(packet.getFloat(DEPTH_SELL_PRICE_OFFSET + (i * DEPTH_PACKET_SIZE)));
+            depthPacket.setBuyQuantity(packet.getInt(position + DEPTH_BUY_QUANTITY_OFFSET + (i * DEPTH_PACKET_SIZE)));
+            depthPacket.setSellQuantity(packet.getInt(position + DEPTH_SELL_QUANTITY_OFFSET + (i * DEPTH_PACKET_SIZE)));
+            depthPacket.setBuyOrder(packet.getShort(position + DEPTH_BUY_ORDER_OFFSET + (i * DEPTH_PACKET_SIZE)));
+            depthPacket.setSellOrder(packet.getShort(position + DEPTH_SELL_ORDER_OFFSET + (i * DEPTH_PACKET_SIZE)));
+            depthPacket.setBuyPrice(packet.getFloat(position + DEPTH_BUY_PRICE_OFFSET + (i * DEPTH_PACKET_SIZE)));
+            depthPacket.setSellPrice(packet.getFloat(position + DEPTH_SELL_PRICE_OFFSET + (i * DEPTH_PACKET_SIZE)));
             depthPacketList.add(depthPacket);
         }
 
