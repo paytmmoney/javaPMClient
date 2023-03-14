@@ -6,7 +6,7 @@ public class EpochConverterUtil {
 
     public static long epochConverter(long inputEpochValue) {
         try {
-            return inputEpochValue + ApplicationConstants.ninetyEightyConstant;
+            return inputEpochValue + ApplicationConstants.NINETY_EIGHTY_CONSTANT;
         } catch (Exception e) {
             e.printStackTrace();
             return inputEpochValue;
