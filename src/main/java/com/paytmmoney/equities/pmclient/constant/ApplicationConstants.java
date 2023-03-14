@@ -14,6 +14,6 @@ public class ApplicationConstants {
     ninetyEighty.set(1980, 0, 1, 0, 0, 0);
     int ninetyEightyConstant = (int) (ninetyEighty.getTimeInMillis() / 1000);
     */
-    public static final long ninetyEightyConstant = 315532800;
+    public static final long NINETY_EIGHTY_CONSTANT = 315532800;
 
 }
