@@ -12,7 +12,7 @@ public class ApplicationConstants {
     ninetyEighty.clear();
     ninetyEighty.setTimeZone(utc);
     ninetyEighty.set(1980, 0, 1, 0, 0, 0);
-    int timeNew = (int) (ninetyEighty.getTimeInMillis() / 1000);
+    int ninetyEightyConstant = (int) (ninetyEighty.getTimeInMillis() / 1000);
     */
     public static final long ninetyEightyConstant = 315532800;
 
