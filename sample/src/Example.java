@@ -10,6 +10,9 @@ import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
+import com.paytmmoney.equities.pmclient.response.LivePriceDataListDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainConfigDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainDto;
 import com.paytmmoney.equities.pmclient.response.OrderBookDataDto;
 import com.paytmmoney.equities.pmclient.response.OrderBookDto;
 import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
@@ -76,7 +79,7 @@ public class Example {
 
             // To check live price
             String preferences = "NSE:13:INDEX,NSE:6705:EQUITY";
-            Object livePriceData = pmClient.getLiveMarketData("FULL", preferences);
+            LivePriceDataListDto livePriceData = pmClient.getLiveMarketData("FULL", preferences);
             System.out.println("livePriceData:" + livePriceData);
 
             // To check Funds Summary api
@@ -162,11 +165,11 @@ public class Example {
             executeOrder(null, null, "new", "cover");
 
             //To get option chain details
-            Object optionChain = pmClient.getOptionChain("CALL", "symbol", "expiry");
+            OptionChainDto optionChain = pmClient.getOptionChain("CALL", "symbol", "expiry");
             System.out.println("optionChain:" + optionChain);
 
             //To get option chain config details
-            Object optionChainConfig = pmClient.getOptionChainConfig("symbol");
+            OptionChainConfigDto optionChainConfig = pmClient.getOptionChainConfig("symbol");
             System.out.println("optionChainConfig:" + optionChainConfig);
 
             //   executeConvertOrder(null, null, "new");

@@ -16,6 +16,9 @@ import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
 import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
+import com.paytmmoney.equities.pmclient.response.LivePriceDataListDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainConfigDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainDto;
 import com.paytmmoney.equities.pmclient.response.OrderBookDto;
 import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
 import com.paytmmoney.equities.pmclient.response.OrderResDto;
@@ -211,16 +214,16 @@ public class PMClient {
         return gttService.getGTTByInstructionId(sessionManager, id);
     }
 
-    public Object getLiveMarketData(String mode, String pref) throws ApplicationException {
+    public LivePriceDataListDto getLiveMarketData(String mode, String pref) throws ApplicationException {
         return orderService.getLiveMarketData(sessionManager, mode, pref);
     }
 
     // FNO API
-    public Object getOptionChain(String type, String symbol, String expiry) throws ApplicationException {
+    public OptionChainDto getOptionChain(String type, String symbol, String expiry) throws ApplicationException {
         return orderService.getOptionChain(sessionManager, type, symbol, expiry);
     }
 
-    public Object getOptionChainConfig(String symbol) throws ApplicationException {
+    public OptionChainConfigDto getOptionChainConfig(String symbol) throws ApplicationException {
         return orderService.getOptionChainConfig(sessionManager, symbol);
     }
 
