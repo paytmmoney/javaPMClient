@@ -35,7 +35,10 @@ import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDataDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueResultDto;
+import com.paytmmoney.equities.pmclient.response.LivePriceDataListDto;
 import com.paytmmoney.equities.pmclient.response.Meta;
+import com.paytmmoney.equities.pmclient.response.OptionChainConfigDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainDto;
 import com.paytmmoney.equities.pmclient.response.OrderBookDataDto;
 import com.paytmmoney.equities.pmclient.response.OrderBookDto;
 import com.paytmmoney.equities.pmclient.response.OrderDataResDto;
@@ -72,6 +75,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -104,6 +108,11 @@ public class PMClientTest {
     private GTTService gttService;
     private ChartDetailService chartDetailService;
     private PMClient pMClient;
+    @Mock
+    ConvertOrderReqDto convertOrderReqDto;
+    @Mock
+    OrderReqDto orderReqDto;
+
 
     @Before
     public void setUp() {
@@ -236,28 +245,28 @@ public class PMClientTest {
     @Test
     public void testPlaceOrder() throws Exception {
         when(orderService.placeOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.placeOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", null, null, null));
+        OrderResDto result = pMClient.placeOrder(orderReqDto);
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 
     @Test
     public void testModifyOrder() throws Exception {
         when(orderService.modifyOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.modifyOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", null, null,null));
+        OrderResDto result = pMClient.modifyOrder(orderReqDto);
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 
     @Test
     public void testCancelOrder() throws Exception {
         when(orderService.cancelOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.cancelOrder(new OrderReqDto((double) 0, "mktType", "orderNo", Integer.valueOf(0), Integer.valueOf(0), "legNo", (double) 0, (double) 0, "algoOrderNo", "clientId", "transactionId", "edisAuthMode", "edisAuthCode", null, "edisTxnId", null, null, null));
+        OrderResDto result = pMClient.cancelOrder(orderReqDto);
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 
     @Test
     public void testConvertOrder() throws Exception {
         when(orderService.convertOrder(any(), any())).thenReturn(new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
-        OrderResDto result = pMClient.convertOrder(new ConvertOrderReqDto("exchange", "mktType", "productFrom", "productTo", 1L, "securityId", "segment", "source", "txnType", "transactionId", "clientId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
+        OrderResDto result = pMClient.convertOrder(convertOrderReqDto);
         Assert.assertEquals(result, new OrderResDto(Arrays.<OrderDataResDto>asList(new OrderDataResDto("orderNo", "omsErrorCode", "isin", Integer.valueOf(0))), "errorCode", "message", "status", "uuid"));
     }
 
@@ -351,21 +360,21 @@ public class PMClientTest {
 
     @Test
     public void testGetLiveMarketData() throws Exception {
-        when(orderService.getLiveMarketData(any(), anyString(), anyString())).thenReturn(new Object());
+        when(orderService.getLiveMarketData(any(), anyString(), anyString())).thenReturn(new LivePriceDataListDto());
         Object result = pMClient.getLiveMarketData("mode", "pref");
         Assert.assertEquals(result.getClass(), Object.class);
     }
 
     @Test
     public void testGetOptionChain() throws Exception {
-        when(orderService.getOptionChain(any(), anyString(), anyString(), anyString())).thenReturn(new Object());
+        when(orderService.getOptionChain(any(), anyString(), anyString(), anyString())).thenReturn(new OptionChainDto());
         Object result = pMClient.getOptionChain("type", "symbol","expiry");
         Assert.assertEquals(result.getClass(), Object.class);
     }
 
     @Test
     public void testGetOptionChainConfig() throws Exception {
-        when(orderService.getOptionChainConfig(any(), anyString())).thenReturn(new Object());
+        when(orderService.getOptionChainConfig(any(), anyString())).thenReturn(new OptionChainConfigDto());
         Object result = pMClient.getOptionChainConfig("symbol");
         Assert.assertEquals(result.getClass(), Object.class);
     }
