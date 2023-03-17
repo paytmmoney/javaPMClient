@@ -13,6 +13,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LivePriceDataListDto {
-    public List<LivePriceDataDto> data;
+    private List<LivePriceDataDto> data;
 }
 

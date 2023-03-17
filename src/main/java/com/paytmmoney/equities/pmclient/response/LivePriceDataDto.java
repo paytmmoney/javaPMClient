@@ -13,27 +13,39 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LivePriceDataDto {
-    public boolean tradable;
-    public String mode;
-    public int security_id;
-    public double last_price;
-    public int last_traded_quantity;
-    public double average_traded_price;
-    public int volume_traded;
-    public int total_buy_quantity;
-    public int total_sell_quantity;
-    public LivePriceDataOhlcDto ohlc;
-    public double change_percent;
-    public double change_absolute;
+    private Boolean tradable;
+    private String mode;
+    @JsonProperty("security_id")
+    private Long securityId;
+    @JsonProperty("last_price")
+    private Double lastPrice;
+    @JsonProperty("last_traded_quantity")
+    private Long lastTradedQuantity;
+    @JsonProperty("average_traded_price")
+    private Double averageTradedPrice;
+    @JsonProperty("volume_traded")
+    private Long volumeTraded;
+    @JsonProperty("total_buy_quantity")
+    private Long totalBuyQuantity;
+    @JsonProperty("total_sell_quantity")
+    private Long totalSellQuantity;
+    private LivePriceDataOhlcDto ohlc;
+    @JsonProperty("change_percent")
+    private Double changePercent;
+    @JsonProperty("change_absolute")
+    private Double changeAbsolute;
     @JsonProperty("52_week_high")
-    public double _52_week_high;
+    private Double _52WeekHigh;
     @JsonProperty("52_week_low")
-    public double _52_week_low;
-    public long last_trade_time;
-    public long last_update_time;
-    public int oi;
-    public int change_oi;
-    public LivePriceDataDepthDto depth;
-    public boolean found;
+    private Double _52WeekLow;
+    @JsonProperty("last_trade_time")
+    private Long lastTradeTime;
+    @JsonProperty("last_update_time")
+    private Long lastUpdateTime;
+    private Integer oi;
+    @JsonProperty("change_oi")
+    private Long changeOi;
+    private LivePriceDataDepthDto depth;
+    private Boolean found;
 
 }

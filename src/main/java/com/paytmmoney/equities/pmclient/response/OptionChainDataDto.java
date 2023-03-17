@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OptionChainDataDto {
-    public List<OptionChainResultsDto> results;
-    public OptionChainPgCtxDto pg_cxt;
+    private List<OptionChainResultsDto> results;
+    private OptionChainPgCtxDto pgCxt;
 }

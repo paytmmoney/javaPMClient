@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LivePriceDataBuy {
-    public int quantity;
-    public double price;
-    public int orders;
+    private Integer quantity;
+    private Double price;
+    private Integer orders;
 }

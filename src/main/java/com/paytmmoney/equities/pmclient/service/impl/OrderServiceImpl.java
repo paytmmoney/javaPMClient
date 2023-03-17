@@ -154,11 +154,11 @@ public class OrderServiceImpl implements OrderService {
             LivePriceDataListDto responseBody = response.getBody();
             if (response.getStatusCode()==HttpStatus.OK) {
                 for(LivePriceDataDto livePriceDataDto : response.getBody().getData()){
-                    if(ObjectUtils.isNotEmpty(livePriceDataDto.getLast_trade_time())){
-                        livePriceDataDto.setLast_trade_time(EpochConverterUtil.epochConverter(livePriceDataDto.getLast_trade_time()));
+                    if(ObjectUtils.isNotEmpty(livePriceDataDto.getLastTradeTime())){
+                        livePriceDataDto.setLastTradeTime(EpochConverterUtil.epochConverter(livePriceDataDto.getLastTradeTime()));
                     }
-                    if(ObjectUtils.isNotEmpty(livePriceDataDto.getLast_update_time())){
-                        livePriceDataDto.setLast_update_time(EpochConverterUtil.epochConverter(livePriceDataDto.getLast_update_time()));
+                    if(ObjectUtils.isNotEmpty(livePriceDataDto.getLastUpdateTime())){
+                        livePriceDataDto.setLastUpdateTime(EpochConverterUtil.epochConverter(livePriceDataDto.getLastUpdateTime()));
                     }
                 }
                 return responseBody;

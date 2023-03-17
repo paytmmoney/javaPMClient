@@ -13,6 +13,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LivePriceDataDepthDto {
-    public List<LivePriceDataBuy> buy;
-    public List<LivePriceDataSellDto> sell;
+    private List<LivePriceDataBuy> buy;
+    private List<LivePriceDataSellDto> sell;
 }

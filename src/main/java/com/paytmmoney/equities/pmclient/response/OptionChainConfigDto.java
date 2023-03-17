@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OptionChainConfigDto{
-    public OptionChainConfigMetaDto meta;
-    public OptionChainConfigDataDto data;
+    private OptionChainConfigMetaDto meta;
+    private OptionChainConfigDataDto data;
 }
 

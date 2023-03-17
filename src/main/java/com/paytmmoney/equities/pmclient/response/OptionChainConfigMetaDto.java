@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OptionChainConfigMetaDto{
-    public String code;
-    public String message;
-    public String displayMessage;
+    private String code;
+    private String message;
+    private String displayMessage;
 }
 
