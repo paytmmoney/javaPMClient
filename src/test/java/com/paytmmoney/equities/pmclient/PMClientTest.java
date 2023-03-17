@@ -362,21 +362,21 @@ public class PMClientTest {
     public void testGetLiveMarketData() throws Exception {
         when(orderService.getLiveMarketData(any(), anyString(), anyString())).thenReturn(new LivePriceDataListDto());
         Object result = pMClient.getLiveMarketData("mode", "pref");
-        Assert.assertEquals(result.getClass(), Object.class);
+        Assert.assertEquals(result.getClass(), LivePriceDataListDto.class);
     }
 
     @Test
     public void testGetOptionChain() throws Exception {
         when(orderService.getOptionChain(any(), anyString(), anyString(), anyString())).thenReturn(new OptionChainDto());
         Object result = pMClient.getOptionChain("type", "symbol","expiry");
-        Assert.assertEquals(result.getClass(), Object.class);
+        Assert.assertEquals(result.getClass(), OptionChainDto.class);
     }
 
     @Test
     public void testGetOptionChainConfig() throws Exception {
         when(orderService.getOptionChainConfig(any(), anyString())).thenReturn(new OptionChainConfigDto());
         Object result = pMClient.getOptionChainConfig("symbol");
-        Assert.assertEquals(result.getClass(), Object.class);
+        Assert.assertEquals(result.getClass(), OptionChainConfigDto.class);
     }
 }
 
