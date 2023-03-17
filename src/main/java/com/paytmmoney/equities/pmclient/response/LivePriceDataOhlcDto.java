@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LivePriceDataOhlcDto {
     @JsonProperty("open")
-    private Double myopen;
+    private Double open;
     private Double high;
     private Double low;
     private Double close;
