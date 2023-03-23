@@ -151,18 +151,20 @@ public class OrderServiceImpl implements OrderService {
             response = restTemplate.exchange(ApiUtils.getLiveMarketDataEndpoint(mode, pref), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
                     LivePriceDataListDto.class);
-            LivePriceDataListDto responseBody = response.getBody();
-            if (response.getStatusCode()==HttpStatus.OK) {
-                for(LivePriceDataDto livePriceDataDto : response.getBody().getData()){
-                    if(ObjectUtils.isNotEmpty(livePriceDataDto.getLastTradeTime())){
+            if (response.getStatusCode() == HttpStatus.OK && ObjectUtils.isNotEmpty(response.getBody())) {
+                LivePriceDataListDto responseBody = response.getBody();
+                for (LivePriceDataDto livePriceDataDto : responseBody.getData()) {
+                    if (ObjectUtils.isNotEmpty(livePriceDataDto.getLastTradeTime())) {
                         livePriceDataDto.setLastTradeTime(EpochConverterUtil.epochConverter(livePriceDataDto.getLastTradeTime()));
                     }
-                    if(ObjectUtils.isNotEmpty(livePriceDataDto.getLastUpdateTime())){
+                    if (ObjectUtils.isNotEmpty(livePriceDataDto.getLastUpdateTime())) {
                         livePriceDataDto.setLastUpdateTime(EpochConverterUtil.epochConverter(livePriceDataDto.getLastUpdateTime()));
                     }
                 }
                 return responseBody;
             }
+        } catch (NullPointerException ne) {
+            log.error("Exception in OrderServiceImpl->getLiveMarketData:", ne);
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getLiveMarketData:", e);
             ApiUtils.handleException(response);
