@@ -1,6 +1,10 @@
 package com.paytmmoney.equities.pmclient.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.paytmmoney.equities.pmclient.constant.ApiConstants;
+import com.paytmmoney.equities.pmclient.constant.ApplicationConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.enums.OrderProductType;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
@@ -10,11 +14,17 @@ import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.response.EdisResDto;
 import com.paytmmoney.equities.pmclient.response.EdisStatusResDto;
+import com.paytmmoney.equities.pmclient.response.LivePriceDataListDto;
+import com.paytmmoney.equities.pmclient.response.LivePriceDataDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainConfigDto;
+import com.paytmmoney.equities.pmclient.response.OptionChainDto;
 import com.paytmmoney.equities.pmclient.response.OrderResDto;
 import com.paytmmoney.equities.pmclient.response.TpinGenerateResDto;
 import com.paytmmoney.equities.pmclient.service.OrderService;
 import com.paytmmoney.equities.pmclient.util.ApiUtils;
+import com.paytmmoney.equities.pmclient.util.EpochConverterUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -134,14 +144,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Object getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException {
+    public LivePriceDataListDto getLiveMarketData(SessionManager sessionManager, String mode, String pref) throws ApplicationException {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.LIVE_MARKET_DATA[1]);
-        ResponseEntity<Object> response = null;
+        ResponseEntity<LivePriceDataListDto> response = null;
         try {
             response = restTemplate.exchange(ApiUtils.getLiveMarketDataEndpoint(mode, pref), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
-                    Object.class);
-            return response.getBody();
+                    LivePriceDataListDto.class);
+            if (response.getStatusCode() == HttpStatus.OK && ObjectUtils.isNotEmpty(response.getBody())) {
+                LivePriceDataListDto responseBody = response.getBody();
+                for (LivePriceDataDto livePriceDataDto : responseBody.getData()) {
+                    if (ObjectUtils.isNotEmpty(livePriceDataDto.getLastTradeTime())) {
+                        livePriceDataDto.setLastTradeTime(EpochConverterUtil.epochConverter(livePriceDataDto.getLastTradeTime()));
+                    }
+                    if (ObjectUtils.isNotEmpty(livePriceDataDto.getLastUpdateTime())) {
+                        livePriceDataDto.setLastUpdateTime(EpochConverterUtil.epochConverter(livePriceDataDto.getLastUpdateTime()));
+                    }
+                }
+                return responseBody;
+            }
+        } catch (NullPointerException ne) {
+            log.error("Exception in OrderServiceImpl->getLiveMarketData:", ne);
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getLiveMarketData:", e);
             ApiUtils.handleException(response);
@@ -150,13 +173,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Object getOptionChain(SessionManager sessionManager, String type, String symbol, String expiry) throws ApplicationException {
+    public OptionChainDto getOptionChain(SessionManager sessionManager, String type, String symbol, String expiry) throws ApplicationException {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.FNO_OPTION_CHAIN[1]);
-        ResponseEntity<Object> response = null;
+        ResponseEntity<OptionChainDto> response = null;
         try {
-            response = restTemplate.exchange(ApiUtils.getOptionChainEndpoint(type,symbol,expiry), HttpMethod.GET,
+            response = restTemplate.exchange(ApiUtils.getOptionChainEndpoint(type, symbol, expiry), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
-                    Object.class);
+                    OptionChainDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getOptionChain:", e);
@@ -165,13 +188,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Object getOptionChainConfig(SessionManager sessionManager, String symbol) throws ApplicationException {
+    public OptionChainConfigDto getOptionChainConfig(SessionManager sessionManager, String symbol) throws ApplicationException {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.FNO_OPTION_CHAIN_CONFIG[1]);
-        ResponseEntity<Object> response = null;
+        ResponseEntity<OptionChainConfigDto> response = null;
         try {
             response = restTemplate.exchange(ApiUtils.getOptionChainConfigEndpoint(symbol), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken),
-                    Object.class);
+                    OptionChainConfigDto.class);
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in OrderServiceImpl->getOptionChainConfig:", e);

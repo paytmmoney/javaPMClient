@@ -172,8 +172,8 @@ public class ApiUtilsTest {
 
     @Test
     public void testGetHttpEntityForPost4() {
-        HttpEntity<ConvertOrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new ConvertOrderReqDto("exchange", "mktType", "productFrom", "productTo", Long.valueOf(1), "securityId", "segment", "source", "txnType", "transactionId", "clientId", "edisAuthMode", "edisAuthCode", null, "edisTxnId"));
-        Assert.assertEquals(result.getBody().getEdisAuthCode(), "edisAuthCode");
+        HttpEntity<ConvertOrderReqDto> result = ApiUtils.getHttpEntityForPost("accessToken", new ConvertOrderReqDto("exchange", "mktType", "productFrom", "productTo", Long.valueOf(1), "securityId", "segment", "source", "txnType", "transactionId", "clientId"));
+        Assert.assertEquals(result.getBody().getClientId(), "clientId");
     }
 
     @Test

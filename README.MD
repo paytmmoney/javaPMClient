@@ -1,4 +1,4 @@
-# The Paytm Money Equity 1.1.0 API Java client
+# The Paytm Money Equity 1.1.1 API Java client
 
 The official Java client for communicating with [PaytmMoney Equity API](https://www.paytmmoney.com/stocks/).
 
@@ -17,23 +17,23 @@ trading platform. Execute orders in real time, manage user portfolio, stream liv
 
 - This jar will work only in springboot application.
 
-- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.0.jar') ```
+- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.1.jar') ```
 
 - For maven project, you can add this line in pom.xml
 - ``` java
   <dependency>
   <groupId>com.paytmmoney.equities</groupId>
   <artifactId>pmclient</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <scope>system</scope>
-  <systemPath>${basedir}/libs/pmclient-1.1.0.jar</systemPath>
+  <systemPath>${basedir}/libs/pmclient-1.1.1.jar</systemPath>
   </dependency>
   ```
 
-- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.0
+- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.1
 
 - To use pmclient in **Android**, you need to include jar file in the libs directory and add the following line in
-  you module's gradle file ``` compile files('dist/pmclient-1.1.0.jar') ```
+  you module's gradle file ``` compile files('dist/pmclient-1.1.1.jar') ```
 
 ## API usage
 
@@ -312,7 +312,7 @@ GTTOrderResDto gTTOrderResDto=pmClient.getGttByInstructionId(id)
 ### Get Live Price via API
 * To Get Live Price Data via API
 ```java
-Object livePriceData=pmClient.getLiveMarketData("mode", "exchange", "scripId", "scripType")
+Object livePriceData=pmClient.getLiveMarketData("mode", preferences)
 ```
 
 ### Get Option Chain
