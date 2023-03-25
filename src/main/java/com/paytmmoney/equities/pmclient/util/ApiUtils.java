@@ -230,7 +230,7 @@ public class ApiUtils {
     }
 
     public static void handleException(ResponseEntity<?> response) throws ApplicationException {
-        if (Objects.isNull(response)) {
+        if (Objects.isNull(response) || Objects.isNull(response.getBody())) {
             throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
         }
         throw new ApplicationException(response.getStatusCode().getReasonPhrase(),
