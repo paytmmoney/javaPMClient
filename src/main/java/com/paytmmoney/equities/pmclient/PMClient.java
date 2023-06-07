@@ -107,6 +107,10 @@ public class PMClient {
         return accountService.getOrderBook(sessionManager);
     }
 
+    public OrderBookDto getOrders() throws ApplicationException {
+        return accountService.getOrders(sessionManager);
+    }
+
     public TradeDetailsDto getTradeDetails(String orderNo, String legNo, String segment) throws ApplicationException {
         return accountService.getTradeDetails(sessionManager, orderNo, legNo, segment);
     }

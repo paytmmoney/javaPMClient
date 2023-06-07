@@ -17,6 +17,8 @@ import com.paytmmoney.equities.pmclient.response.UserHoldingDto;
 public interface AccountService {
     OrderBookDto getOrderBook(SessionManager sessionManager) throws ApplicationException;
 
+    OrderBookDto getOrders(SessionManager sessionManager) throws ApplicationException;
+
     UserDetailsResDto getUserDetails(SessionManager sessionManager) throws ApplicationException;
 
     TradeDetailsDto getTradeDetails(SessionManager sessionManager, String orderNo,

@@ -62,6 +62,21 @@ public class AccountServiceImpl implements AccountService {
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
 
+    public OrderBookDto getOrders(SessionManager sessionManager) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.ORDERS_ENDPOINT[1]);
+        ResponseEntity<OrderBookDto> response = null;
+        try {
+            response = restTemplate.exchange(
+                    ApiConstants.ORDERS_ENDPOINT[0][0], HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), OrderBookDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in AccountServiceImpl->getOrders:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
     public TradeDetailsDto getTradeDetails(SessionManager sessionManager, String orderNo,
                                            String legNo, String segment) throws ApplicationException {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager,ApiConstants.TRADE_DETAILS_ENDPOINT[1]);

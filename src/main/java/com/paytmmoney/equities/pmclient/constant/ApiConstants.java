@@ -18,6 +18,7 @@ public class ApiConstants {
 
     // order-book, trade details endpoints
     public static final String[][] ORDER_BOOK_ENDPOINT = {{API_HOST + "/orders/v1/order-book"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
+    public static final String[][] ORDERS_ENDPOINT = {{API_HOST + "/orders/v1/user/orders"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
     public static final String[][] TRADE_DETAILS_ENDPOINT = {{API_HOST + "/orders/v1/trade-details"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
 
     // positions and holdings endpoints
