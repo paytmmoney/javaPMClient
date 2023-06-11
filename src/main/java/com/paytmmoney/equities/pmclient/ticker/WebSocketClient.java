@@ -9,8 +9,11 @@ import com.paytmmoney.equities.pmclient.model.PreferenceDto;
 import com.paytmmoney.equities.pmclient.model.Tick;
 import com.paytmmoney.equities.pmclient.util.EpochConverterUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.glassfish.tyrus.client.auth.AuthenticationException;
 
+import javax.net.ssl.SSLHandshakeException;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
@@ -25,6 +28,8 @@ import java.nio.ByteOrder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static com.paytmmoney.equities.pmclient.constant.ApplicationConstants.DEFAULT_MAX_RECONNECT_ATTEMPT;
+import static com.paytmmoney.equities.pmclient.constant.ApplicationConstants.INITIAL_RECONNECT_DELAY;
 import static com.paytmmoney.equities.pmclient.constant.ByteConversionConstants.FULL_PKT;
 import static com.paytmmoney.equities.pmclient.constant.ByteConversionConstants.INDEX_FULL_PKT;
 import static com.paytmmoney.equities.pmclient.constant.ByteConversionConstants.INDEX_LTP_PKT;
@@ -132,6 +137,10 @@ public class WebSocketClient {
     private OnErrorListener onErrorListener;
     private Session ws; // session object required to manage that session
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00"); // for rounding off floating point value to 2 decimal places
+    private int reconnectCount = NumberUtils.INTEGER_ZERO;
+    private Long reconnectDelay = INITIAL_RECONNECT_DELAY;
+    private boolean doReconnect = false;
+    private int maxReconnectAttempt = DEFAULT_MAX_RECONNECT_ATTEMPT;
 
     /**
      * Initialize WebSocketClient.
@@ -143,14 +152,32 @@ public class WebSocketClient {
     }
 
     /**
+     * Initialize WebSocketClient and sets doReconnect and maxReconnectAttempt variables..
+     *
+     * @param accessToken         is the public access token received after successful login process.
+     * @param doReconnect         boolean value determining whether reconnect feature is allowed or not.
+     * @param maxReconnectAttempt the no. of retries made to server to create connection.
+     */
+    public WebSocketClient(String accessToken, boolean doReconnect, int maxReconnectAttempt) {
+        createUrl(accessToken);
+        this.doReconnect = doReconnect;
+        this.maxReconnectAttempt = maxReconnectAttempt;
+    }
+
+    /**
      * Create a websocket connection with Broadcast server
      */
     public void connect() {
         try {
             ContainerProvider.getWebSocketContainer().connectToServer(this, URI.create(wsUrl));
         } catch (Exception e) {
-            if (onErrorListener != null)
+            if (onErrorListener != null) {
                 onErrorListener.onError(e);
+                Throwable cause = e.getCause();
+                if (doReconnect && !(cause instanceof AuthenticationException || cause instanceof SSLHandshakeException)) {
+                    reconnect();
+                }
+            }
         }
     }
 
@@ -240,8 +267,12 @@ public class WebSocketClient {
      */
     @OnClose
     public void onClose(CloseReason reason) {
-        if (onCloseListener != null)
+        if (onCloseListener != null) {
             onCloseListener.onClose(reason.toString());
+            if (doReconnect && (reason.getCloseCode() != CloseReason.CloseCodes.NORMAL_CLOSURE)) {
+                reconnect();
+            }
+        }
     }
 
     /**
@@ -251,8 +282,51 @@ public class WebSocketClient {
      */
     @OnError
     public void onError(Throwable throwable) {
-        if (onErrorListener != null)
+        if (onErrorListener != null) {
             onErrorListener.onError(throwable.getMessage());
+            Throwable cause = throwable.getCause();
+            if (doReconnect && !(cause instanceof AuthenticationException || cause instanceof SSLHandshakeException)) {
+                reconnect();
+            }
+        }
+    }
+
+    /**
+     * This method tries to reconnect to server for maxReconnectAttempt times.
+     */
+    private void reconnect() {
+        try {
+            Thread.sleep(reconnectDelay);
+            reconnectDelay *= NumberUtils.INTEGER_TWO;
+            reconnectCount += NumberUtils.INTEGER_ONE;
+            if (reconnectCount <= maxReconnectAttempt) {
+                connect();
+            }
+            Thread.sleep(1000L);
+            if ((ObjectUtils.isNotEmpty(ws) && ws.isOpen()) || reconnectCount > maxReconnectAttempt) {
+                reconnectDelay = INITIAL_RECONNECT_DELAY;
+                reconnectCount = NumberUtils.INTEGER_ZERO;
+            }
+        } catch (Exception e) {
+            if (onErrorListener != null) {
+                onErrorListener.onError(e);
+            }
+        }
+    }
+
+    /**
+     * This method is used to explicitly close connection with the server.
+     */
+    public void closeConnection() {
+        try {
+            if (ws != null) {
+                ws.close();
+            }
+        } catch (Exception e) {
+            if (onErrorListener != null) {
+                onErrorListener.onError(e);
+            }
+        }
     }
 
     /**

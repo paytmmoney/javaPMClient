@@ -46,11 +46,11 @@ public class Example {
         /**
          * PreferenceDto Format
          *
-        actionType - 'ADD', 'REMOVE'
-        modeType - 'LTP', 'FULL', 'QUOTE'
-        scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
-        exchangeType - 'BSE', 'NSE'
-        scripId -
+         actionType - 'ADD', 'REMOVE'
+         modeType - 'LTP', 'FULL', 'QUOTE'
+         scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
+         exchangeType - 'BSE', 'NSE'
+         scripId -
          */
         preferenceList.add(new PreferenceDto(
                 "ADD",
@@ -484,6 +484,11 @@ public class Example {
          */
         final WebSocketClient webSocketClient = new WebSocketClient(accessToken);
 
+        /** To use reconnect feature, comment above line and uncomment below line.
+         * Pass doReconnect param as true and in maxReconnectAttempt param, the no. of times you want to retry to create connection.
+         */
+//        final WebSocketClient webSocketClient = new WebSocketClient(accessToken, true, 5);
+
         /** Set onOpen listener to listen to connection open event.*/
         webSocketClient.setOnOpenListener(new OnOpenListener() {
             @Override
@@ -507,7 +512,7 @@ public class Example {
 
             @Override
             public void onError(Exception exception) {
-                System.out.println("Exception in WebSocketClient: " + exception.getMessage());
+                System.out.println("Exception in WebSocketClient: " + exception.getCause().getMessage());
             }
 
             @Override
