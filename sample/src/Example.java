@@ -512,7 +512,7 @@ public class Example {
 
             @Override
             public void onError(Exception exception) {
-                System.out.println("Exception in WebSocketClient: " + exception.getCause().getMessage());
+                System.out.println("Exception in WebSocketClient: " + exception.getMessage());
             }
 
             @Override

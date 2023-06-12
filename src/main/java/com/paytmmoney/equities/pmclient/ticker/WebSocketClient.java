@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.glassfish.tyrus.client.auth.AuthenticationException;
+import org.glassfish.tyrus.core.HandshakeException;
+import org.springframework.http.HttpStatus;
 
 import javax.net.ssl.SSLHandshakeException;
 import javax.websocket.ClientEndpoint;
@@ -22,6 +24,7 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import java.net.ConnectException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -173,8 +176,7 @@ public class WebSocketClient {
         } catch (Exception e) {
             if (onErrorListener != null) {
                 onErrorListener.onError(e);
-                Throwable cause = e.getCause();
-                if (doReconnect && !(cause instanceof AuthenticationException || cause instanceof SSLHandshakeException)) {
+                if (doReconnect && is5xxServerError(e)) {
                     reconnect();
                 }
             }
@@ -285,7 +287,7 @@ public class WebSocketClient {
         if (onErrorListener != null) {
             onErrorListener.onError(throwable.getMessage());
             Throwable cause = throwable.getCause();
-            if (doReconnect && !(cause instanceof AuthenticationException || cause instanceof SSLHandshakeException)) {
+            if (doReconnect && is5xxServerError(throwable)) {
                 reconnect();
             }
         }
@@ -312,6 +314,18 @@ public class WebSocketClient {
                 onErrorListener.onError(e);
             }
         }
+    }
+
+    private boolean is5xxServerError(Throwable e) {
+        int httpStatusCode = 400;
+        if (e.getCause() instanceof HandshakeException) {
+            HandshakeException handshakeException = (HandshakeException) e.getCause();
+            httpStatusCode = handshakeException.getHttpStatusCode();
+        }
+        if (e instanceof ConnectException) {
+            httpStatusCode = 500;
+        }
+        return HttpStatus.valueOf(httpStatusCode).is5xxServerError();
     }
 
     /**
