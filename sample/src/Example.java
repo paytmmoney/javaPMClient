@@ -539,6 +539,9 @@ public class Example {
         /** create a websocket connection with broadcast server.*/
         webSocketClient.connect();
 
+        /** To explicitly close websocket connection with server, uncomment this method call*/
+//        webSocketClient.closeConnection();
+
         while (true) {
             // to make sure this method never terminates, and we keep on getting live data
         }

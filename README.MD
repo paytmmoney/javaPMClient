@@ -343,6 +343,11 @@ Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
          */
         final WebSocketClient webSocketClient = new WebSocketClient(accessToken);
 
+        /** To use reconnect feature, comment above line and uncomment below line.
+         * Pass doReconnect param as true and in maxReconnectAttempt param, the no. of times you want to retry to create connection.
+         */
+//        final WebSocketClient webSocketClient = new WebSocketClient(accessToken, true, 5);
+        
         /** Set onOpen listener to listen to connection open event.*/
         webSocketClient.setOnOpenListener(new OnOpenListener() {
             @Override
@@ -393,6 +398,9 @@ Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
         /** create a websocket connection with broadcast server.*/
         webSocketClient.connect();
 
+        /** To explicitly close websocket connection with server, call this method*/
+//        webSocketClient.closeConnection();
+        
         while (true) {
             // to make sure this method never terminates, and we keep on getting live data
         }
