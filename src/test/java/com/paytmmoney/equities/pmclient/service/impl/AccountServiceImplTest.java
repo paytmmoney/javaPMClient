@@ -130,6 +130,33 @@ public class AccountServiceImplTest {
     }
 
     @Test
+    public void testGetOrders() throws Exception {
+        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
+        ResponseEntity<OrderBookDto> response = new ResponseEntity<OrderBookDto>(orderBookDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<OrderBookDto>>any())
+        ).thenReturn(response);
+        OrderBookDto result = accountServiceImpl.getOrders(sessionManager);
+        Assert.assertEquals(result.getData().get(0).getOrderNo(), "orderNo");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testGetOrdersException() throws Exception {
+        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
+        ResponseEntity<OrderBookDto> response = new ResponseEntity<OrderBookDto>(orderBookDto, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<OrderBookDto>>any())
+        ).thenReturn(null);
+        accountServiceImpl.getOrders(sessionManager);
+    }
+
+    @Test
     public void testGetTradeDetails() throws Exception {
         TradeDetailsDto tradeDetailsDto = new TradeDetailsDto(Arrays.<TradeDetailsDataDto>asList(new TradeDetailsDataDto("clientId", "exchOrderNo", "exchOrderTime", "exchTradeTime", 1L, "tradeNo", (double) 0)), "message", "status");
         ResponseEntity<TradeDetailsDto> response = new ResponseEntity<TradeDetailsDto>(tradeDetailsDto, HttpStatus.OK);

@@ -1,6 +1,5 @@
 package com.paytmmoney.equities.pmclient;
 
-import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisIsin;
@@ -8,7 +7,6 @@ import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTTransactionDetailsReqDTO;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
-import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
 import com.paytmmoney.equities.pmclient.response.EdisDataResDto;
@@ -49,7 +47,6 @@ import com.paytmmoney.equities.pmclient.response.PositionDataDto;
 import com.paytmmoney.equities.pmclient.response.PositionDetailDataDto;
 import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
 import com.paytmmoney.equities.pmclient.response.PositionDto;
-import com.paytmmoney.equities.pmclient.response.PriceChartResDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDataDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginListResDto;
@@ -80,11 +77,9 @@ import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static com.paytmmoney.equities.pmclient.constant.ApiConstants.COLON;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -157,6 +152,12 @@ public class PMClientTest {
         Assert.assertEquals(result, new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", Integer.valueOf(0), "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", Integer.valueOf(0), "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type", "tagType","tagId","algoModule")), "message", "status"));
     }
 
+    @Test
+    public void testGetOrders() throws Exception {
+        when(accountService.getOrders(any())).thenReturn(new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", Integer.valueOf(0), "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", Integer.valueOf(0), "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status"));
+        OrderBookDto result = pMClient.getOrders();
+        Assert.assertEquals(result, new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", Integer.valueOf(0), "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", Integer.valueOf(0), "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type", "tagType","tagId","algoModule")), "message", "status"));
+    }
 
     @Test
     public void testSetAccessToken() {
