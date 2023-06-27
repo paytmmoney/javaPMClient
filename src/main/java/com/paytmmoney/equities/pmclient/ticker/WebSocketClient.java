@@ -9,13 +9,10 @@ import com.paytmmoney.equities.pmclient.model.PreferenceDto;
 import com.paytmmoney.equities.pmclient.model.Tick;
 import com.paytmmoney.equities.pmclient.util.EpochConverterUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.glassfish.tyrus.client.auth.AuthenticationException;
 import org.glassfish.tyrus.core.HandshakeException;
 import org.springframework.http.HttpStatus;
 
-import javax.net.ssl.SSLHandshakeException;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.ContainerProvider;
@@ -236,6 +233,7 @@ public class WebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         ws = session;
+        resetReconnectCount();
         if (onOpenListener != null)
             onOpenListener.onOpen();
     }
@@ -296,6 +294,9 @@ public class WebSocketClient {
     /**
      * This method tries to reconnect to server for maxReconnectAttempt times.
      */
+    /**
+     * This method tries to reconnect to server for maxReconnectAttempt times.
+     */
     private void reconnect() {
         try {
             Thread.sleep(reconnectDelay);
@@ -304,10 +305,8 @@ public class WebSocketClient {
             if (reconnectCount <= maxReconnectAttempt) {
                 connect();
             }
-            Thread.sleep(1000L);
-            if ((ObjectUtils.isNotEmpty(ws) && ws.isOpen()) || reconnectCount > maxReconnectAttempt) {
-                reconnectDelay = INITIAL_RECONNECT_DELAY;
-                reconnectCount = NumberUtils.INTEGER_ZERO;
+            if (reconnectCount > maxReconnectAttempt) {
+                resetReconnectCount();
             }
         } catch (Exception e) {
             if (onErrorListener != null) {
@@ -326,6 +325,11 @@ public class WebSocketClient {
             httpStatusCode = 500;
         }
         return HttpStatus.valueOf(httpStatusCode).is5xxServerError();
+    }
+
+    private void resetReconnectCount() {
+        reconnectDelay = INITIAL_RECONNECT_DELAY;
+        reconnectCount = NumberUtils.INTEGER_ZERO;
     }
 
     /**
