@@ -163,13 +163,6 @@ ConvertOrderReqDto conertOrder=ConvertOrderReqDto.builder().source("N").txnType(
 ```java
 OrderResDto orderResDto=pmClient.convertOrder(conertOrder);
 ```
-### Order Details
-
-* Fetch details of all the order
-
-```java
-OrderBookDto orderBook=pmClient.orderBook();
-```
 
 ### Position
 
@@ -325,6 +318,18 @@ Object optionChain=pmClient.getOptionChain("type", "symbol", "expiry")
 * To Get Option Chain Config using symbol
 ```java
 Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
+```
+
+### Get Order Book
+* Get orders with apiKey filter
+```java
+OrderBookDto orderBookDto = pmClient.getOrderBook();
+```
+
+### Get All Orders
+* Get all orders without apiKey filter
+```java
+OrderBookDto orderBookDto = pmClient.getOrders();
 ```
 
 ## WebSocket live streaming data
