@@ -332,6 +332,12 @@ OrderBookDto orderBookDto = pmClient.getOrderBook();
 OrderBookDto orderBookDto = pmClient.getOrders();
 ```
 
+### Brokerage, Statutory & Regulatory Levies
+* Get Charges Info
+```java
+ChargesInfoResDTO chargesInfoResDTO = pmClient.chargesInfo("brokerageProfileCode", "transactionType", "instrumentType", "productType", "exchange", qty, price);
+```
+
 ## WebSocket live streaming data
 * To use websocket client in your project, add below method -
 ```java

@@ -2,6 +2,7 @@ package com.paytmmoney.equities.pmclient.service.impl;
 
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
+import com.paytmmoney.equities.pmclient.request.ChargesInfoReqDTO;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
 import com.paytmmoney.equities.pmclient.response.FundSummaryConfigDto;
@@ -51,6 +52,8 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -104,7 +107,7 @@ public class AccountServiceImplTest {
 
     @Test
     public void testGetOrderBook() throws Exception {
-        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
+        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1F, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
         ResponseEntity<OrderBookDto> response = new ResponseEntity<OrderBookDto>(orderBookDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
@@ -118,7 +121,7 @@ public class AccountServiceImplTest {
 
     @Test(expected = ApplicationException.class)
     public void testGetOrderBookException() throws Exception {
-        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
+        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1F, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
         ResponseEntity<OrderBookDto> response = new ResponseEntity<OrderBookDto>(orderBookDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
@@ -131,7 +134,7 @@ public class AccountServiceImplTest {
 
     @Test
     public void testGetOrders() throws Exception {
-        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
+        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1F, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
         ResponseEntity<OrderBookDto> response = new ResponseEntity<OrderBookDto>(orderBookDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
@@ -145,7 +148,7 @@ public class AccountServiceImplTest {
 
     @Test(expected = ApplicationException.class)
     public void testGetOrdersException() throws Exception {
-        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1L, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
+        OrderBookDto orderBookDto = new OrderBookDto(Arrays.<OrderBookDataDto>asList(new OrderBookDataDto("algoOrdNo", 1F, 1L, "clientId", "displayName", "displayOrderType", "displayProduct", "displayStatus", "displayValidity", "errorCode", "exchOrderNo", "exchOrderTime", "exchange", "expiryDate", 0, "instrument", "isin", "lastUpdatedTime", "legNo", 1L, "mktType", "offMktFlag", "optType", "orderDateTime", "orderNo", "orderType", "placedBy", "prAbstickValue", (double) 0, "product", 1L, "reasonDescription", (double) 0, 1L, "securityId", "segment", 0, "slAbstickValue", "status", "strategyId", (double) 0, 1L, 1L, 1L, "txnType", "validity", "platform", "channel","instrument_type","tagType","tagId","algoModule")), "message", "status");
         ResponseEntity<OrderBookDto> response = new ResponseEntity<OrderBookDto>(orderBookDto, HttpStatus.OK);
         when(restTemplate.exchange(
                 ArgumentMatchers.anyString(),
@@ -381,5 +384,18 @@ public class AccountServiceImplTest {
                 ArgumentMatchers.<Class<String>>any())
         ).thenReturn(null);
         accountServiceImpl.getSecurityMaster("exchange");
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void testChargesInfoException() throws Exception {
+        ChargesInfoReqDTO chargesInfoReqDTO = new ChargesInfoReqDTO();
+        ResponseEntity<ChargesInfoReqDTO> response = new ResponseEntity<ChargesInfoReqDTO>(chargesInfoReqDTO, HttpStatus.OK);
+        when(restTemplate.exchange(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(HttpMethod.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.<Class<OrderBookDto>>any())
+        ).thenReturn(null);
+        accountServiceImpl.chargesInfo(sessionManager, anyString(), anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt());
     }
 }
