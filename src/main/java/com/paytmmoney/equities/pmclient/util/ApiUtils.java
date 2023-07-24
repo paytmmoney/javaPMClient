@@ -4,6 +4,7 @@ import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
+import com.paytmmoney.equities.pmclient.request.ChargesInfoReqDTO;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
@@ -235,5 +236,12 @@ public class ApiUtils {
         }
         throw new ApplicationException(response.getStatusCode().getReasonPhrase(),
                 response.getStatusCode().value());
+    }
+
+    public static HttpEntity<ChargesInfoReqDTO> getHttpEntityForPost(String accessToken, ChargesInfoReqDTO chargesInfoReqDTO) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+            return new HttpEntity<>(chargesInfoReqDTO, headers);
     }
 }

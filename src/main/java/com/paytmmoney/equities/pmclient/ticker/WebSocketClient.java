@@ -10,6 +10,8 @@ import com.paytmmoney.equities.pmclient.model.Tick;
 import com.paytmmoney.equities.pmclient.util.EpochConverterUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.glassfish.tyrus.core.HandshakeException;
+import org.springframework.http.HttpStatus;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -19,12 +21,15 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import java.net.ConnectException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static com.paytmmoney.equities.pmclient.constant.ApplicationConstants.DEFAULT_MAX_RECONNECT_ATTEMPT;
+import static com.paytmmoney.equities.pmclient.constant.ApplicationConstants.INITIAL_RECONNECT_DELAY;
 import static com.paytmmoney.equities.pmclient.constant.ByteConversionConstants.FULL_PKT;
 import static com.paytmmoney.equities.pmclient.constant.ByteConversionConstants.INDEX_FULL_PKT;
 import static com.paytmmoney.equities.pmclient.constant.ByteConversionConstants.INDEX_LTP_PKT;
@@ -132,6 +137,10 @@ public class WebSocketClient {
     private OnErrorListener onErrorListener;
     private Session ws; // session object required to manage that session
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00"); // for rounding off floating point value to 2 decimal places
+    private int reconnectCount = NumberUtils.INTEGER_ZERO;
+    private Long reconnectDelay = INITIAL_RECONNECT_DELAY;
+    private boolean doReconnect = false;
+    private int maxReconnectAttempt = DEFAULT_MAX_RECONNECT_ATTEMPT;
 
     /**
      * Initialize WebSocketClient.
@@ -143,14 +152,31 @@ public class WebSocketClient {
     }
 
     /**
+     * Initialize WebSocketClient and sets doReconnect and maxReconnectAttempt variables..
+     *
+     * @param accessToken         is the public access token received after successful login process.
+     * @param doReconnect         boolean value determining whether reconnect feature is allowed or not.
+     * @param maxReconnectAttempt the no. of retries made to server to create connection.
+     */
+    public WebSocketClient(String accessToken, boolean doReconnect, int maxReconnectAttempt) {
+        createUrl(accessToken);
+        this.doReconnect = doReconnect;
+        this.maxReconnectAttempt = maxReconnectAttempt;
+    }
+
+    /**
      * Create a websocket connection with Broadcast server
      */
     public void connect() {
         try {
             ContainerProvider.getWebSocketContainer().connectToServer(this, URI.create(wsUrl));
         } catch (Exception e) {
-            if (onErrorListener != null)
+            if (onErrorListener != null) {
                 onErrorListener.onError(e);
+                if (doReconnect && is5xxServerError(e)) {
+                    reconnect();
+                }
+            }
         }
     }
 
@@ -207,6 +233,7 @@ public class WebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         ws = session;
+        resetReconnectCount();
         if (onOpenListener != null)
             onOpenListener.onOpen();
     }
@@ -240,8 +267,12 @@ public class WebSocketClient {
      */
     @OnClose
     public void onClose(CloseReason reason) {
-        if (onCloseListener != null)
+        if (onCloseListener != null) {
             onCloseListener.onClose(reason.toString());
+            if (doReconnect && (reason.getCloseCode() != CloseReason.CloseCodes.NORMAL_CLOSURE)) {
+                reconnect();
+            }
+        }
     }
 
     /**
@@ -251,8 +282,69 @@ public class WebSocketClient {
      */
     @OnError
     public void onError(Throwable throwable) {
-        if (onErrorListener != null)
+        if (onErrorListener != null) {
             onErrorListener.onError(throwable.getMessage());
+            Throwable cause = throwable.getCause();
+            if (doReconnect && is5xxServerError(throwable)) {
+                reconnect();
+            }
+        }
+    }
+
+    /**
+     * This method tries to reconnect to server for maxReconnectAttempt times.
+     */
+    /**
+     * This method tries to reconnect to server for maxReconnectAttempt times.
+     */
+    private void reconnect() {
+        try {
+            Thread.sleep(reconnectDelay);
+            reconnectDelay *= NumberUtils.INTEGER_TWO;
+            reconnectCount += NumberUtils.INTEGER_ONE;
+            if (reconnectCount <= maxReconnectAttempt) {
+                connect();
+            }
+            if (reconnectCount > maxReconnectAttempt) {
+                resetReconnectCount();
+            }
+        } catch (Exception e) {
+            if (onErrorListener != null) {
+                onErrorListener.onError(e);
+            }
+        }
+    }
+
+    private boolean is5xxServerError(Throwable e) {
+        int httpStatusCode = 400;
+        if (e.getCause() instanceof HandshakeException) {
+            HandshakeException handshakeException = (HandshakeException) e.getCause();
+            httpStatusCode = handshakeException.getHttpStatusCode();
+        }
+        if (e instanceof ConnectException) {
+            httpStatusCode = 500;
+        }
+        return HttpStatus.valueOf(httpStatusCode).is5xxServerError();
+    }
+
+    private void resetReconnectCount() {
+        reconnectDelay = INITIAL_RECONNECT_DELAY;
+        reconnectCount = NumberUtils.INTEGER_ZERO;
+    }
+
+    /**
+     * This method is used to explicitly close connection with the server.
+     */
+    public void closeConnection() {
+        try {
+            if (ws != null) {
+                ws.close();
+            }
+        } catch (Exception e) {
+            if (onErrorListener != null) {
+                onErrorListener.onError(e);
+            }
+        }
     }
 
     /**

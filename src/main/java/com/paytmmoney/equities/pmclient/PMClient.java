@@ -7,8 +7,8 @@ import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
-import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
+import com.paytmmoney.equities.pmclient.response.ChargesInfoResDTO;
 import com.paytmmoney.equities.pmclient.response.EdisResDto;
 import com.paytmmoney.equities.pmclient.response.EdisStatusResDto;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
@@ -24,7 +24,6 @@ import com.paytmmoney.equities.pmclient.response.OrderMarginCalDto;
 import com.paytmmoney.equities.pmclient.response.OrderResDto;
 import com.paytmmoney.equities.pmclient.response.PositionDetailDto;
 import com.paytmmoney.equities.pmclient.response.PositionDto;
-import com.paytmmoney.equities.pmclient.response.PriceChartResDto;
 import com.paytmmoney.equities.pmclient.response.ScriptMarginCalResDto;
 import com.paytmmoney.equities.pmclient.response.TpinGenerateResDto;
 import com.paytmmoney.equities.pmclient.response.TradeDetailsDto;
@@ -42,8 +41,6 @@ import com.paytmmoney.equities.pmclient.service.impl.OrderServiceImpl;
 import com.paytmmoney.equities.pmclient.service.impl.SessionManagerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
-
-import static com.paytmmoney.equities.pmclient.constant.ApiConstants.COLON;
 
 @Slf4j
 public class PMClient {
@@ -105,6 +102,10 @@ public class PMClient {
     //Account API
     public OrderBookDto getOrderBook() throws ApplicationException {
         return accountService.getOrderBook(sessionManager);
+    }
+
+    public OrderBookDto getOrders() throws ApplicationException {
+        return accountService.getOrders(sessionManager);
     }
 
     public TradeDetailsDto getTradeDetails(String orderNo, String legNo, String segment) throws ApplicationException {
@@ -180,6 +181,10 @@ public class PMClient {
 //    public PriceChartResDto priceChartDetails(PriceChartReqDto priceChartReqDto) throws ApplicationException {
 //        return chartDetailService.priceChartDetails(sessionManager, priceChartReqDto);
 //    }
+
+    public ChargesInfoResDTO chargesInfo( String brokerageProfileCode, String transactionType, String instrumentType, String productType, String exchange, Integer qty, Integer price) throws ApplicationException {
+        return accountService.chargesInfo(sessionManager, brokerageProfileCode, transactionType, instrumentType, productType, exchange, qty, price);
+    }
 
     //GTT API
     public GTTOrderResDto createGtt(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {

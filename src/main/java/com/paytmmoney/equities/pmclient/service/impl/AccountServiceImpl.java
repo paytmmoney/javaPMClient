@@ -4,7 +4,9 @@ import com.paytmmoney.equities.pmclient.constant.ApiConstants;
 import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
+import com.paytmmoney.equities.pmclient.request.ChargesInfoReqDTO;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
+import com.paytmmoney.equities.pmclient.response.ChargesInfoResDTO;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
 import com.paytmmoney.equities.pmclient.response.OrderBookDto;
@@ -57,6 +59,21 @@ public class AccountServiceImpl implements AccountService {
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in AccountServiceImpl->getOrderBook:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    public OrderBookDto getOrders(SessionManager sessionManager) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.ORDERS_ENDPOINT[1]);
+        ResponseEntity<OrderBookDto> response = null;
+        try {
+            response = restTemplate.exchange(
+                    ApiConstants.ORDERS_ENDPOINT[0][0], HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), OrderBookDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in AccountServiceImpl->getOrders:", e);
             ApiUtils.handleException(response);
         }
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
@@ -199,4 +216,20 @@ public class AccountServiceImpl implements AccountService {
         }
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
     }
+
+    @Override
+    public ChargesInfoResDTO chargesInfo(SessionManager sessionManager, String brokerageProfileCode, String transactionType, String instrumentType, String productType, String exchange, Integer qty, Integer price) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.CHARGES_INFO_ENDPOINT[1]);
+        ResponseEntity<ChargesInfoResDTO> response = null;
+        ChargesInfoReqDTO chargesInfoReqDTO = ChargesInfoReqDTO.builder().brokerageProfileCode(brokerageProfileCode).transactionType(transactionType).instrumentType(instrumentType).productType(productType).exchange(exchange).qty(Double.valueOf(qty)).price(Double.valueOf(price)).build();
+        try {
+            response = restTemplate.exchange(ApiConstants.CHARGES_INFO_ENDPOINT[0][0], HttpMethod.POST,
+                    ApiUtils.getHttpEntityForPost(jwtToken, chargesInfoReqDTO),
+                    ChargesInfoResDTO.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in AccountServiceImpl->getChargesInfo:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());    }
 }

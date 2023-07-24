@@ -17,7 +17,7 @@ public class OrderBookDataDto {
     @JsonProperty("algo_ord_no")
     private String algoOrdNo;
     @JsonProperty("avg_traded_price")
-    private Long avgTradedPrice;
+    private Float avgTradedPrice;
     @JsonProperty("child_leg_unq_id")
     private Long childLegUnqId;
     @JsonProperty("client_id")
