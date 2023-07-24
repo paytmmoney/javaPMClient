@@ -1,4 +1,4 @@
-# The Paytm Money Equity 1.1.1 API Java client
+# The Paytm Money Equity 1.1.2 API Java client
 
 The official Java client for communicating with [PaytmMoney Equity API](https://www.paytmmoney.com/stocks/).
 
@@ -17,23 +17,23 @@ trading platform. Execute orders in real time, manage user portfolio, stream liv
 
 - This jar will work only in springboot application.
 
-- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.1.jar') ```
+- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.2.jar') ```
 
 - For maven project, you can add this line in pom.xml
 - ``` java
   <dependency>
   <groupId>com.paytmmoney.equities</groupId>
   <artifactId>pmclient</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <scope>system</scope>
-  <systemPath>${basedir}/libs/pmclient-1.1.1.jar</systemPath>
+  <systemPath>${basedir}/libs/pmclient-1.1.2.jar</systemPath>
   </dependency>
   ```
 
-- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.1
+- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.2
 
 - To use pmclient in **Android**, you need to include jar file in the libs directory and add the following line in
-  you module's gradle file ``` compile files('dist/pmclient-1.1.1.jar') ```
+  you module's gradle file ``` compile files('dist/pmclient-1.1.2.jar') ```
 
 ## API usage
 
@@ -162,13 +162,6 @@ ConvertOrderReqDto conertOrder=ConvertOrderReqDto.builder().source("N").txnType(
 
 ```java
 OrderResDto orderResDto=pmClient.convertOrder(conertOrder);
-```
-### Order Details
-
-* Fetch details of all the order
-
-```java
-OrderBookDto orderBook=pmClient.orderBook();
 ```
 
 ### Position
@@ -327,6 +320,24 @@ Object optionChain=pmClient.getOptionChain("type", "symbol", "expiry")
 Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
 ```
 
+### Get Order Book
+* Get orders with apiKey filter
+```java
+OrderBookDto orderBookDto = pmClient.getOrderBook();
+```
+
+### Get All Orders
+* Get all orders without apiKey filter
+```java
+OrderBookDto orderBookDto = pmClient.getOrders();
+```
+
+### Brokerage, Statutory & Regulatory Levies
+* Get Charges Info
+```java
+ChargesInfoResDTO chargesInfoResDTO = pmClient.chargesInfo("brokerageProfileCode", "transactionType", "instrumentType", "productType", "exchange", qty, price);
+```
+
 ## WebSocket live streaming data
 * To use websocket client in your project, add below method -
 ```java
@@ -343,6 +354,11 @@ Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
          */
         final WebSocketClient webSocketClient = new WebSocketClient(accessToken);
 
+        /** To use reconnect feature, comment above line and uncomment below line.
+         * Pass doReconnect param as true and in maxReconnectAttempt param, the no. of times you want to retry to create connection.
+         */
+//        final WebSocketClient webSocketClient = new WebSocketClient(accessToken, true, 5);
+        
         /** Set onOpen listener to listen to connection open event.*/
         webSocketClient.setOnOpenListener(new OnOpenListener() {
             @Override
@@ -393,6 +409,9 @@ Object optionChainConfig=pmClient.getOptionChainConfig("symbol")
         /** create a websocket connection with broadcast server.*/
         webSocketClient.connect();
 
+        /** To explicitly close websocket connection with server, call this method*/
+//        webSocketClient.closeConnection();
+        
         while (true) {
             // to make sure this method never terminates, and we keep on getting live data
         }

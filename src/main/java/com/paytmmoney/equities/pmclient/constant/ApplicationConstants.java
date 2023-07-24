@@ -15,5 +15,6 @@ public class ApplicationConstants {
     int ninetyEightyConstant = (int) (ninetyEighty.getTimeInMillis() / 1000);
     */
     public static final long NINETY_EIGHTY_CONSTANT = 315532800;
-
+    public static final long INITIAL_RECONNECT_DELAY = 2000L;
+    public static final int DEFAULT_MAX_RECONNECT_ATTEMPT = 5;
 }
