@@ -18,6 +18,7 @@ public class ApiConstants {
 
     // order-book, trade details endpoints
     public static final String[][] ORDER_BOOK_ENDPOINT = {{API_HOST + "/orders/v1/order-book"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
+    public static final String[][] ORDERS_ENDPOINT = {{API_HOST + "/orders/v1/user/orders"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
     public static final String[][] TRADE_DETAILS_ENDPOINT = {{API_HOST + "/orders/v1/trade-details"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
 
     // positions and holdings endpoints
@@ -26,6 +27,8 @@ public class ApiConstants {
     public static final String[][] HOLDINGS_VALUE_ENDPOINT = {{API_HOST + "/holdings/v1/get-holdings-value"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
     public static final String[][] HOLDINGS_DATA_ENDPOINT = {{API_HOST + "/holdings/v1/get-user-holdings-data"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
     public static final String[][] FUND_SUMMARY_ENDPOINT = {{API_HOST + "/accounts/v1/funds/summary"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
+    public static final String[][] CHARGES_INFO_ENDPOINT = {{API_HOST + "/accounts/v1/charges/info"},{ACCESS_TOKEN}};
+
 
     // margin endpoints
     public static final String[][] MARGIN_CALCULATOR_ENDPOINT = {{API_HOST + "/margin/v1/scrips/calculator"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};

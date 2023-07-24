@@ -44,7 +44,7 @@ class WebSocketClientTest {
     @Mock
     CloseReason.CloseCode closeCode;
     @InjectMocks
-    WebSocketClient webSocketClient;
+    WebSocketClient webSocketClient = new WebSocketClient("accessToken");
 
     @BeforeEach
     void setUp() {

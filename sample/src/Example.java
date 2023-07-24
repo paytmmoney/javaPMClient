@@ -46,11 +46,11 @@ public class Example {
         /**
          * PreferenceDto Format
          *
-        actionType - 'ADD', 'REMOVE'
-        modeType - 'LTP', 'FULL', 'QUOTE'
-        scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
-        exchangeType - 'BSE', 'NSE'
-        scripId -
+         actionType - 'ADD', 'REMOVE'
+         modeType - 'LTP', 'FULL', 'QUOTE'
+         scripType - 'ETF', 'FUTURE', 'INDEX', 'OPTION', 'EQUITY'
+         exchangeType - 'BSE', 'NSE'
+         scripId -
          */
         preferenceList.add(new PreferenceDto(
                 "ADD",
@@ -484,6 +484,11 @@ public class Example {
          */
         final WebSocketClient webSocketClient = new WebSocketClient(accessToken);
 
+        /** To use reconnect feature, comment above line and uncomment below line.
+         * Pass doReconnect param as true and in maxReconnectAttempt param, the no. of times you want to retry to create connection.
+         */
+//        final WebSocketClient webSocketClient = new WebSocketClient(accessToken, true, 5);
+
         /** Set onOpen listener to listen to connection open event.*/
         webSocketClient.setOnOpenListener(new OnOpenListener() {
             @Override
@@ -533,6 +538,9 @@ public class Example {
 
         /** create a websocket connection with broadcast server.*/
         webSocketClient.connect();
+
+        /** To explicitly close websocket connection with server, uncomment this method call*/
+//        webSocketClient.closeConnection();
 
         while (true) {
             // to make sure this method never terminates, and we keep on getting live data
