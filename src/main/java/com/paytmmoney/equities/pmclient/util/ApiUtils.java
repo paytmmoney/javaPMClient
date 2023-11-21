@@ -114,6 +114,38 @@ public class ApiUtils {
         return ApiConstants.GTT_BY_INSTRUCTION_ID[0][0] + FORWARD_SLASH + id;
     }
 
+    public static String getGttByIdOrStatusV2Endpoint(@Nullable String pml_id, @Nullable String status) {
+        if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .encode().toUriString();
+        } else if (StringUtils.isEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        } else if (StringUtils.isNotEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        }
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0]).encode().toUriString();
+    }
+
+    public static String gttByInstructionIdV2Endpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT_BY_INSTRUCTION_ID_V2[0][0] + FORWARD_SLASH + id;
+    }
+
+    public static String gttByIdV2Endpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT_V2[0][0] + FORWARD_SLASH + id;
+    }
+
     public static String getGttExpiryEndpoint(String pml_id) {
         return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_EXPIRY[0][0])
                 .queryParam(ApiConstants.PML_ID_PARAM, pml_id)

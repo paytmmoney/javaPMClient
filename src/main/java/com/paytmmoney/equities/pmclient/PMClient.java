@@ -219,6 +219,26 @@ public class PMClient {
         return gttService.getGTTByInstructionId(sessionManager, id);
     }
 
+    public GTTOrderResDto createGttV2(GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
+        return gttService.createGTT(sessionManager, gttOrderReqDto);
+    }
+
+    public GTTOrderResDto updateGttV2(String id, GTTOrderReqDto gttOrderReqDto) throws ApplicationException {
+        return gttService.updateGTT(sessionManager, id, gttOrderReqDto);
+    }
+
+    public GTTOrderResDto getGttV2(String id) throws ApplicationException {
+        return gttService.getGTT(sessionManager, id);
+    }
+
+    public GTTGetAllResDto getAllGttV2(@Nullable String pmlId, @Nullable String status) throws ApplicationException {
+        return gttService.getAllGTT(sessionManager, pmlId, status);
+    }
+
+    public GTTOrderResDto getGttByInstructionIdV2(String id) throws ApplicationException {
+        return gttService.getGTTByInstructionId(sessionManager, id);
+    }
+
     public LivePriceDataListDto getLiveMarketData(String mode, String pref) throws ApplicationException {
         return orderService.getLiveMarketData(sessionManager, mode, pref);
     }
