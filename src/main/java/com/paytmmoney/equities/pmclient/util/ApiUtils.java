@@ -84,38 +84,6 @@ public class ApiUtils {
 
     public static String getGttByIdOrStatusEndpoint(@Nullable String pml_id, @Nullable String status) {
         if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
-            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0])
-                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
-                    .encode().toUriString();
-        } else if (StringUtils.isEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
-            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0])
-                    .queryParam(ApiConstants.STATUS, status)
-                    .encode().toUriString();
-        } else if (StringUtils.isNotEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
-            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0])
-                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
-                    .queryParam(ApiConstants.STATUS, status)
-                    .encode().toUriString();
-        }
-        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0]).encode().toUriString();
-    }
-
-    public static String gttByIdEndpoint(String id) {
-        if (StringUtils.isEmpty(id)){
-            id = null;
-        }
-        return ApiConstants.GTT[0][0] + FORWARD_SLASH + id;
-    }
-
-    public static String gttByInstructionIdEndpoint(String id) {
-        if (StringUtils.isEmpty(id)){
-            id = null;
-        }
-        return ApiConstants.GTT_BY_INSTRUCTION_ID[0][0] + FORWARD_SLASH + id;
-    }
-
-    public static String getGttByIdOrStatusV2Endpoint(@Nullable String pml_id, @Nullable String status) {
-        if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
             return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
                     .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
                     .encode().toUriString();
@@ -132,11 +100,18 @@ public class ApiUtils {
         return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0]).encode().toUriString();
     }
 
-    public static String gttByInstructionIdV2Endpoint(String id) {
+    public static String gttByIdEndpoint(String id) {
         if (StringUtils.isEmpty(id)){
             id = null;
         }
-        return ApiConstants.GTT_BY_INSTRUCTION_ID_V2[0][0] + FORWARD_SLASH + id;
+        return ApiConstants.GTT[0][0] + FORWARD_SLASH + id;
+    }
+
+    public static String gttByInstructionIdEndpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT_BY_INSTRUCTION_ID[0][0] + FORWARD_SLASH + id;
     }
 
     public static String gttByIdV2Endpoint(String id) {
@@ -177,18 +152,21 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, jwtToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(headers);
     }
 
     public static HttpEntity<String> getHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(headers);
     }
 
     public static HttpEntity<String> getHttpEntityForPost(String apiKey, String apiSecretKey, String requestToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         JSONObject json = new JSONObject();
         json.put(ApiConstants.API_KEY, apiKey);
         json.put(ApiConstants.API_SECRET_KEY,apiSecretKey);
@@ -201,6 +179,7 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(scriptMarginCalReqDto, headers);
     }
 
@@ -209,6 +188,7 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(orderReqDto, headers);
     }
 
@@ -217,6 +197,7 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(convertOrderReqDto, headers);
     }
 
@@ -225,6 +206,7 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(edisValidateReqDto, headers);
     }
 
@@ -233,6 +215,7 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(priceChartReqDto, headers);
     }
 
@@ -241,6 +224,7 @@ public class ApiUtils {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(gttOrderReqDto, headers);
     }
 
@@ -274,6 +258,7 @@ public class ApiUtils {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+            headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
             return new HttpEntity<>(chargesInfoReqDTO, headers);
     }
 }

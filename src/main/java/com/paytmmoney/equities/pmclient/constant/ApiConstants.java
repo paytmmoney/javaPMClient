@@ -63,13 +63,10 @@ public class ApiConstants {
 
     // gtt endpoints
     public static final String[][] GTT = {{API_HOST + "/gtt/v1/gtt"},{ACCESS_TOKEN}};
+    public static final String[][] GTT_V2 = {{API_HOST + "/gtt/v2/gtt"},{ACCESS_TOKEN}};
     public static final String[][] GTT_AGGREGATE = {{GTT[0][0] + "/aggregate"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
     public static final String[][] GTT_EXPIRY = {{GTT[0][0] + "/expiry-date"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
-    public static final String[][] GTT_BY_INSTRUCTION_ID = {{GTT[0][0] + "/instructions"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
-
-    // gtt endpoints v2
-    public static final String[][] GTT_V2 = {{API_HOST + "/gtt/v2/gtt"},{ACCESS_TOKEN}};
-    public static final String[][] GTT_BY_INSTRUCTION_ID_V2 = {{GTT_V2[0][0] + "/instructions"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
+    public static final String[][] GTT_BY_INSTRUCTION_ID = {{GTT_V2[0][0] + "/instructions"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
 
     // live market data endpoints
     public static final String[][] LIVE_MARKET_DATA = {{API_HOST + "/data/v1/price/live"},{ACCESS_TOKEN,READ_ACCESS_TOKEN}};
@@ -89,6 +86,8 @@ public class ApiConstants {
     public static final String REQUEST_TOKEN = "request_token";
     public static final String MERCHANT_SECRET = "merchantSecret";
     public static final String X_JWT_TOKEN = "x-jwt-token";
+    public static final String OPENAPI_CLIENT_SRC = "openapi-client-src";
+    public static final String OPENAPI_CLIENT_SRC_VALUE = "Sdk";
 
     public static final String ORDER_NO = "order_no";
     public static final String LEG_NO = "leg_no";

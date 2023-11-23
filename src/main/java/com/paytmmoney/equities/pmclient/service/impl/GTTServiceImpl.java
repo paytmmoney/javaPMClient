@@ -29,7 +29,7 @@ public class GTTServiceImpl implements GTTService {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT[1]);
         ResponseEntity<GTTOrderResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiConstants.GTT[0][0], HttpMethod.POST,
+            response = restTemplate.exchange(ApiConstants.GTT_V2[0][0], HttpMethod.POST,
                     ApiUtils.getHttpEntityForPost(jwtToken, gttOrderReqDto), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class GTTServiceImpl implements GTTService {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT[1]);
         ResponseEntity<GTTOrderResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiUtils.gttByIdEndpoint(id), HttpMethod.GET,
+            response = restTemplate.exchange(ApiUtils.gttByIdV2Endpoint(id), HttpMethod.GET,
                     ApiUtils.getHttpEntity(jwtToken), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class GTTServiceImpl implements GTTService {
         String jwtToken = ApiUtils.isSessionExpired(sessionManager,  ApiConstants.GTT[1]);
         ResponseEntity<GTTOrderResDto> response = null;
         try {
-            response = restTemplate.exchange(ApiUtils.gttByIdEndpoint(id), HttpMethod.PUT,
+            response = restTemplate.exchange(ApiUtils.gttByIdV2Endpoint(id), HttpMethod.PUT,
                     ApiUtils.getHttpEntityForPost(jwtToken, gttOrderReqDto), GTTOrderResDto.class);
             return response.getBody();
         } catch (Exception e) {
@@ -134,78 +134,6 @@ public class GTTServiceImpl implements GTTService {
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getGTTByInstructionId:", e);
-            ApiUtils.handleException(response);
-        }
-        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
-    }
-
-    public GTTOrderResDto createGTTV2(SessionManager sessionManager, GTTOrderReqDto gttOrderReqDto) throws
-            ApplicationException {
-        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_V2[1]);
-        ResponseEntity<GTTOrderResDto> response = null;
-        try {
-            response = restTemplate.exchange(ApiConstants.GTT_V2[0][0], HttpMethod.POST,
-                    ApiUtils.getHttpEntityForPost(jwtToken, gttOrderReqDto), GTTOrderResDto.class);
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("Exception in GTTServiceImpl->createGTTV2:", e);
-            ApiUtils.handleException(response);
-        }
-        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
-    }
-
-    public GTTOrderResDto getGTTV2(SessionManager sessionManager, String id) throws ApplicationException {
-        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_V2[1]);
-        ResponseEntity<GTTOrderResDto> response = null;
-        try {
-            response = restTemplate.exchange(ApiUtils.gttByIdV2Endpoint(id), HttpMethod.GET,
-                    ApiUtils.getHttpEntity(jwtToken), GTTOrderResDto.class);
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("Exception in GTTServiceImpl->getGTTV2:", e);
-            ApiUtils.handleException(response);
-        }
-        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
-    }
-
-    public GTTOrderResDto updateGTTV2(SessionManager sessionManager, String id, GTTOrderReqDto gttOrderReqDto) throws
-            ApplicationException {
-        String jwtToken = ApiUtils.isSessionExpired(sessionManager,  ApiConstants.GTT_V2[1]);
-        ResponseEntity<GTTOrderResDto> response = null;
-        try {
-            response = restTemplate.exchange(ApiUtils.gttByIdV2Endpoint(id), HttpMethod.PUT,
-                    ApiUtils.getHttpEntityForPost(jwtToken, gttOrderReqDto), GTTOrderResDto.class);
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("Exception in GTTServiceImpl->updateGTTV2:", e);
-            ApiUtils.handleException(response);
-        }
-        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
-    }
-
-    public GTTOrderResDto getGTTByInstructionIdV2(SessionManager sessionManager, String id) throws ApplicationException {
-        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_BY_INSTRUCTION_ID_V2[1]);
-        ResponseEntity<GTTOrderResDto> response = null;
-        try {
-            response = restTemplate.exchange(ApiUtils.gttByInstructionIdV2Endpoint(id), HttpMethod.GET,
-                    ApiUtils.getHttpEntity(jwtToken), GTTOrderResDto.class);
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("Exception in GTTServiceImpl->getGTTByInstructionIdV2:", e);
-            ApiUtils.handleException(response);
-        }
-        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
-    }
-
-    public GTTGetAllResDto getAllGTTV2(SessionManager sessionManager, @Nullable String pml_id, @Nullable String status) throws ApplicationException {
-        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_V2[1]);
-        ResponseEntity<GTTGetAllResDto> response = null;
-        try {
-            response = restTemplate.exchange(ApiUtils.getGttByIdOrStatusV2Endpoint(pml_id, status), HttpMethod.GET,
-                    ApiUtils.getHttpEntity(jwtToken), GTTGetAllResDto.class);
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("Exception in GTTServiceImpl->getAllGTTV2:", e);
             ApiUtils.handleException(response);
         }
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
