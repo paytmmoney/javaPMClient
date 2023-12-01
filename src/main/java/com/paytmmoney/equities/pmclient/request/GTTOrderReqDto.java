@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -20,9 +21,7 @@ public class GTTOrderReqDto {
     @JsonProperty(ApiConstants.EXCHANGE)
     private String exchange;
 
-    @JsonProperty(ApiConstants.ORDER_TYPE)
-    private String orderType;
-
+    @Nullable
     @JsonProperty(ApiConstants.PML_ID)
     private String pmlId;
 

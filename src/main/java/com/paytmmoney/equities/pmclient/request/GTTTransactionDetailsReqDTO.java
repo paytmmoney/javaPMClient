@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Data
 @Builder
@@ -14,6 +15,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GTTTransactionDetailsReqDTO {
+
+    @Nullable
+    @JsonProperty(ApiConstants.ID)
+    private String id;
+
+    @Nullable
+    @JsonProperty(ApiConstants.SUB_TYPE)
+    private String subType;
+
+    @JsonProperty(ApiConstants.ORDER_TYPE)
+    private String orderType;
 
     @JsonProperty(ApiConstants.LIMIT_PRICE)
     private Double limitPrice;
