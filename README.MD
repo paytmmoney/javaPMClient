@@ -302,6 +302,36 @@ GTTAggregateResDto gTTAggregateResDto=pmClient.getGttAggregate()
 GTTOrderResDto gTTOrderResDto=pmClient.getGttByInstructionId(id)
 ```
 
+### Create GTT V2
+* To create a GTT order.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.createGttV2(gttOrderV2ReqDto);
+```
+
+### Get All GTT V2
+* To get all GTT or get by pml_id or status.
+```java
+GTTGetAllV2ResDto gTTGetAllV2ResDto=pmClient.getAllGttV2(pmlId,status);
+```
+
+### Get GTT V2
+* To get GTT by Id.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.getGttV2(id);
+```
+
+### Update GTT V2
+* To update GTT by Id.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.updateGttV2(id, gttOrderV2ReqDto);
+```
+
+### Get GTT InstructionId V2
+* To GTT by InstructionId.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.getGttByInstructionIdV2(id)
+```
+
 ### Get Live Price via API
 * To Get Live Price Data via API
 ```java
