@@ -17,7 +17,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GTTOrderDataTransactionResDto implements Serializable {
+public class GTTOrderDataTransactionV2ResDto implements Serializable {
 
     @JsonProperty(ApiConstants.EXECUTION_REF_ID)
     private String executionRefId;
@@ -45,4 +45,16 @@ public class GTTOrderDataTransactionResDto implements Serializable {
 
     @JsonProperty(ApiConstants.TRIGGERED_AT_TYPE)
     private String triggeredAtType;
+
+    @JsonProperty(ApiConstants.SET_PRICE)
+    private String setPrice;
+
+    @JsonProperty(ApiConstants.ORDER_TYPE)
+    private String orderType;
+
+    @JsonProperty(ApiConstants.STATUS)
+    private String status;
+
+    @JsonProperty(ApiConstants.ID)
+    private String id;
 }

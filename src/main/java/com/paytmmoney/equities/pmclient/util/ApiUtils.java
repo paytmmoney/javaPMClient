@@ -8,6 +8,7 @@ import com.paytmmoney.equities.pmclient.request.ChargesInfoReqDTO;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderV2ReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.PriceChartReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
@@ -84,20 +85,20 @@ public class ApiUtils {
 
     public static String getGttByIdOrStatusEndpoint(@Nullable String pml_id, @Nullable String status) {
         if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
-            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0])
                     .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
                     .encode().toUriString();
         } else if (StringUtils.isEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
-            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0])
                     .queryParam(ApiConstants.STATUS, status)
                     .encode().toUriString();
         } else if (StringUtils.isNotEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
-            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0])
                     .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
                     .queryParam(ApiConstants.STATUS, status)
                     .encode().toUriString();
         }
-        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0]).encode().toUriString();
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT[0][0]).encode().toUriString();
     }
 
     public static String gttByIdEndpoint(String id) {
@@ -114,6 +115,30 @@ public class ApiUtils {
         return ApiConstants.GTT_BY_INSTRUCTION_ID[0][0] + FORWARD_SLASH + id;
     }
 
+    public static String getGttExpiryEndpoint(String pml_id) {
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_EXPIRY[0][0])
+                .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                .encode().toUriString();
+    }
+
+    public static String getGttByIdOrStatusV2Endpoint(@Nullable String pml_id, @Nullable String status) {
+        if (StringUtils.isNotEmpty(pml_id) && StringUtils.isEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .encode().toUriString();
+        } else if (StringUtils.isEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        } else if (StringUtils.isNotEmpty(pml_id) && StringUtils.isNotEmpty(status)) {
+            return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0])
+                    .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
+                    .queryParam(ApiConstants.STATUS, status)
+                    .encode().toUriString();
+        }
+        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_V2[0][0]).encode().toUriString();
+    }
+
     public static String gttByIdV2Endpoint(String id) {
         if (StringUtils.isEmpty(id)){
             id = null;
@@ -121,10 +146,11 @@ public class ApiUtils {
         return ApiConstants.GTT_V2[0][0] + FORWARD_SLASH + id;
     }
 
-    public static String getGttExpiryEndpoint(String pml_id) {
-        return UriComponentsBuilder.fromHttpUrl(ApiConstants.GTT_EXPIRY[0][0])
-                .queryParam(ApiConstants.PML_ID_PARAM, pml_id)
-                .encode().toUriString();
+    public static String gttByInstructionIdV2Endpoint(String id) {
+        if (StringUtils.isEmpty(id)){
+            id = null;
+        }
+        return ApiConstants.GTT_BY_INSTRUCTION_ID_V2[0][0] + FORWARD_SLASH + id;
     }
 
     public static String getLiveMarketDataEndpoint(String mode, String pref) {
@@ -226,6 +252,15 @@ public class ApiUtils {
         headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
         headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
         return new HttpEntity<>(gttOrderReqDto, headers);
+    }
+
+    public static HttpEntity<GTTOrderV2ReqDto> getHttpEntityForPost(
+            String accessToken, GTTOrderV2ReqDto gttOrderV2ReqDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set(ApiConstants.X_JWT_TOKEN, accessToken);
+        headers.set(ApiConstants.OPENAPI_CLIENT_SRC, ApiConstants.OPENAPI_CLIENT_SRC_VALUE);
+        return new HttpEntity<>(gttOrderV2ReqDto, headers);
     }
 
 

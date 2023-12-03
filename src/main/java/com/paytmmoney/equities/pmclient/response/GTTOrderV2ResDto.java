@@ -1,4 +1,4 @@
-package com.paytmmoney.equities.pmclient.request;
+package com.paytmmoney.equities.pmclient.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,20 +8,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GTTTransactionDetailsReqDTO {
+public class GTTOrderV2ResDto implements Serializable {
 
-    @JsonProperty(ApiConstants.LIMIT_PRICE)
-    private Double limitPrice;
+    @JsonProperty(ApiConstants.DATA)
+    private GTTOrderDataV2ResDto data;
 
-    @JsonProperty(ApiConstants.QUANTITY)
-    private Integer quantity;
-
-    @JsonProperty(ApiConstants.TRIGGER_PRICE)
-    private Double triggerPrice;
-
+    @JsonProperty(ApiConstants.META)
+    private GTTMetaResDto meta;
 }

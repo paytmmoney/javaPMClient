@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GTTOrderDataResDto implements Serializable {
+public class GTTOrderDataV2ResDto implements Serializable {
 
     @JsonProperty(ApiConstants.ID)
     private String id;
@@ -44,20 +44,11 @@ public class GTTOrderDataResDto implements Serializable {
     @JsonProperty(ApiConstants.USER_ID)
     private String userId;
 
-    @JsonProperty(ApiConstants.STATUS)
-    private String status;
-
     @JsonProperty(ApiConstants.TRANSACTION_TYPE)
     private String transactionType;
 
     @JsonProperty(ApiConstants.TRANSACTION_DETAILS)
-    private List<GTTOrderDataTransactionResDto> transactionDetails;
-
-    @JsonProperty(ApiConstants.SET_PRICE)
-    private String setPrice;
-
-    @JsonProperty(ApiConstants.ORDER_TYPE)
-    private String orderType;
+    private List<GTTOrderDataTransactionV2ResDto> transactionDetails;
 
     @JsonProperty(ApiConstants.TRIGGER_TYPE)
     private String triggerType;
