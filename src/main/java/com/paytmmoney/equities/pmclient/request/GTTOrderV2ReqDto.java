@@ -21,10 +21,6 @@ public class GTTOrderV2ReqDto {
     @JsonProperty(ApiConstants.EXCHANGE)
     private String exchange;
 
-    @Nullable
-    @JsonProperty(ApiConstants.PML_ID)
-    private String pmlId;
-
     @JsonProperty(ApiConstants.PRODUCT_TYPE)
     private String productType;
 
