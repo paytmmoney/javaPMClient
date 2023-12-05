@@ -143,6 +143,54 @@ public class ApiUtilsTest {
     }
 
     @Test
+    public void testGetGttByIdOrStatusV2Endpoint() {
+        String result = ApiUtils.getGttByIdOrStatusV2Endpoint("pml_id","status");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt?pml-id=pml_id&status=status");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusV2Endpoint1() {
+        String result = ApiUtils.getGttByIdOrStatusV2Endpoint(null,"status");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt?status=status");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusV2Endpoint2() {
+        String result = ApiUtils.getGttByIdOrStatusV2Endpoint("pml_id",null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt?pml-id=pml_id");
+    }
+
+    @Test
+    public void testGetGttByIdOrStatusV2Endpoint3() {
+        String result = ApiUtils.getGttByIdOrStatusV2Endpoint(null,null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt");
+    }
+
+    @Test
+    public void testGttByIdV2Endpoint() {
+        String result = ApiUtils.gttByIdV2Endpoint("id");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt/id");
+    }
+
+    @Test
+    public void testGttByIdV2Endpoint1() {
+        String result = ApiUtils.gttByIdV2Endpoint(null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt/null");
+    }
+
+    @Test
+    public void testGttByInstructionIdV2Endpoint() {
+        String result = ApiUtils.gttByInstructionIdV2Endpoint("id");
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt/instructions/id");
+    }
+
+    @Test
+    public void testGttByInstructionIdV2Endpoint1() {
+        String result = ApiUtils.gttByInstructionIdV2Endpoint(null);
+        Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v2/gtt/instructions/null");
+    }
+
+    @Test
     public void testGetGttExpiryEndpoint() {
         String result = ApiUtils.getGttExpiryEndpoint("pml-id");
         Assert.assertEquals(result, "https://developer.paytmmoney.com/gtt/v1/gtt/expiry-date?pml-id=pml-id");

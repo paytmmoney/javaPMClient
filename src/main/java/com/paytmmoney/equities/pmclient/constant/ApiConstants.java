@@ -88,7 +88,7 @@ public class ApiConstants {
     public static final String MERCHANT_SECRET = "merchantSecret";
     public static final String X_JWT_TOKEN = "x-jwt-token";
     public static final String OPENAPI_CLIENT_SRC = "openapi-client-src";
-    public static final String OPENAPI_CLIENT_SRC_VALUE = "Sdk";
+    public static final String OPENAPI_CLIENT_SRC_VALUE = "sdk";
 
     public static final String ORDER_NO = "order_no";
     public static final String LEG_NO = "leg_no";
