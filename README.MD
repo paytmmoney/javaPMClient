@@ -1,4 +1,4 @@
-# The Paytm Money Equity 1.1.2 API Java client
+# The Paytm Money Equity 1.1.3 API Java client
 
 The official Java client for communicating with [PaytmMoney Equity API](https://www.paytmmoney.com/stocks/).
 
@@ -17,23 +17,23 @@ trading platform. Execute orders in real time, manage user portfolio, stream liv
 
 - This jar will work only in springboot application.
 
-- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.2.jar') ```
+- To use pmclient jar in your springboot app, add the jar file in libs directory of your project and then add the following line in your build.gradle ``` implementation files('libs/pmclient-1.1.3.jar') ```
 
 - For maven project, you can add this line in pom.xml
 - ``` java
   <dependency>
   <groupId>com.paytmmoney.equities</groupId>
   <artifactId>pmclient</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
   <scope>system</scope>
-  <systemPath>${basedir}/libs/pmclient-1.1.2.jar</systemPath>
+  <systemPath>${basedir}/libs/pmclient-1.1.3.jar</systemPath>
   </dependency>
   ```
 
-- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.2
+- Include com.paytmmoney.equities.pmclient into build path from maven. Use version 1.1.3
 
 - To use pmclient in **Android**, you need to include jar file in the libs directory and add the following line in
-  you module's gradle file ``` compile files('dist/pmclient-1.1.2.jar') ```
+  you module's gradle file ``` compile files('dist/pmclient-1.1.3.jar') ```
 
 ## API usage
 
@@ -300,6 +300,36 @@ GTTAggregateResDto gTTAggregateResDto=pmClient.getGttAggregate()
 * To GTT by InstructionId.
 ```java
 GTTOrderResDto gTTOrderResDto=pmClient.getGttByInstructionId(id)
+```
+
+### Create GTT V2
+* To create a GTT order.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.createGttV2(gttOrderV2ReqDto);
+```
+
+### Get All GTT V2
+* To get all GTT or get by pml_id or status.
+```java
+GTTGetAllV2ResDto gTTGetAllV2ResDto=pmClient.getAllGttV2(pmlId,status);
+```
+
+### Get GTT V2
+* To get GTT by Id.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.getGttV2(id);
+```
+
+### Update GTT V2
+* To update GTT by Id.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.updateGttV2(id, gttOrderV2ReqDto);
+```
+
+### Get GTT InstructionId V2
+* To GTT by InstructionId.
+```java
+GTTOrderV2ResDto gTTOrderV2ResDto=pmClient.getGttByInstructionIdV2(id)
 ```
 
 ### Get Live Price via API

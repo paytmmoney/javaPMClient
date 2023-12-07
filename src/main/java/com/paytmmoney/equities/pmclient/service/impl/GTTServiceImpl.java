@@ -5,9 +5,12 @@ import com.paytmmoney.equities.pmclient.constant.MessageConstants;
 import com.paytmmoney.equities.pmclient.exception.ApplicationException;
 import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderV2ReqDto;
 import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
 import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllV2ResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderV2ResDto;
 import com.paytmmoney.equities.pmclient.service.GTTService;
 import com.paytmmoney.equities.pmclient.util.ApiUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -134,6 +137,78 @@ public class GTTServiceImpl implements GTTService {
             return response.getBody();
         } catch (Exception e) {
             log.error("Exception in GTTServiceImpl->getGTTByInstructionId:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    public GTTOrderV2ResDto createGTTV2(SessionManager sessionManager, GTTOrderV2ReqDto gttOrderV2ReqDto) throws
+            ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_V2[1]);
+        ResponseEntity<GTTOrderV2ResDto> response = null;
+        try {
+            response = restTemplate.exchange(ApiConstants.GTT_V2[0][0], HttpMethod.POST,
+                    ApiUtils.getHttpEntityForPost(jwtToken, gttOrderV2ReqDto), GTTOrderV2ResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in GTTServiceImpl->createGTTV2:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    public GTTOrderV2ResDto getGTTV2(SessionManager sessionManager, String id) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_V2[1]);
+        ResponseEntity<GTTOrderV2ResDto> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.gttByIdV2Endpoint(id), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), GTTOrderV2ResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in GTTServiceImpl->getGTTV2:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    public GTTOrderV2ResDto updateGTTV2(SessionManager sessionManager, String id, GTTOrderV2ReqDto gttOrderV2ReqDto) throws
+            ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager,  ApiConstants.GTT_V2[1]);
+        ResponseEntity<GTTOrderV2ResDto> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.gttByIdV2Endpoint(id), HttpMethod.PUT,
+                    ApiUtils.getHttpEntityForPost(jwtToken, gttOrderV2ReqDto), GTTOrderV2ResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in GTTServiceImpl->updateGTTV2:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    public GTTGetAllV2ResDto getAllGTTV2(SessionManager sessionManager, @Nullable String pml_id, @Nullable String status) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_V2[1]);
+        ResponseEntity<GTTGetAllV2ResDto> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.getGttByIdOrStatusV2Endpoint(pml_id, status), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), GTTGetAllV2ResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in GTTServiceImpl->getAllGTTV2:", e);
+            ApiUtils.handleException(response);
+        }
+        throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());
+    }
+
+    public GTTOrderV2ResDto getGTTByInstructionIdV2(SessionManager sessionManager, String id) throws ApplicationException {
+        String jwtToken = ApiUtils.isSessionExpired(sessionManager, ApiConstants.GTT_BY_INSTRUCTION_ID_V2[1]);
+        ResponseEntity<GTTOrderV2ResDto> response = null;
+        try {
+            response = restTemplate.exchange(ApiUtils.gttByInstructionIdV2Endpoint(id), HttpMethod.GET,
+                    ApiUtils.getHttpEntity(jwtToken), GTTOrderV2ResDto.class);
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Exception in GTTServiceImpl->getGTTByInstructionIdV2:", e);
             ApiUtils.handleException(response);
         }
         throw new ApplicationException(MessageConstants.NULL_RESPONSE, HttpStatus.NO_CONTENT.value());

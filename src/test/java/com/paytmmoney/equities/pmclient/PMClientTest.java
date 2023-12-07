@@ -5,7 +5,9 @@ import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisIsin;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderV2ReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTTransactionDetailsReqDTO;
+import com.paytmmoney.equities.pmclient.request.GTTTransactionDetailsV2ReqDTO;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDtoList;
@@ -25,11 +27,16 @@ import com.paytmmoney.equities.pmclient.response.GTTAggregateDataResDto;
 import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
 import com.paytmmoney.equities.pmclient.response.GTTAggregateStatusResDto;
 import com.paytmmoney.equities.pmclient.response.GTTGetAllDataResDTO;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllDataV2ResDTO;
 import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllV2ResDto;
 import com.paytmmoney.equities.pmclient.response.GTTMetaResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderDataResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderDataTransactionResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderDataTransactionV2ResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderDataV2ResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderV2ResDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDataDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueResultDto;
@@ -357,6 +364,43 @@ public class PMClientTest {
         when(gttService.getGTTByInstructionId(any(), anyString())).thenReturn(new GTTOrderResDto(new GTTOrderDataResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","status","transactionType",(Arrays.asList(new GTTOrderDataTransactionResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType"))),"setPrice","orderType","triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
         GTTOrderResDto result = pMClient.getGttByInstructionId("id");
         Assert.assertEquals(result, new GTTOrderResDto(new GTTOrderDataResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","status","transactionType",(Arrays.asList(new GTTOrderDataTransactionResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType"))),"setPrice","orderType","triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+    }
+
+    @Test
+    public void testCreateGttV2() throws Exception {
+        when(gttService.createGTTV2(any(), any())).thenReturn(new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+        GTTOrderV2ResDto result = pMClient.createGttV2(new GTTOrderV2ReqDto("exchange","productType","securityId","segment","setPrice",(Arrays.asList(new GTTTransactionDetailsV2ReqDTO("id","subType","orderType",1D, Integer.valueOf(1),1D))), "transactionType", "triggerType"));
+        Assert.assertEquals(result, new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+    }
+
+    @Test
+    public void testUpdateGttV2() throws Exception {
+        GTTTransactionDetailsV2ReqDTO gttTransactionDetailsV2ReqDTO = GTTTransactionDetailsV2ReqDTO.builder().quantity(Integer.valueOf(1)).triggerPrice(1D).limitPrice(1D).orderType("orderType").subType("subType").id("id").build();
+        GTTOrderV2ReqDto gttOrderV2ReqDto = GTTOrderV2ReqDto.builder().setPrice("0.0").transactionType("transactionType").transactionDetails(Arrays.asList(gttTransactionDetailsV2ReqDTO)).triggerType("triggerType").build();
+        when(gttService.updateGTTV2(any(), anyString(), any())).thenReturn(new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+        GTTOrderV2ResDto result = pMClient.updateGttV2("id", gttOrderV2ReqDto);
+        Assert.assertEquals(result, new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+    }
+
+    @Test
+    public void testGetGttV2() throws Exception {
+        when(gttService.getGTTV2(any(), anyString())).thenReturn(new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+        GTTOrderV2ResDto result = pMClient.getGttV2("id");
+        Assert.assertEquals(result, new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+    }
+
+    @Test
+    public void testGetAllGttV2() throws Exception {
+        when(gttService.getAllGTTV2(any(), anyString(), anyString())).thenReturn(new GTTGetAllV2ResDto(new GTTGetAllDataV2ResDTO(Collections.singletonList(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"))),new GTTMetaResDto("status","displayMessage")));
+        GTTGetAllV2ResDto result = pMClient.getAllGttV2("pml_id","status");
+        Assert.assertEquals(result, new GTTGetAllV2ResDto(new GTTGetAllDataV2ResDTO(Collections.singletonList(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"))),new GTTMetaResDto("status","displayMessage")));
+    }
+
+    @Test
+    public void testGetGttByInstructionIdV2() throws Exception {
+        when(gttService.getGTTByInstructionIdV2(any(), anyString())).thenReturn(new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
+        GTTOrderV2ResDto result = pMClient.getGttByInstructionIdV2("id");
+        Assert.assertEquals(result, new GTTOrderV2ResDto(new GTTOrderDataV2ResDto("id","instructionId","segment","exchange","securityId","pmlId","name","userId","transactionType",(Arrays.asList(new GTTOrderDataTransactionV2ResDto("executionRefId",1D,"notificationRefId",Integer.valueOf(0),"subType",1D,"triggeredAt",1D,"triggeredAtType","setPrice","orderType","status","id"))),"triggerType","productType","cancellationCode","cancellationReason","expiryDate","createdAt","updatedAt","deletedAt","requestMetaData"),new GTTMetaResDto("status","displayMessage")));
     }
 
     @Test
