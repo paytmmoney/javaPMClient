@@ -6,6 +6,7 @@ import com.paytmmoney.equities.pmclient.model.SessionManager;
 import com.paytmmoney.equities.pmclient.request.ConvertOrderReqDto;
 import com.paytmmoney.equities.pmclient.request.EdisValidateReqDto;
 import com.paytmmoney.equities.pmclient.request.GTTOrderReqDto;
+import com.paytmmoney.equities.pmclient.request.GTTOrderV2ReqDto;
 import com.paytmmoney.equities.pmclient.request.OrderReqDto;
 import com.paytmmoney.equities.pmclient.request.ScriptMarginCalReqDto;
 import com.paytmmoney.equities.pmclient.response.ChargesInfoResDTO;
@@ -14,7 +15,9 @@ import com.paytmmoney.equities.pmclient.response.EdisStatusResDto;
 import com.paytmmoney.equities.pmclient.response.FundSummaryDto;
 import com.paytmmoney.equities.pmclient.response.GTTAggregateResDto;
 import com.paytmmoney.equities.pmclient.response.GTTGetAllResDto;
+import com.paytmmoney.equities.pmclient.response.GTTGetAllV2ResDto;
 import com.paytmmoney.equities.pmclient.response.GTTOrderResDto;
+import com.paytmmoney.equities.pmclient.response.GTTOrderV2ResDto;
 import com.paytmmoney.equities.pmclient.response.HoldingValueDto;
 import com.paytmmoney.equities.pmclient.response.LivePriceDataListDto;
 import com.paytmmoney.equities.pmclient.response.OptionChainConfigDto;
@@ -217,6 +220,26 @@ public class PMClient {
 
     public GTTOrderResDto getGttByInstructionId(String id) throws ApplicationException {
         return gttService.getGTTByInstructionId(sessionManager, id);
+    }
+
+    public GTTOrderV2ResDto createGttV2(GTTOrderV2ReqDto gttOrderV2ReqDto) throws ApplicationException {
+        return gttService.createGTTV2(sessionManager, gttOrderV2ReqDto);
+    }
+
+    public GTTOrderV2ResDto updateGttV2(String id, GTTOrderV2ReqDto gttOrderV2ReqDto) throws ApplicationException {
+        return gttService.updateGTTV2(sessionManager, id, gttOrderV2ReqDto);
+    }
+
+    public GTTOrderV2ResDto getGttV2(String id) throws ApplicationException {
+        return gttService.getGTTV2(sessionManager, id);
+    }
+
+    public GTTGetAllV2ResDto getAllGttV2(@Nullable String pmlId, @Nullable String status) throws ApplicationException {
+        return gttService.getAllGTTV2(sessionManager, pmlId, status);
+    }
+
+    public GTTOrderV2ResDto getGttByInstructionIdV2(String id) throws ApplicationException {
+        return gttService.getGTTByInstructionIdV2(sessionManager, id);
     }
 
     public LivePriceDataListDto getLiveMarketData(String mode, String pref) throws ApplicationException {
