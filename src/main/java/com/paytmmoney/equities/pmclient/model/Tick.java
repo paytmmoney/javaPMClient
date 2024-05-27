@@ -23,7 +23,7 @@ public class Tick {
     private byte mode;
     private int lastTradedQuantity;
     private float averageTradedPrice;
-    private int volumeTraded;
+    private long volumeTraded;
     private int totalBuyQuantity;
     private int totalSellQuantity;
     private float open;
@@ -34,6 +34,6 @@ public class Tick {
     private float changeAbsolute;
     private float fiftyTwoWeekHigh;
     private float fiftyTwoWeekLow;
-    private int oi;
-    private int oiChange;
+    private long oi;
+    private long oiChange;
 }

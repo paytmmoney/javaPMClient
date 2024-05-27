@@ -42,7 +42,7 @@ public class LivePriceDataDto {
     private Long lastTradeTime;
     @JsonProperty("last_update_time")
     private Long lastUpdateTime;
-    private Integer oi;
+    private Long oi;
     @JsonProperty("change_oi")
     private Long changeOi;
     private LivePriceDataDepthDto depth;
